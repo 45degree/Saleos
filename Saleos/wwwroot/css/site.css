@@ -1,0 +1,107 @@
+﻿/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .container {
+    max-width: 1400px;
+  }
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+  background-color: #efefefef;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
+
+/* main page */
+.side-widget-collection {
+    flex: 0 0 400px;
+    margin-left: 100px;
+}
+
+.side-widget {
+    margin-bottom: 20px
+}
+
+.banner {
+    width: 100vm;
+    height: 320px;
+    background: url("../img/banner.webp");
+    background-size: cover;
+}
+
+@media screen and (min-device-width: 100px) and (max-device-width: 1000px){
+    .side-widget-collection {
+        visibility: hidden;
+        display: none;
+    }
+}
+
+/*  Userinfo */
+
+.UserInfo {
+    background-color: white;
+    overflow: auto;
+}
+
+.photo-2 img {
+    margin: -50px 0 0;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 4px solid rgba(255,255,255,.4);
+}
+
+.photo-1 {
+    background-image: url("../img/about.webp");
+    width: auto;
+    height: 120px;
+}
+
+.photo-2 {
+    background-color: white;
+    width: auto;
+    height: 40px;
+    text-align: center;
+}
+
+.User-Details {
+    height: 28px;
+    margin: 10px 0 30px;
+}
+
+.User-Details p {
+    margin: 20px;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* tags */
+.tags-panel {
+    padding: 20px;
+    background-color: white;
+}

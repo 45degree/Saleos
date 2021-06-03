@@ -1,0 +1,58 @@
+/*Homearticle*/
+
+.home-article-info {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.home-article-info img {
+    width: 240px;
+    height: 145px;
+    border: 1px solid #f3f3f3;
+    padding: 2px;
+}
+
+.article-main-info {
+    display: flex; 
+    padding: 20px;
+    opacity: 0.8;
+    width: 100%;
+    flex-wrap: wrap;
+    background-color: white;
+}
+
+.article-extra-info {
+    border-top: 1px solid #d2d5d9;
+    padding: 5px 20px;
+    background-color: white;
+    font-size: 15px;
+    width: 100%;
+}
+
+.article-info-content {
+    flex: auto;
+    padding: 0 20px;
+}
+
+.article-create-time {
+    float: left;
+    margin-right: 10px;
+}
+
+.article-tags {
+    float: left;
+}
+
+.read-whole-article {
+    float: right;
+}
+
+@media screen and (min-device-width: 100px) and (max-device-width: 600px){
+    .home-article-info img {
+        width: 100%;
+        height: 100%;
+        border: 1px solid #f3f3f3;
+        padding: 2px;
+    }
+}

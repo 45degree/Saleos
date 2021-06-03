@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <UserSecretsId>aspnet-Saleos-9C37731A-D4C3-4011-8F69-AA2BE3542A67</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Saleos.DTO\Saleos.DTO.csproj" />
+      <ProjectReference Include="..\Saleos.Entity\Saleos.Entity.csproj" />
+    </ItemGroup>
+
+</Project>
