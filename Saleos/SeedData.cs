@@ -31,12 +31,18 @@ namespace Saleos
             await identityDbContext.Database.EnsureCreatedAsync();
             await identityDbContext.Database.MigrateAsync();
 
+            var category1 = new Category()
+            {
+                Content = "Category 1"
+            };
+            
             var article1 = new Article()
             {
                 Title =  "Title 1",
                 Content = "Content 1",
                 CreateTime = new DateTime(2020, 2, 1),
-                LastModifiedTime = DateTime.Today
+                LastModifiedTime = DateTime.Today,
+                Category = category1
             };
 
             var tag1 = new Tag()
@@ -48,6 +54,7 @@ namespace Saleos
 
             homePageDbContext.Article.AddRange(article1);
             homePageDbContext.Tags.AddRange(tag1);
+            homePageDbContext.Categories.AddRange(category1);
             await homePageDbContext.AddRangeAsync(articleTag1);
 
             await homePageDbContext.SaveChangesAsync();

@@ -11,6 +11,7 @@ namespace Saleos.Entity
             {
                 Content = addDto.Content,
                 Title = addDto.Title,
+                Category = addDto.Category.GetCategory(),
                 CreateTime = addDto.CreateTime,
                 LastModifiedTime = addDto.CreateTime
             };
@@ -23,6 +24,9 @@ namespace Saleos.Entity
             {
                 Id = article.Id,
                 Title = article.Title,
+                Abstract = article.Abstract,
+                ImgUrl = article.ImageUrl,
+                Category = article.Category.GetCategoryDto(),
                 Content = article.Content,
                 CreateTime = article.CreateTime,
                 LastModifiedTime = article.LastModifiedTime,
@@ -35,6 +39,24 @@ namespace Saleos.Entity
             return articleDto;
         }
 
+        public static CategoryDto GetCategoryDto(this Category category)
+        {
+            return new CategoryDto()
+            {
+                Id = category.Id,
+                Content = category.Content
+            };
+        }
+
+        public static Category GetCategory(this CategoryDto categoryDto)
+        {
+            return new Category
+            {
+                Id = categoryDto.Id,
+                Content = categoryDto.Content,
+            };
+        }
+        
 
         public static TagDto GetTagDto(this Tag tag)
         {

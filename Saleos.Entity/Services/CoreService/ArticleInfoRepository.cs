@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Saleos.DTO;
 using Saleos.Entity.Data;
 
-namespace Saleos.Entity.Services
+namespace Saleos.Entity.Services.CoreServices
 {
     public class ArticleInfoRepository : IArticleInfoRepository
     {

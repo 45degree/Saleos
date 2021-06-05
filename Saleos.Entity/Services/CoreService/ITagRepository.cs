@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Saleos.DTO;
 
-namespace Saleos.Entity.Services
+namespace Saleos.Entity.Services.CoreServices
 {
     public interface ITagRepository
     {
@@ -29,7 +30,7 @@ namespace Saleos.Entity.Services
         /// <returns>
         /// Tag的集合
         /// </returns>
-        public Task<List<Tag>> GetTagAsync();
+        public Task<List<TagDto>> GetTagAsync();
 
         /// <summary>
         /// 通过id异步获取Tag

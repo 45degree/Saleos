@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Saleos.DTO
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -68,14 +69,10 @@
                 <div class="tags-panel">
                     <div style="border-bottom: 1px solid black;">tags</div>
                     <div>
-                        <a href="#" class="badge badge-pill badge-primary">Primary</a>
-                        <a href="#" class="badge badge-pill badge-primary">Primary</a>
-                        <a href="#" class="badge badge-pill badge-primary">Primary</a>
-                        <a href="#" class="badge badge-pill badge-primary">Primary</a>
-                        <a href="#" class="badge badge-pill badge-primary">Primary</a>
-                        <a href="#" class="badge badge-pill badge-primary">Primary</a>
-                        <a href="#" class="badge badge-pill badge-primary">Primary</a>
-                        <a href="#" class="badge badge-pill badge-primary">Primary</a>
+                        @foreach (var tag in ViewData["Tags"] as List<TagDto>)
+                        {
+                            <a href="#" class="badge badge-pill badge-primary">@tag.Tags</a>
+                        }
                     </div>
                 </div>
             </div>
@@ -85,7 +82,7 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2021 - Saleos - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        &copy; 2021 - Saleos
     </div>
 </footer>
 

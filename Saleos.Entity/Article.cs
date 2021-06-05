@@ -17,37 +17,41 @@ namespace Saleos.Entity
         public string ImageUrl { get; set; }
 
         /// <summary>
-        /// 是否是转载文章
+        /// whether this article is a reprint
         /// </summary>
-        [Required]
-        public bool IsReprint { get; set; }
+        public bool IsReprint { get; set; } = false;
 
         /// <summary>
-        /// 转载文案的地址
+        /// the reprint Url if this article is a reprint
         /// </summary>
         public string OriginalArticleUri {get; set;}
 
         /// <summary>
-        /// 文章标题
+        /// the article's title
         /// </summary>
         [Required]
         [MaxLength(40)]
         public string Title { get; set; }
 
         /// <summary>
-        /// 文章内容
+        /// the article's content
         /// </summary>
         public string Content {get; set;}
 
         /// <summary>
-        /// 文章摘要
+        /// the article's abstract
         /// </summary>
         public string Abstract { get; set; }
 
         /// <summary>
-        /// 文章包含的标签
+        /// the tags that this article contains
         /// </summary>
         public List<ArticleTag> ArticleTags { get; set; }
+        
+        /// <summary>
+        /// the category that the article belongs to
+        /// </summary>
+        public Category Category { get; set; }
 
         public DateTime CreateTime { get; set; }
 
@@ -60,7 +64,7 @@ namespace Saleos.Entity
     }
 
     /// <summary>
-    /// Article 和 tag 的关联表
+    /// a join table that connect Articles and Tags
     /// </summary>
     public class ArticleTag
     {

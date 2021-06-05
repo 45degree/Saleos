@@ -9,6 +9,7 @@ namespace Saleos.DTO
         public string Abstract { get; set; }
         public string Title { get; set; }
         public string ImgUrl { get; set; }
+        public CategoryDto Category { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime LastModifiedTime { get; set; }
         public List<TagDto> Tags { get; set; } 

@@ -1,5 +1,8 @@
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Saleos.Entity.Services.CoreServices;
 
 namespace Saleos.Controllers
 {
@@ -9,13 +12,20 @@ namespace Saleos.Controllers
     /// </summary>
     public abstract class BaseController : Controller
     {
-        public override void OnActionExecuted(ActionExecutedContext context)
+        protected ArticleServices ArticleServices;
+        
+        public BaseController(ArticleServices articleServices)
+        {
+            ArticleServices = articleServices;
+        }
+        
+        public override async void OnActionExecuted(ActionExecutedContext context)
         {
             // TODO initial the UserInfo's info
             ViewData[""] = "";
             
             // TODO initial the TagsList's info
-            ViewData["Tags"] = "";
+            ViewData["Tags"] = await ArticleServices.TagRepository.GetTagAsync();
             
             base.OnActionExecuted(context);
         }

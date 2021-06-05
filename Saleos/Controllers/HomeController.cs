@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Saleos.DTO;
+using Saleos.Entity.Services.CoreServices;
 using Saleos.Models;
 
 namespace Saleos.Controllers
@@ -13,19 +15,20 @@ namespace Saleos.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ArticleServices articleServices, ILogger<HomeController> logger)
+            : base(articleServices)
         {
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int page)
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            var articlesQueryDto = new ArticlesQueryDto()
+            {
+                PageNumber = page
+            };
+            var articleInfos =  await ArticleServices.ArticleInfoRepository.GetArticleInfoByQueryAsync(articlesQueryDto);
+            return View(articleInfos);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

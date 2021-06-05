@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Saleos.DTO
@@ -12,6 +13,8 @@ namespace Saleos.DTO
         public string Content { get; set; }
 
         [Required]
-        public DateTime CreateTime { get; set; } 
+        public DateTime CreateTime { get; set; }
+        
+        public CategoryDto Category { get; set; }
     }
 }

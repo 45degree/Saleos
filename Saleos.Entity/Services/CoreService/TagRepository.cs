@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Saleos.DTO;
 using Saleos.Entity.Data;
 
-namespace Saleos.Entity.Services
+namespace Saleos.Entity.Services.CoreServices
 {
     public class TagRepository : ITagRepository
     {
@@ -26,11 +27,12 @@ namespace Saleos.Entity.Services
             return await _homePageDbContext.Tags.CountAsync();
         }
 
-        public async Task<List<Tag>> GetTagAsync()
+        public async Task<List<TagDto>> GetTagAsync()
         {
             return await _homePageDbContext.Tags
                 .Include(x => x.ArticleTag)
                 .ThenInclude(x => x.Article)
+                .Select(x => x.GetTagDto())
                 .ToListAsync();
         }
 

@@ -82,13 +82,22 @@ namespace Saleos.Test.Entity.Test
         }
 
         /// <summary>
-        /// 用于生成测试数据
+        /// generator test data in the database
         /// </summary>
-        /// <param name="context">数据库上下文</param>
         public static void SeedDate(HomePageDbContext context)
         {
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
+
+            var category1 = new Category()
+            {
+                Content = "Category1"
+            };
+
+            var category2 = new Category()
+            {
+                Content = "Category2"
+            };
 
             var article1 = new Article()
             {
@@ -96,6 +105,7 @@ namespace Saleos.Test.Entity.Test
                 Abstract = "Abstract 1",
                 Content = "Content 1",
                 ImageUrl = "Url 1",
+                Category = category1,
                 CreateTime = new DateTime(2020, 2, 1),
                 LastModifiedTime = DateTime.Today
             };
@@ -106,6 +116,7 @@ namespace Saleos.Test.Entity.Test
                 Abstract = "Abstract 2",
                 Content = "Content 2",
                 ImageUrl = "Url 2",
+                Category = category1,
                 CreateTime = new DateTime(2020, 2, 2),
                 LastModifiedTime = DateTime.Today
             };
@@ -116,6 +127,7 @@ namespace Saleos.Test.Entity.Test
                 Abstract = "Abstract 3",
                 Content = "Content 3",
                 ImageUrl = "Url 2",
+                Category = category2,
                 CreateTime = new DateTime(2020, 2, 3),
                 LastModifiedTime = DateTime.Today
             };
@@ -142,6 +154,7 @@ namespace Saleos.Test.Entity.Test
 
             context.Article.AddRange(article1, article2, article3);
             context.Tags.AddRange(tag1, tag2, tag3);
+            context.Categories.AddRange(category1, category2);
             context.AddRange(articleTag1, articleTag2,
                 articleTag3, articleTag4,
                 articleTag5, articleTag6);

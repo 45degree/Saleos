@@ -36,9 +36,10 @@ namespace Saleos.Controllers
             return Redirect(user.ReturnUrl ?? "/");
         }
 
-        public async Task Logout()
+        public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public class User

@@ -1,7 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using Saleos.DTO;
 
-namespace Saleos.Entity.Services
+namespace Saleos.Entity.Services.CoreServices
 {
     public interface IArticleRepository
     {
@@ -24,7 +25,7 @@ namespace Saleos.Entity.Services
         /// <exception cref="IndexOutOfRangeException">
         /// 当articleId没有对应的文章时抛出该异常，例如articleId小于等于0，或则大于数据库中最大Id
         /// </exception>
-        public Task<Article> GetArticleAsync(int articleId);
+        public Task<ArticleDto> GetArticleAsync(int articleId);
 
         /// <summary>
         /// 获取文章的数量
@@ -39,13 +40,13 @@ namespace Saleos.Entity.Services
         /// <exception cref="ArgumentNullException">
         /// 当article为null时抛出异常
         /// </exception>
-        public void AddArticle(Article article);
+        public void AddArticle(ArticleAddDto article);
 
         /// <summary>
         /// 更新文章
         /// </summary>
         /// <param name="article">修改后的文章</param>
-        public void UpdateArticle(Article article);
+        public Task UpdateArticleAsync(ArticleUpdateDto article);
 
         /// <summary>
         /// delete an article

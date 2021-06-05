@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Saleos.Entity.Services
+namespace Saleos.Entity.Services.CoreServices
 {
     public abstract class ArticleServices
     {

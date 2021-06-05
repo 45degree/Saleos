@@ -23,6 +23,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Saleos.Entity.Data;
+using Saleos.Entity.Services.CoreServices;
 
 namespace Saleos
 {
@@ -42,6 +43,8 @@ namespace Saleos
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<HomePageIdentityDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("IdentityConnection")));
+
+            services.AddScoped<ArticleServices, ArticleServicesImpl>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
