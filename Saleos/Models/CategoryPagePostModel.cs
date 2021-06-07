@@ -14,24 +14,11 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace Saleos.DTO
+namespace Saleos.Models
 {
-    public class ArticleAddDto
+    public class CategoryPagePostModel
     {
-        [Required]
-        public string Title { get; set; }
-
-        [Required]
+        public int Id { get; set; }
         public string Content { get; set; }
-
-        [Required]
-        public DateTime CreateTime { get; set; }
-        
-        public CategoryDto Category { get; set; }
-        public List<int> Tags { get; set; }
     }
 }

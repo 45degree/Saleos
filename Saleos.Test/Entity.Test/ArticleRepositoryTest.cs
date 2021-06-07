@@ -1,4 +1,22 @@
+/*
+ * Copyright 2021 45degree
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Saleos.DTO;
@@ -44,7 +62,7 @@ namespace Saleos.Test.Entity.Test
             Assert.Equal("Title 1", article1.Title);
             Assert.Equal("Content 1", article1.Content);
             Assert.Equal("Abstract 1", article1.Abstract);
-            Assert.Equal("Category1", article1.Category.Content);
+            Assert.Equal("Category 1", article1.Category.Content);
             Assert.Equal(3, article1.Tags.Count);
 
             var article2 = await articleServices.ArticleRepository.GetArticleAsync(2);
@@ -52,7 +70,7 @@ namespace Saleos.Test.Entity.Test
             Assert.Equal("Title 2", article2.Title);
             Assert.Equal("Content 2", article2.Content);
             Assert.Equal("Abstract 2", article2.Abstract);
-            Assert.Equal("Category1", article2.Category.Content);
+            Assert.Equal("Category 1", article2.Category.Content);
             Assert.Equal(2, article2.Tags.Count);
         }
 
@@ -134,7 +152,7 @@ namespace Saleos.Test.Entity.Test
                 Category = new CategoryDto(){ Content = "Category4"},
                 CreateTime = new DateTime(2020, 2, 3),
             };
-            articleServices.ArticleRepository.AddArticle(newArticle);
+            await articleServices.ArticleRepository.AddArticleAsync(newArticle);
             await articleServices.SaveAsync();
 
             var article = await articleServices.ArticleRepository.GetArticleAsync(4);
@@ -149,10 +167,8 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                articleServices.ArticleRepository.AddArticle(null);
-            });
+            await Assert.ThrowsAsync<ArgumentNullException>(() =>
+                articleServices.ArticleRepository.AddArticleAsync(null));
         }
 
         [Fact]
@@ -162,14 +178,16 @@ namespace Saleos.Test.Entity.Test
             ArticleServices articleServices = new ArticleServicesImpl(context);
             var articleUpdate = new ArticleUpdateDto()
             {
-                Id = 1,
-                Content = "Changed Content 1",
+                Id = 3,
+                Content = "Changed Content 3",
+                Tags = new List<int>(){1, 2, 3 }
             };
             await articleServices.ArticleRepository.UpdateArticleAsync(articleUpdate);
             await articleServices.SaveAsync();
 
-            var newArticle = await articleServices.ArticleRepository.GetArticleAsync(1);
-            Assert.Equal("Changed Content 1", newArticle.Content);
+            var newArticle = await articleServices.ArticleRepository.GetArticleAsync(3);
+            Assert.Equal("Changed Content 3", newArticle.Content);
+            Assert.Equal(3, newArticle.Tags.Count);
         }
 
         [Fact]
@@ -183,12 +201,7 @@ namespace Saleos.Test.Entity.Test
             var article = await articleServices.ArticleRepository.GetArticleAsync(1);
             Assert.Null(article);
 
-            var tag1 = await articleServices.TagRepository.GetTagAsync(1);
-            var tag2 = await articleServices.TagRepository.GetTagAsync(2);
-            var tag3 = await articleServices.TagRepository.GetTagAsync(3);
-            Assert.Empty(tag1.ArticleTag);
-            Assert.Single(tag2.ArticleTag);
-            Assert.Equal(2, tag3.ArticleTag.Count);
+            Assert.Equal(3, context.ArticleTags.Count());
         }
 
         [Theory]

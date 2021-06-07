@@ -1,8 +1,24 @@
+/*
+ * Copyright 2021 45degree
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Saleos.Entity;
+using Saleos.DTO;
 using Saleos.Entity.Data;
 using Saleos.Entity.Services.CoreServices;
 using Xunit;
@@ -24,7 +40,7 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            Assert.True(await articleServices.TagRepository.TagIsExistedAsync(articleId));
+            Assert.True(await articleServices.TagRepository.TagIsExistAsync(articleId));
         }
 
         [Theory]
@@ -35,11 +51,11 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            Assert.False(await articleServices.TagRepository.TagIsExistedAsync(articleId));
+            Assert.False(await articleServices.TagRepository.TagIsExistAsync(articleId));
         }
 
         [Fact]
-        public async void GetTagAsync_ReturnAllTags()
+        public async Task GetTagAsync_ReturnAllTags()
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
@@ -51,14 +67,13 @@ namespace Saleos.Test.Entity.Test
         [InlineData(1)]
         [InlineData(2)]
         [InlineData(3)]
-        public async void GetTagAsync_IdIsInRange_ReturnTag(int tagId)
+        public async Task GetTagAsync_IdIsInRange_ReturnTag(int tagId)
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
             var tag = await articleServices.TagRepository.GetTagAsync(tagId);
             Assert.Equal(tagId, tag.Id);
             Assert.Equal($"Tag {tagId}", tag.Content);
-            Assert.Equal(tagId, tag.ArticleTag.Count);  // tagId 和 tag 对应的文章数是相同的
         }
 
         [Theory]
@@ -74,7 +89,7 @@ namespace Saleos.Test.Entity.Test
         }
 
         [Fact]
-        public async void GetTagCountAsync_ReturnTagsCount()
+        public async Task GetTagCountAsync_ReturnTagsCount()
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
@@ -83,15 +98,15 @@ namespace Saleos.Test.Entity.Test
         }
 
         [Fact]
-        public async void AddTag_TagIsValid_TagIsRestoredInData()
+        public async Task AddTag_TagIsValid_TagIsRestoredInData()
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var newTag = new Tag()
+            var newTag = new TagAddDto()
             {
                 Content = "Tag 4"
             };
-            articleServices.TagRepository.AddTag(newTag);
+            await articleServices.TagRepository.AddTagAsync(newTag);
             await articleServices.SaveAsync();
 
             var tag = await articleServices.TagRepository.GetTagAsync(4);
@@ -99,21 +114,24 @@ namespace Saleos.Test.Entity.Test
         }
 
         [Fact]
-        public async void AddTag_TagIsNull_ExceptionThrow()
+        public async Task AddTag_TagIsNull_ExceptionThrow()
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            Assert.Throws<ArgumentNullException>(() => articleServices.TagRepository.AddTag(null));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => articleServices.TagRepository.AddTagAsync(null));
         }
 
         [Fact]
-        public async void UpdateTag_TagChangedInData()
+        public async Task UpdateTag_TagChangedInData()
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var tag = await articleServices.TagRepository.GetTagAsync(1);
-            tag.Content = "Changed Tag 1";
-            articleServices.TagRepository.UpdateTag(tag);
+            var updateTag = new TagUpdateDto()
+            {
+                Id = 1,
+                Content = "Changed Tag 1",
+            };
+            await articleServices.TagRepository.UpdateTagAsync(updateTag);
             await articleServices.SaveAsync();
 
             var newTag = await articleServices.TagRepository.GetTagAsync(1);
@@ -121,7 +139,7 @@ namespace Saleos.Test.Entity.Test
         }
 
         [Fact]
-        public async void DeleteTag_IdIsInRange_RemoveTagAndArticleTagsInData()
+        public async Task DeleteTag_IdIsInRange_RemoveTagAndArticleTagsInData()
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
@@ -131,7 +149,7 @@ namespace Saleos.Test.Entity.Test
             await Assert.ThrowsAsync<IndexOutOfRangeException>(() =>
                 articleServices.TagRepository.GetTagAsync(1));
 
-            // whether the article which has this tag in database delete this tag
+            // whether the article that has this tag really delete this tag in database
             var article1 = await articleServices.ArticleRepository.GetArticleAsync(1);
             var article2 = await articleServices.ArticleRepository.GetArticleAsync(2);
             var article3 = await articleServices.ArticleRepository.GetArticleAsync(3);
@@ -201,7 +219,7 @@ namespace Saleos.Test.Entity.Test
         }
 
         [Fact]
-        public async void DeleteTagFromArticle_ValidId_DeleteTagFromArticleInData()
+        public async Task DeleteTagFromArticle_ValidId_DeleteTagFromArticleInData()
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
@@ -213,7 +231,7 @@ namespace Saleos.Test.Entity.Test
         }
 
         [Fact]
-        public async void DeleteTagFromArticle_ArticleDontHaveTheTag_NothingChanged()
+        public async Task DeleteTagFromArticle_ArticleDontHaveTheTag_NothingChanged()
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
@@ -244,5 +262,51 @@ namespace Saleos.Test.Entity.Test
                 articleServices.DeleteTagFromArticleAsync(articleId, tagId)
             );
         }
+        
+        [Fact]
+        public async Task GetTagsByQueryAsync_TitleIsInData_ReturnArticle()
+        {
+            await using var context = new HomePageDbContext(ContextOptions);
+            ArticleServices articleServices = new ArticleServicesImpl(context);
+            var queryDto = new TagQueryDto()
+            {
+                Content = "Tag 1",
+            };
+            var tags = await articleServices.TagRepository.GetTagsByQueryAsync(queryDto);
+            Assert.Single(tags);
+            Assert.Equal("Tag 1", tags[0].Content);
+        }
+
+        [Theory]
+        [InlineData("nonexistent title")]
+        [InlineData("Tag 1 ")]
+        public async Task GetArticleInfoByQueryAsync_TitleIsNotInData_ReturnNull(string content)
+        {
+            await using var context = new HomePageDbContext(ContextOptions);
+            ArticleServices articleServices = new ArticleServicesImpl(context);
+            var queryDto = new TagQueryDto()
+            {
+                Content = content,
+            };
+            var tags = await articleServices.TagRepository.GetTagsByQueryAsync(queryDto);
+            Assert.Empty(tags);
+        }
+
+        [Theory]
+        [InlineData(" ")]
+        [InlineData(null)]
+        public async Task GetArticleInfoByQueryAsync_TitleIsNullOrWhiteSpace_IgnoreTitleFilter(string content)
+        {
+            await using var context = new HomePageDbContext(ContextOptions);
+            ArticleServices articleServices = new ArticleServicesImpl(context);
+            var queryDto = new TagQueryDto()
+            {
+                Content = content,
+            };
+            var tags = await articleServices.TagRepository.GetTagsByQueryAsync(queryDto);
+            Assert.Equal(3, tags.Count);
+        }
+        
+        //TODO test query string in pagination
     }
 }

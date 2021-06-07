@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using Saleos.DTO;
 
-namespace Saleos.DTO
+namespace Saleos.Entity.DtoExtension
 {
-    public class ArticleAddDto
+    public static class TagDtoExtension
     {
-        [Required]
-        public string Title { get; set; }
+        public static TagDto GetTagDtoFromTag(this Tag tag)
+        {
+            var tagDto = new TagDto()
+            {
+                Id = tag.Id,
+                Content = tag.Content,
+            };
+            return tagDto;
+        }
 
-        [Required]
-        public string Content { get; set; }
-
-        [Required]
-        public DateTime CreateTime { get; set; }
-        
-        public CategoryDto Category { get; set; }
-        public List<int> Tags { get; set; }
+        public static Tag GetTagFromTagAddDto(this TagAddDto addDto)
+        {
+            var tag = new Tag() { Content = addDto.Content };
+            return tag;
+        }
     }
 }

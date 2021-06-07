@@ -1,3 +1,4 @@
+@model TagPageViewModel
 @{
     ViewBag.Title = "title";
     ViewData["ActiveData"] = "AdminTags"; // see SideBarPage in Views/Shared/SideBarPage.cs
@@ -16,10 +17,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                     <input type="text" class="form-control" placeholder="Tag" aria-label="Username" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" placeholder="Tag" />
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-primary" id="tag-submit">Save changes</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -36,7 +37,7 @@
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="./AdminArticle.html">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Article">Home</a></li>
                     <li class="breadcrumb-item active">Tags</li>
                 </ol>
             </div><!-- /.col -->
@@ -50,7 +51,7 @@
     <div class="container-fluid">
         <div class="row" style="margin-bottom: 10px;">
             <div class="col">
-                <button class="btn btn-outline-primary btn-sm"
+                <button class="btn btn-outline-primary btn-sm" id="add-new-tag"
                         data-toggle="modal" data-target="#TagModal">新建</button>
             </div>
         </div>
@@ -68,14 +69,19 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @foreach (var tag in Model.Tags)
+                            {
                                 <tr>
-                                    <td>1</td>
-                                    <td>Content1</td>
+                                    <td class="tag-id">@tag.Id</td>
+                                    <td class="tag-content">@tag.Content</td>
                                     <td>
-                                        <button type="button" class="btn btn-outline-primary btn-sm">修改</button>
-                                        <button type="button" class="btn btn-outline-danger btn-sm">删除</button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm modify-tag-button"
+                                                data-toggle="modal" data-target='#TagModal'>修改</button>
+                                        <button class="btn btn-outline-danger btn-sm delete-tag-button"
+                                                type="button">删除</button>
                                     </td>
                                 </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -109,3 +115,56 @@
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
+
+@section CustomScript
+{
+    <script type="text/javascript">
+        let SelectedTagId = 0 // the tag's id that be selected. if the value is 0, that means the tag is new
+        $('#TagModal').on('hidden', function (){
+            SelectedTagId = 0
+        })
+        
+        $('.modify-tag-button').click(function() {
+            let id = $(this).parent().siblings('.tag-id').text()
+            let content = $(this).parent().siblings('.tag-content').text()
+            $('.modal-body > input').val(content)
+            SelectedTagId = id
+        })
+        
+        $('.delete-tag-button').click(function () {
+            let id = $(this).parent().siblings('.tag-id').text()
+            $.ajax({
+                url: '@Url.Action("Tags", "Admin")' + '/' + id,
+                type: 'DELETE',
+                success: function() {
+                    location.reload()
+                },
+                error: function () {
+                    alert('Not Found')
+                }
+            })
+        })
+        
+        $('#add-new-tag').click(function () {
+            $('.modal-body > input').val(null)
+            SelectedTagId = 0
+        })
+        
+        $('#tag-submit').click(function (){
+            $.ajax({
+                url: '@Url.Action("AddOrUpdateTags", "Admin")',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                dateType: 'json',
+                data: JSON.stringify({
+                    id: SelectedTagId,
+                    content: $('.modal-body > input').val()
+                }),
+                success: function(result) {
+                    $('#TagModal').modal('hide')
+                    location.reload()
+                }
+            })
+        })
+    </script>
+}

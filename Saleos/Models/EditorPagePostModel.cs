@@ -14,24 +14,17 @@
  * limitations under the License.
  */
 
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
-namespace Saleos.DTO
+namespace Saleos.Models
 {
-    public class ArticleAddDto
+    public class EditorPagePostModel
     {
-        [Required]
+        public bool IsReprint { get; set; }
+        public bool ReprintUrl { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
-
-        [Required]
         public string Content { get; set; }
-
-        [Required]
-        public DateTime CreateTime { get; set; }
-        
-        public CategoryDto Category { get; set; }
-        public List<int> Tags { get; set; }
+        public List<int> NewTags { get; set; }
     }
 }

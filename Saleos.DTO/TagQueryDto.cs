@@ -14,24 +14,10 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
 namespace Saleos.DTO
 {
-    public class ArticleAddDto
+    public class TagQueryDto : BaseQueryDto
     {
-        [Required]
-        public string Title { get; set; }
-
-        [Required]
         public string Content { get; set; }
-
-        [Required]
-        public DateTime CreateTime { get; set; }
-        
-        public CategoryDto Category { get; set; }
-        public List<int> Tags { get; set; }
     }
 }

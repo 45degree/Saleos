@@ -41,8 +41,6 @@ namespace Saleos
         {
             services.AddDbContext<HomePageDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<HomePageIdentityDbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("IdentityConnection")));
 
             services.AddScoped<ArticleServices, ArticleServicesImpl>();
 

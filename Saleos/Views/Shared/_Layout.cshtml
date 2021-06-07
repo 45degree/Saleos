@@ -69,9 +69,9 @@
                 <div class="tags-panel">
                     <div style="border-bottom: 1px solid black;">tags</div>
                     <div>
-                        @foreach (var tag in ViewData["Tags"] as List<TagDto>)
+                        @foreach (var tag in (List<TagDto>) ViewData["Tags"])
                         {
-                            <a href="#" class="badge badge-pill badge-primary">@tag.Tags</a>
+                            <a href="#" class="badge badge-pill badge-primary">@tag.Content</a>
                         }
                     </div>
                 </div>

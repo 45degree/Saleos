@@ -1,3 +1,4 @@
+@model List<Saleos.DTO.ArticleInfoDto>
 @{
     ViewBag.Title = "title";
     ViewData["ActiveData"] = "AdminArticle"; // see SideBarPage in Views/Shared/SideBarPage.cs
@@ -27,7 +28,7 @@
       <div class="container-fluid">
           <div class="row" style="margin-bottom: 10px;">
               <div class="col">
-                  <a href="#" type="button" class="btn btn-outline-primary btn-sm">新建</a>
+                  <a asp-action="Editor" asp-route-articleId="0" type="button" class="btn btn-outline-primary btn-sm">新建</a>
               </div>
           </div>
 
@@ -46,16 +47,19 @@
                                   </tr>
                               </thead>
                               <tbody>
+                              @foreach (var articleInfo in Model)
+                              {
                                   <tr>
-                                      <td>1</td>
-                                      <td>Title1</td>
-                                      <td>2020-2-2</td>
-                                      <td>2020-2-2</td>
+                                      <td>@articleInfo.Id</td>
+                                      <td>@articleInfo.Title</td>
+                                      <td>@articleInfo.CreateTime</td>
+                                      <td>@articleInfo.LastModifiedTime</td>
                                       <td>
-                                          <a asp-action="Editor" type="button" class="btn btn-outline-primary btn-sm">修改</a>
+                                          <a asp-action="Editor" asp-route-articleId="@articleInfo.Id" type="button" class="btn btn-outline-primary btn-sm">修改</a>
                                           <button type="button" class="btn btn-outline-danger btn-sm">删除</button>
                                       </td>
                                   </tr>
+                              }
                               </tbody>
                           </table>
                       </div>

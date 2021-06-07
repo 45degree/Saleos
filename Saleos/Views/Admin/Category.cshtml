@@ -1,3 +1,4 @@
+@model CategoryPageViewModel
 @{
     ViewBag.Title = "title";
     ViewData["ActiveData"] = "AdminCategory"; // see SideBarPage in Views/Shared/SideBarPage.cs
@@ -15,10 +16,10 @@
                      </button>
                  </div>
                  <div class="modal-body">
-                      <input type="text" class="form-control" placeholder="Category" aria-label="Username" aria-describedby="basic-addon1">
+                     <input type="text" class="form-control" placeholder="Category"/>
                  </div>
                  <div class="modal-footer">
-                     <button type="button" class="btn btn-primary">Save changes</button>
+                     <button type="button" class="btn btn-primary" id="category-submit">Save changes</button>
                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                  </div>
              </div>
@@ -49,7 +50,7 @@
     <div class="container-fluid">
         <div class="row" style="margin-bottom: 10px;">
             <div class="col">
-                <button class="btn btn-outline-primary btn-sm"
+                <button class="btn btn-outline-primary btn-sm" id="add-new-category"
                         data-toggle="modal" data-target="#CategoryModal">新建</button>
             </div>
         </div>
@@ -67,14 +68,20 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @foreach (var category in Model.Categories)
+                            {
                                 <tr>
-                                    <td>1</td>
-                                    <td>Content</td>
+                                    <td class="category-id">@category.Id</td>
+                                    <td class="category-content">@category.Content</td>
                                     <td>
-                                        <a href="./AdminEditor.html" type="button" class="btn btn-outline-primary btn-sm">修改</a>
-                                        <button type="button" class="btn btn-outline-danger btn-sm">删除</button>
+                                        <button class="btn btn-outline-primary btn-sm modify-category-button"
+                                                type="button" data-toggle="modal"
+                                                data-target="#CategoryModal">修改</button>
+                                        <button class="btn btn-outline-danger btn-sm delete-category-button"
+                                                type="button" >删除</button>
                                     </td>
                                 </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -108,3 +115,57 @@
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
+
+@section CustomScript {
+    <script type="text/javascript">
+        // the category's id that be selected. if the value is 0, that means the category is new
+        let SelectedCategoryId = 0 
+
+        $('#CategoryModal').on('hidden', function (){
+            SelectedCategoryId = 0
+        })
+
+        $('.modify-category-button').click(function() {
+            let id = $(this).parent().siblings('.category-id').text()
+            let content = $(this).parent().siblings('.category-content').text()
+            $('.modal-body > input').val(content)
+            SelectedCategoryId = id
+        })
+        
+        $('.delete-category-button').click(function() {
+            let id = $(this).parent().siblings('.category-id').text()
+            $.ajax({
+                url: '@Url.Action("Category", "Admin")' + '/' + id,
+                type: 'DELETE',
+                success: function() {
+                    location.reload()
+                },
+                error: function () {
+                    alert("Not Found")
+                }
+            })
+        });
+
+        $('#add-new-category').click(function () {
+            $('.modal-body > input').val(null)
+            SelectedCategoryId = 0
+        })
+
+        $('#category-submit').click(function (){
+            $.ajax({
+                url: '@Url.Action("AddOrUpdateCategory", "Admin")',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                dateType: 'json',
+                data: JSON.stringify({
+                    id: SelectedCategoryId,
+                    content: $('.modal-body > input').val()
+                }),
+                success: function() {
+                    $('#CategoryModal').modal('hide')
+                    location.reload()
+                }
+            })
+        })
+    </script>
+}

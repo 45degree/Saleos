@@ -1,3 +1,19 @@
+/*
+ * Copyright 2021 45degree
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,6 +21,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Saleos.DTO;
 using Saleos.Entity.Data;
+using Saleos.Entity.DtoExtension;
 
 namespace Saleos.Entity.Services.CoreServices
 {
@@ -32,7 +49,7 @@ namespace Saleos.Entity.Services.CoreServices
                 .Include(x => x.Category)
                 .Include(x => x.ArticleTags)
                 .ThenInclude(x => x.Tag)
-                .Select(x => x.GetArticleDto())
+                .Select(x => x.GetArticleDtoFromArticle())
                 .FirstOrDefaultAsync();
         }
 
@@ -41,10 +58,10 @@ namespace Saleos.Entity.Services.CoreServices
             return await _homePageDbContext.Article.CountAsync();
         }
 
-        public void AddArticle(ArticleAddDto article)
+        public async Task AddArticleAsync(ArticleAddDto article)
         {
             if (article == null) throw new ArgumentNullException($"{nameof(article)} is null");
-            _homePageDbContext.Article.Add(article.GetArticle());
+            await _homePageDbContext.Article.AddAsync(article.GetArticleFromArticleAddDto());
         }
 
         public async Task UpdateArticleAsync(ArticleUpdateDto articleUpdate)
@@ -58,13 +75,16 @@ namespace Saleos.Entity.Services.CoreServices
             if (articleUpdate.Title != null) article.Title = articleUpdate.Title;
             if (articleUpdate.Tags != null)
             {
+                await _homePageDbContext.ArticleTags.Where(x => x.ArticleId == articleUpdate.Id).ForEachAsync(
+                    x=> _homePageDbContext.Remove(x)
+                );
                 article.ArticleTags = new List<ArticleTag>();
                 foreach (var tagId in articleUpdate.Tags)
                 {
-                    article.ArticleTags.Add(new ArticleTag()
+                    await _homePageDbContext.ArticleTags.AddAsync(new ArticleTag()
                     {
                         ArticleId = articleUpdate.Id,
-                        TagId = tagId,
+                        TagId = tagId
                     });
                 }
             }

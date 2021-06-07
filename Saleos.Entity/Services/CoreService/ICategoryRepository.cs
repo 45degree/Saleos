@@ -21,16 +21,16 @@ using Saleos.DTO;
 
 namespace Saleos.Entity.Services.CoreServices
 {
-    public interface ITagRepository
+    public interface ICategoryRepository
     {
         /// <summary>
         /// 通过Id判断tag是否存在
         /// </summary>
-        /// <param name="tagId">tag的Id</param>
+        /// <param name="categoryId">tag的Id</param>
         /// <returns>
         /// 如果存在该Tag，则返回true，否则返回false
         /// </returns>
-        public Task<bool> TagIsExistAsync(int tagId);
+        public Task<bool> CategoryIsExistAsync(int categoryId);
 
         /// <summary>
         /// 获取Tag的数量
@@ -38,7 +38,7 @@ namespace Saleos.Entity.Services.CoreServices
         /// <returns>
         /// 数据库中Tag的数量
         /// </returns>
-        public Task<int> GetTagsCountAsync();
+        public Task<int> GetCategoryCountAsync();
 
         /// <summary>
         /// 异步获取所有Tags
@@ -46,47 +46,47 @@ namespace Saleos.Entity.Services.CoreServices
         /// <returns>
         /// Tag的集合
         /// </returns>
-        public Task<List<TagDto>> GetTagAsync();
+        public Task<List<CategoryDto>> GetCategoryAsync();
 
         /// <summary>
         /// 通过id异步获取Tag
         /// </summary>
-        /// <param name="tagId">Tag的id</param>
+        /// <param name="categoryId">Tag的id</param>
         /// <returns>id对应的Tag</returns>
         /// <exception cref="IndexOutOfRangeException">
         /// 当tagId没有对应的tag时抛出该异常，例如tagId小于等于0，或则大于数据库中最大Id
         /// </exception>
-        public Task<TagDto> GetTagAsync(int tagId);
+        public Task<CategoryDto> GetCategoryAsync(int categoryId);
 
         /// <summary>
         /// Get Tags by query
         /// </summary>
-        /// <param name="tagQueryDto"></param>
+        /// <param name="categoryQueryDto"></param>
         /// <returns></returns>
-        public Task<List<TagDto>> GetTagsByQueryAsync(TagQueryDto tagQueryDto);
+        public Task<List<CategoryDto>> GetCategoryByQueryAsync(CategoryQueryDto categoryQueryDto);
 
         /// <summary>
         /// 添加tag
         /// </summary>
-        /// <param name="tag">需要被添加的tag</param>
+        /// <param name="categoryAddDto">需要被添加的tag</param>
         /// <exception cref="ArgumentNullException">
         /// tag为null时抛出该异常
         /// </exception>
-        public Task AddTagAsync(TagAddDto tag);
+        public Task AddCategoryAsync(CategoryAddDto categoryAddDto);
 
         /// <summary>
         /// 更新tag
         /// </summary>
-        /// <param name="tag">更新后的tag</param>
-        public Task UpdateTagAsync(TagUpdateDto tag);
+        /// <param name="categoryUpdateDto">更新后的tag</param>
+        public Task UpdateCategoryAsync(CategoryUpdateDto categoryUpdateDto);
 
         /// <summary>
         /// 删除一个tag
         /// </summary>
-        /// <param name="tagId">tag的Id</param>
+        /// <param name="categoryId">tag的Id</param>
         /// <exception cref="IndexOutOfRangeException">
         /// 当tagId没有对应的tag时抛出该异常，例如tagId小于等于0，或则大于数据库中最大Id
         /// </exception>
-        public Task DeleteTagAsync(int tagId); 
+        public Task DeleteCategoryAsync(int categoryId); 
     }
 }

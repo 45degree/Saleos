@@ -14,36 +14,31 @@
  * limitations under the License.
  */
 
-using System;
 using System.Collections.Generic;
+using Saleos.DTO;
 
-namespace Saleos.DTO
+namespace Saleos.Entity.DtoExtension
 {
-    public class ArticleDto : ArticleInfoDto, ICloneable
+    public static class ArticleInfoDtoExtension
     {
-        public string Content { get; set; }
-        
-        public object Clone()
+        public static ArticleInfoDto GetArticleInfoDtoFromArticle(this Article article)
         {
-            var articleDto = new ArticleDto()
+            var articleInfoDto = new ArticleInfoDto()
             {
-                Id = Id,
-                Title = Title,
-                Abstract = Abstract,
-                ImgUrl = ImgUrl,
-                Category = Category,
-                Content = Content,
-                CreateTime = CreateTime,
-                LastModifiedTime = LastModifiedTime,
+                Id = article.Id,
+                Abstract = article.Abstract,
+                Title = article.Title,
+                ImgUrl = article.ImageUrl,
+                CreateTime = article.CreateTime,
+                LastModifiedTime = article.LastModifiedTime,
                 Tags = new List<TagDto>(),
             };
-
-            foreach (var tagDto in Tags)
+            foreach (var articleTag in article.ArticleTags)
             {
-                articleDto.Tags.Add(tagDto.Clone() as TagDto);
+                articleInfoDto.Tags.Add(articleTag.Tag.GetTagDtoFromTag());
             }
 
-            return articleDto;
-        }
+            return articleInfoDto;
+        } 
     }
 }

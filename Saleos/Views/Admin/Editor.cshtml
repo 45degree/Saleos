@@ -1,3 +1,4 @@
+@model EditorPageViewModel
 @{
     ViewBag.Title = "title";
     ViewData["ActiveData"] = "AdminArticle"; // see SideBarPage in Views/Shared/SideBarPage.cs
@@ -34,16 +35,23 @@
     <div class="row">
         <div class="input-group col">
             <div class="input-group-prepend" style="border: 1px solid #ced4da;">
-                <select class="selectpicker" data-width="fit">
+                <select class="selectpicker" id="article-reprint" data-width="fit">
                     <option>原创</option>
                     <option>转载</option>
                 </select>
             </div>
-            <input type="text" class="form-control" placeholder="Title" style="height: 100%;" />
+            <input type="text" class="form-control" id="article-title-content" placeholder="Title"
+                   value="@Model.ArticleDto.Title" style="height: 100%;" />
+            <div class="input-group-prepend" id="article-reprint-url" style="margin-left: 10px">
+                <span class="input-group-text" >Url</span>
+            </div>
+            <input type="text" class="form-control" placeholder="Url" id="article-reprint-url-content"
+                   style="height: 100%">
         </div>
     </div>
     <div style="margin: 10px auto;"></div>
     <div id="vditor"></div>
+    <input type="hidden" id="article-content" value="@Model.ArticleDto.Content">
     <div class="row" style="margin-top: 10px;">
         <div class="input-group col">
             <div class="input-group-prepend">
@@ -62,28 +70,99 @@
                 <span class="input-group-text">标签</span>
             </div>
             <div style="border: 1px solid #ced4da; flex-grow: 1;">
-                <select class="selectpicker form-control" multiple data-live-search="true">
-                    <option data-content="<span class='badge badge-success'>A</span>">A</option>
-                    <option data-content="<span class='badge badge-success'>B</span>">B</option>
-                    <option data-content="<span class='badge badge-success'>C</span>">C</option>
+                <select class="selectpicker form-control tag-selector" multiple data-live-search="true">
+                    @foreach (var tagDto in Model.TagDtos)
+                    {
+                        <option data-content="<span class='badge badge-success'>@tagDto.Content</span>">@tagDto.Content</option>
+                    }
                 </select>
             </div>
         </div>
     </div>
 
     <div style="display: flex; flex-direction: row-reverse; padding: 10px 0;">
-        <button type="button" class="btn btn-primary">提交</button>
+        <button type="button" class="btn btn-primary" id="submit-button">提交</button>
     </div>
 </div>
 <!-- /.content -->
 
 @section ExternalScript {
-        <!-- Vditor -->
-        <script src="https://cdn.jsdelivr.net/npm/vditor/dist/index.min.js"></script>
-        <script src="@Url.Content("~/js/vditor.js")"></script>
-        <!-- Bootstrap-select -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
-        <script>
-            $('select').selectpicker();
-        </script>
+    <!-- Bootstrap-select -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
+    <!-- Vditor -->
+    <script src="https://cdn.jsdelivr.net/npm/vditor/dist/index.min.js"></script>
+    <script src="@Url.Content("~/js/vditor.js")"></script>
+    <script type="text/javascript">
+        'use strict';
+        
+        function ToggleReprintTextBox(article_reprint_dom) {
+            if (article_reprint_dom.selectpicker('val') === '转载') {
+                $('#article-reprint-url').show()
+                $('#article-reprint-url-content').show()
+            }
+            else {
+                $('#article-reprint-url').hide()
+                $('#article-reprint-url-content').hide()
+            }
+        }
+        
+        let article_reprint_dom = $('#article-reprint')
+        ToggleReprintTextBox(article_reprint_dom)
+
+        // get all tags
+        let tagsMap = new Map();
+        let allTags = JSON.parse('@Html.Raw(Json.Serialize(Model.TagDtos))');
+        if (allTags != null) {
+            allTags.forEach(function (tag){
+                tagsMap.set(tag.content, tag.id)
+            });
+        }
+        
+        // get selected tags
+        let selectedTags = JSON.parse('@Html.Raw(Json.Serialize(Model.ArticleDto.Tags))')
+        if (selectedTags != null) {
+            selectedTags = selectedTags.map(i => i.content);
+        }
+        else selectedTags = []
+        $('.tag-selector').selectpicker('val', selectedTags);
+        
+        article_reprint_dom.on('changed.bs.select', function (e) {
+            ToggleReprintTextBox(article_reprint_dom)
+        })
+
+        // it stores the article's content in order to pass the value to this javascript
+        $(document).ready(function (){
+            initialVditor($('#article-content').val())
+        });
+    </script>
+}
+
+@section CustomScript {
+    <script type="text/javascript">
+        'use strict';
+        $('#submit-button').click(function (){
+            let selectedTagId = [];
+            let articleContent = window.vditor.getValue();
+            let articleTitle = $('#article-title-content').val();
+            $('.tag-selector').selectpicker('val').forEach(function (value){
+                let id = tagsMap.get(value)
+                selectedTagId.push(id)
+            })
+            $.ajax({
+                url: '@Url.Action("AddOrUpdateArticle", "Admin")',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                dateType: 'json',
+                data: JSON.stringify({
+                    id: @Model.ArticleDto.Id,
+                    title: articleTitle,
+                    content: articleContent,
+                    newTags: selectedTagId
+                }),
+                success: function() {
+                    location.reload();
+                }
+            })
+        })
+    </script>
 }
