@@ -108,6 +108,15 @@
         }
 
         let article_reprint_dom = $('#article-reprint')
+        if (JSON.parse('@Html.Raw(Json.Serialize(Model.Articles.IsReprint))')) {
+            article_reprint_dom.selectpicker('val', '转载')
+            $('#article-reprint-url-content').val(
+                JSON.parse('@Html.Raw(Json.Serialize(Model.Articles.RerpintUri))')
+            )
+        }
+        else {
+            article_reprint_dom.selectpicker('val', '原创')
+        }
         ToggleReprintTextBox(article_reprint_dom)
 
         // get all tags
@@ -161,8 +170,8 @@
         $('#submit-button').click(function (){
             let selectedTagId = [];
             let categoryId;
-            let isReprint = article_reprint_dom.selectpicker('val') === '重载'
-            let ReprintUrl = $('#article-reprint-url-content').val()
+            let isReprint = article_reprint_dom.selectpicker('val') === '转载'
+            let ReprintUri = $('#article-reprint-url-content').val()
             let articleContent = window.vditor.getValue();
             let articleTitle = $('#article-title-content').val();
             $('#tag-selector').selectpicker('val').forEach(function (value){
@@ -177,7 +186,7 @@
                 dateType: 'json',
                 data: JSON.stringify({
                     isReprint: isReprint,
-                    reprintUrl: ReprintUrl,
+                    reprintUri: ReprintUri,
                     id: @Model.Articles.Id,
                     title: articleTitle,
                     content: articleContent,

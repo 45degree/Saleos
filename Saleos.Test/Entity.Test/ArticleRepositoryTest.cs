@@ -153,6 +153,8 @@ namespace Saleos.Test.Entity.Test
                 Content = "Content 4",
                 CategoryId = 2,
                 CreateTime = new DateTime(2020, 2, 3),
+                IsReprint = true,
+                ReprintUri = "https://new.com"
             };
             await articleServices.ArticleRepository.AddArticleAsync(newArticle);
             await articleServices.SaveAsync();
@@ -162,6 +164,8 @@ namespace Saleos.Test.Entity.Test
             Assert.Equal("Title 4", article.Title);
             Assert.Equal("Content 4", article.Content);
             Assert.Equal("Category 2", article.Category.Content);
+            Assert.True(article.IsReprint);
+            Assert.Equal("https://new.com", article.RerpintUri);
         }
 
         [Fact]
@@ -184,6 +188,8 @@ namespace Saleos.Test.Entity.Test
                 Content = "Changed Content 3",
                 Tags = new List<int>(){1, 2, 3 },
                 CategoryId = 1,
+                IsReprint = true,
+                ReprintUri = "https://new.com",
             };
             await articleServices.ArticleRepository.UpdateArticleAsync(articleUpdate);
             await articleServices.SaveAsync();
@@ -192,6 +198,8 @@ namespace Saleos.Test.Entity.Test
             Assert.Equal("Changed Content 3", newArticle.Content);
             Assert.Equal(3, newArticle.Tags.Count);
             Assert.Equal("Category 1", newArticle.Category.Content);
+            Assert.True(newArticle.IsReprint);
+            Assert.Equal("https://new.com", newArticle.RerpintUri);
         }
 
         [Fact]

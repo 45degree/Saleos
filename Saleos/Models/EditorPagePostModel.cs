@@ -21,7 +21,7 @@ namespace Saleos.Models
     public class EditorPagePostModel
     {
         public bool IsReprint { get; set; }
-        public string ReprintUrl { get; set; }
+        public string ReprintUri { get; set; }
         public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }

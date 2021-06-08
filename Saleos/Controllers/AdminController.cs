@@ -75,6 +75,8 @@ namespace Saleos.Controllers
                     CreateTime = DateTime.Now,
                     CategoryId = postModel.CategoryId,
                     Tags = postModel.NewTags,
+                    IsReprint = postModel.IsReprint,
+                    ReprintUri = postModel.ReprintUri,
                 };
                 await _articleServices.ArticleRepository.AddArticleAsync(articleAddDto);
                 await _articleServices.SaveAsync();
@@ -90,6 +92,8 @@ namespace Saleos.Controllers
                     LastModifiedTime = DateTime.Now,
                     Tags = postModel.NewTags,
                     CategoryId = postModel.CategoryId,
+                    IsReprint = postModel.IsReprint,
+                    ReprintUri = postModel.ReprintUri,
                 };
                 await _articleServices.ArticleRepository.UpdateArticleAsync(articleUpdateDto);
                 await _articleServices.SaveAsync();

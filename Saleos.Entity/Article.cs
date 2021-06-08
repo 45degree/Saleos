@@ -40,7 +40,7 @@ namespace Saleos.Entity
         /// <summary>
         /// the reprint Url if this article is a reprint
         /// </summary>
-        public string OriginalArticleUri {get; set;}
+        public string ReprintUri {get; set;}
 
         /// <summary>
         /// the article's title
@@ -63,7 +63,7 @@ namespace Saleos.Entity
         /// the tags that this article contains
         /// </summary>
         public List<ArticleTag> ArticleTags { get; set; }
-        
+
         /// <summary>
         /// the category that the article belongs to
         /// </summary>
@@ -75,7 +75,7 @@ namespace Saleos.Entity
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (IsReprint && string.IsNullOrEmpty(OriginalArticleUri)) yield return new ValidationResult("需要提供原文章uri地址");
+            if (IsReprint && string.IsNullOrEmpty(ReprintUri)) yield return new ValidationResult("需要提供原文章uri地址");
         }
     }
 

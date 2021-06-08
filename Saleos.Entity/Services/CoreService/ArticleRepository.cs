@@ -67,12 +67,14 @@ namespace Saleos.Entity.Services.CoreServices
         public async Task UpdateArticleAsync(ArticleUpdateDto articleUpdate)
         {
             if (articleUpdate == null) throw new ArgumentNullException($"{nameof(articleUpdate)} is null");
-            
+
             var article = await _homePageDbContext.Article.SingleOrDefaultAsync(x => x.Id == articleUpdate.Id);
             article.LastModifiedTime = articleUpdate.LastModifiedTime;
-            
+
             if (articleUpdate.Content != null) article.Content = articleUpdate.Content;
             if (articleUpdate.Title != null) article.Title = articleUpdate.Title;
+            article.IsReprint = articleUpdate.IsReprint;
+            if (articleUpdate.IsReprint) article.ReprintUri = articleUpdate.ReprintUri;
             if (articleUpdate.CategoryId > 0)
             {
                 var category = await _homePageDbContext.Categories

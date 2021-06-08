@@ -23,7 +23,7 @@ namespace Saleos.DTO
     {
         public int Id { get; set; }
         public bool IsReprint {get; set;}
-        public string RerpintUrl {get; set;}
+        public string RerpintUri {get; set;}
         public string Abstract { get; set; }
         public string Title { get; set; }
         public string ImgUrl { get; set; }

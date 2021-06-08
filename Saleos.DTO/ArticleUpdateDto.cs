@@ -35,5 +35,9 @@ namespace Saleos.DTO
         public List<int> Tags { get; set; }
 
         public int CategoryId { get; set; }
+
+        public bool IsReprint { get; set; }
+
+        public string ReprintUri { get; set; }
     }
 }

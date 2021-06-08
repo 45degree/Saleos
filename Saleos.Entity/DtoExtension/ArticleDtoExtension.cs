@@ -34,7 +34,9 @@ namespace Saleos.Entity.DtoExtension
                 Title = addDto.Title,
                 Category = category,
                 CreateTime = addDto.CreateTime,
-                LastModifiedTime = addDto.CreateTime
+                LastModifiedTime = addDto.CreateTime,
+                IsReprint = addDto.IsReprint,
+                ReprintUri = addDto.ReprintUri
             };
             return article;
         }
@@ -52,6 +54,8 @@ namespace Saleos.Entity.DtoExtension
                 CreateTime = article.CreateTime,
                 LastModifiedTime = article.LastModifiedTime,
                 Tags = new List<TagDto>(),
+                IsReprint = article.IsReprint,
+                RerpintUri = article.ReprintUri,
             };
             foreach (var articleTag in article.ArticleTags)
             {
