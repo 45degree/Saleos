@@ -32,6 +32,8 @@ namespace Saleos.DTO
         [Required]
         public DateTime LastModifiedTime { get; set; }
 
-        public List<int> Tags { get; set; } = null;
+        public List<int> Tags { get; set; }
+
+        public int CategoryId { get; set; }
     }
 }

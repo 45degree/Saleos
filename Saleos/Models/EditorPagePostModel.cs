@@ -26,5 +26,6 @@ namespace Saleos.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public List<int> NewTags { get; set; }
+        public int CategoryId { get; set; }
     }
 }

@@ -41,7 +41,7 @@
                 </select>
             </div>
             <input type="text" class="form-control" id="article-title-content" placeholder="Title"
-                   value="@Model.ArticleDto.Title" style="height: 100%;" />
+                   value="@Model.Articles.Title" style="height: 100%;" />
             <div class="input-group-prepend" id="article-reprint-url" style="margin-left: 10px">
                 <span class="input-group-text" >Url</span>
             </div>
@@ -51,17 +51,18 @@
     </div>
     <div style="margin: 10px auto;"></div>
     <div id="vditor"></div>
-    <input type="hidden" id="article-content" value="@Model.ArticleDto.Content">
+    <input type="hidden" id="article-content" value="@Model.Articles.Content">
     <div class="row" style="margin-top: 10px;">
         <div class="input-group col">
             <div class="input-group-prepend">
                 <span class="input-group-text">分类</span>
             </div>
             <div style="border: 1px solid #ced4da; flex-grow: 1;">
-                <select class="selectpicker form-control" data-live-search="true">
-                    <option>A</option>
-                    <option>B</option>
-                    <option>C</option>
+                <select class="selectpicker form-control" id="category-selector" data-live-search="true">
+                    @foreach (var categoryDto in Model.Categories)
+                    {
+                        <option>@categoryDto.Content</option>
+                    }
                 </select>
             </div>
         </div>
@@ -70,8 +71,8 @@
                 <span class="input-group-text">标签</span>
             </div>
             <div style="border: 1px solid #ced4da; flex-grow: 1;">
-                <select class="selectpicker form-control tag-selector" multiple data-live-search="true">
-                    @foreach (var tagDto in Model.TagDtos)
+                <select class="selectpicker form-control" id="tag-selector" multiple data-live-search="true">
+                    @foreach (var tagDto in Model.Tags)
                     {
                         <option data-content="<span class='badge badge-success'>@tagDto.Content</span>">@tagDto.Content</option>
                     }
@@ -105,28 +106,45 @@
                 $('#article-reprint-url-content').hide()
             }
         }
-        
+
         let article_reprint_dom = $('#article-reprint')
         ToggleReprintTextBox(article_reprint_dom)
 
         // get all tags
         let tagsMap = new Map();
-        let allTags = JSON.parse('@Html.Raw(Json.Serialize(Model.TagDtos))');
+        let allTags = JSON.parse('@Html.Raw(Json.Serialize(Model.Tags))');
         if (allTags != null) {
             allTags.forEach(function (tag){
                 tagsMap.set(tag.content, tag.id)
             });
         }
-        
-        // get selected tags
-        let selectedTags = JSON.parse('@Html.Raw(Json.Serialize(Model.ArticleDto.Tags))')
+
+        // get all category
+        let categoryMap = new Map();
+        let allCategory = JSON.parse('@Html.Raw(Json.Serialize(Model.Categories))');
+        if (allCategory != null) {
+            allCategory.forEach(function (category) {
+                categoryMap.set(category.content, category.id)
+            });
+        }
+
+        // make all selected tags shown in select Box
+        let selectedTags = JSON.parse('@Html.Raw(Json.Serialize(Model.Articles.Tags))')
         if (selectedTags != null) {
             selectedTags = selectedTags.map(i => i.content);
         }
         else selectedTags = []
-        $('.tag-selector').selectpicker('val', selectedTags);
-        
-        article_reprint_dom.on('changed.bs.select', function (e) {
+        $('#tag-selector').selectpicker('val', selectedTags);
+
+        // make all selected tags shown in select Box
+        let selectedCategory = JSON.parse('@Html.Raw(Json.Serialize(Model.Articles.Category))')
+        if (selectedCategory != null) {
+            selectedCategory = selectedCategory.content
+        }
+        else selectedCategory = []
+        $('#category-selector').selectpicker('val', selectedCategory);
+
+        article_reprint_dom.on('changed.bs.select', function () {
             ToggleReprintTextBox(article_reprint_dom)
         })
 
@@ -142,22 +160,25 @@
         'use strict';
         $('#submit-button').click(function (){
             let selectedTagId = [];
+            let categoryId;
             let articleContent = window.vditor.getValue();
             let articleTitle = $('#article-title-content').val();
-            $('.tag-selector').selectpicker('val').forEach(function (value){
+            $('#tag-selector').selectpicker('val').forEach(function (value){
                 let id = tagsMap.get(value)
                 selectedTagId.push(id)
             })
+            categoryId = categoryMap.get($('#category-selector').selectpicker('val'))
             $.ajax({
                 url: '@Url.Action("AddOrUpdateArticle", "Admin")',
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 dateType: 'json',
                 data: JSON.stringify({
-                    id: @Model.ArticleDto.Id,
+                    id: @Model.Articles.Id,
                     title: articleTitle,
                     content: articleContent,
-                    newTags: selectedTagId
+                    newTags: selectedTagId,
+                    categoryId: categoryId,
                 }),
                 success: function() {
                     location.reload();

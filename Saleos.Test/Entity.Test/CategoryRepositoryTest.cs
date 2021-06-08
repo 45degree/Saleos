@@ -26,11 +26,11 @@ namespace Saleos.Test.Entity.Test
 {
     public abstract class CategoryRepositoryTest : BaseServicesTest
     {
-        protected CategoryRepositoryTest(DbContextOptions<HomePageDbContext> contextOptions) 
+        protected CategoryRepositoryTest(DbContextOptions<HomePageDbContext> contextOptions)
             : base(contextOptions)
         {
         }
-        
+
         [Theory]
         [InlineData(1)]
         [InlineData(2)]
@@ -210,7 +210,7 @@ namespace Saleos.Test.Entity.Test
             var categories = await articleServices.CategoryRepository.GetCategoryByQueryAsync(queryDto);
             Assert.Equal(2, categories.Count);
         }
-        
+
         //TODO test query string in pagination
     }
 }

@@ -29,7 +29,7 @@ namespace Saleos.Test.Entity.Test
             : base(contextOptions)
         {
         }
-        
+
         [Fact]
         public async Task GetArticleInfoByQueryAsync_TitleIsInData_ReturnArticle()
         {
@@ -76,7 +76,7 @@ namespace Saleos.Test.Entity.Test
             var articles = await articleServices.ArticleInfoRepository.GetArticleInfoByQueryAsync(queryDto);
             Assert.Equal(3, articles.Count);
         }
-        
+
         [Fact]
         public async Task GetAllArticleInfo_GetAllArticleInfo()
         {

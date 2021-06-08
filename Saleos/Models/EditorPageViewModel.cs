@@ -21,7 +21,8 @@ namespace Saleos.Models
 {
     public class EditorPageViewModel
     {
-        public List<TagDto> TagDtos { get; set; }
-        public ArticleDto ArticleDto { get; set; }
+        public List<TagDto> Tags { get; set; }
+        public List<CategoryDto> Categories { get; set; }
+        public ArticleDto Articles { get; set; }
     }
 }

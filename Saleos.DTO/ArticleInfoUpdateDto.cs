@@ -22,6 +22,6 @@ namespace Saleos.DTO
 
         public string ImgUrl { get; set; }
 
-        public string Abstract { get; set; } 
+        public string Abstract { get; set; }
     }
 }

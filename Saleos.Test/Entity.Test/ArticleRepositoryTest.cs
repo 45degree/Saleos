@@ -149,7 +149,7 @@ namespace Saleos.Test.Entity.Test
             {
                 Title = "Title 4",
                 Content = "Content 4",
-                Category = new CategoryDto(){ Content = "Category4"},
+                CategoryId = 2,
                 CreateTime = new DateTime(2020, 2, 3),
             };
             await articleServices.ArticleRepository.AddArticleAsync(newArticle);
@@ -159,7 +159,7 @@ namespace Saleos.Test.Entity.Test
             Assert.Equal(4, article.Id);
             Assert.Equal("Title 4", article.Title);
             Assert.Equal("Content 4", article.Content);
-            Assert.Equal("Category4", article.Category.Content);
+            Assert.Equal("Category 2", article.Category.Content);
         }
 
         [Fact]
@@ -180,7 +180,8 @@ namespace Saleos.Test.Entity.Test
             {
                 Id = 3,
                 Content = "Changed Content 3",
-                Tags = new List<int>(){1, 2, 3 }
+                Tags = new List<int>(){1, 2, 3 },
+                CategoryId = 1,
             };
             await articleServices.ArticleRepository.UpdateArticleAsync(articleUpdate);
             await articleServices.SaveAsync();
@@ -188,6 +189,7 @@ namespace Saleos.Test.Entity.Test
             var newArticle = await articleServices.ArticleRepository.GetArticleAsync(3);
             Assert.Equal("Changed Content 3", newArticle.Content);
             Assert.Equal(3, newArticle.Tags.Count);
+            Assert.Equal("Category 1", newArticle.Category.Content);
         }
 
         [Fact]

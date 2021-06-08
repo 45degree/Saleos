@@ -28,6 +28,6 @@ namespace Saleos.DTO
         public CategoryDto Category { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime LastModifiedTime { get; set; }
-        public List<TagDto> Tags { get; set; } 
+        public List<TagDto> Tags { get; set; }
     }
 }

@@ -32,7 +32,7 @@ namespace Saleos.Controllers
         {
             ArticleServices = articleServices;
         }
-        
+
         public override async void OnActionExecuted(ActionExecutedContext context)
         {
             // TODO initial the UserInfo's info

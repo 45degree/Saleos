@@ -22,7 +22,7 @@ namespace Saleos.DTO
     public class ArticleDto : ArticleInfoDto, ICloneable
     {
         public string Content { get; set; }
-        
+
         public object Clone()
         {
             var articleDto = new ArticleDto()

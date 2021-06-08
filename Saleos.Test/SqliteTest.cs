@@ -44,7 +44,7 @@ namespace Saleos.Test
             .UseSqlite("Data Source=Mock-ArticleInfoRepository-routine.db")
             .Options)
         {
-            
+
         }
     }
 

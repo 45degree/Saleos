@@ -37,11 +37,11 @@ namespace Saleos.DTO
         /// how many items that you want to contain in per page.
         /// </summary>
         private int _pageSize = MaxPageSize;
-        
+
         /// <summary>
         /// page's number you want to get
         /// </summary>
         private int _pageNumber = 1;
-        private const int MaxPageSize = 10; 
+        private const int MaxPageSize = 10;
     }
 }

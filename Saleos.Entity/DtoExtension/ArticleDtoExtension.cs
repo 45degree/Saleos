@@ -15,19 +15,24 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Saleos.DTO;
+using Saleos.Entity.Data;
 
 namespace Saleos.Entity.DtoExtension
 {
     public static class ArticleDtoExtension
     {
-       public static Article GetArticleFromArticleAddDto(this ArticleAddDto addDto)
-        {
+       public static async Task<Article> GetArticleFromArticleAddDto(this ArticleAddDto addDto, HomePageDbContext context)
+       {
+            var category = await context.Categories.SingleOrDefaultAsync(x => x.Id == addDto.CategoryId);
             var article = new Article
             {
                 Content = addDto.Content,
                 Title = addDto.Title,
-                Category = addDto.Category.GetCategoryFromCategoryDto(),
+                Category = category,
                 CreateTime = addDto.CreateTime,
                 LastModifiedTime = addDto.CreateTime
             };

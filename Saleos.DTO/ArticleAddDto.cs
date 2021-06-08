@@ -30,8 +30,8 @@ namespace Saleos.DTO
 
         [Required]
         public DateTime CreateTime { get; set; }
-        
-        public CategoryDto Category { get; set; }
+
+        public int CategoryId { get; set; }
         public List<int> Tags { get; set; }
     }
 }

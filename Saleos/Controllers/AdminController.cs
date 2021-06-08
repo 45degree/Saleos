@@ -35,7 +35,7 @@ namespace Saleos.Controllers
             _articleServices = articleServices;
         }
 
-        // GET
+        [HttpGet]
         [Route("")]
         [Route("Article")]
         public async Task<IActionResult> Article([FromQuery]int page = 1)
@@ -45,13 +45,17 @@ namespace Saleos.Controllers
                 PageNumber = page,
                 PageSize = 10,
             };
-            var articleInfos = await _articleServices.ArticleInfoRepository.GetArticleInfoByQueryAsync(queryDto);
+            var articleInfos = await _articleServices.ArticleInfoRepository
+                .GetArticleInfoByQueryAsync(queryDto);
             return View(articleInfos);
         }
 
-        [HttpDelete, Route("Article")]
-        public async Task<IActionResult> DeleteArticle([FromQuery] int articleId)
+        [HttpDelete, Route("Article/{articleId:int}")]
+        public async Task<IActionResult> DeleteArticle([FromRoute] int articleId)
         {
+            if (!await _articleServices.ArticleRepository.ArticleIsExisted(articleId)) return NotFound();
+            await _articleServices.ArticleRepository.DeleteArticleAsync(articleId);
+            await _articleServices.SaveAsync();
             return NoContent();
         }
 
@@ -60,7 +64,7 @@ namespace Saleos.Controllers
         public async Task<IActionResult> AddOrUpdateArticle([FromBody]EditorPagePostModel postModel)
         {
             if (!ModelState.IsValid) return RedirectToAction($"{nameof(Article)}");
-            
+
             if (postModel.Id == 0)
             {
                 // a new article
@@ -69,6 +73,8 @@ namespace Saleos.Controllers
                     Title = postModel.Title,
                     Content = postModel.Content,
                     CreateTime = DateTime.Now,
+                    CategoryId = postModel.CategoryId,
+                    Tags = postModel.NewTags,
                 };
                 await _articleServices.ArticleRepository.AddArticleAsync(articleAddDto);
                 await _articleServices.SaveAsync();
@@ -83,6 +89,7 @@ namespace Saleos.Controllers
                     Content = postModel.Content,
                     LastModifiedTime = DateTime.Now,
                     Tags = postModel.NewTags,
+                    CategoryId = postModel.CategoryId,
                 };
                 await _articleServices.ArticleRepository.UpdateArticleAsync(articleUpdateDto);
                 await _articleServices.SaveAsync();
@@ -160,7 +167,7 @@ namespace Saleos.Controllers
             {
                 Categories = categories,
             };
-                
+
             return View(categoryPageViewModel);
         }
 
@@ -195,7 +202,8 @@ namespace Saleos.Controllers
         [HttpDelete("Category/{categoryId:int}")]
         public async Task<IActionResult> DeleteCategory([FromRoute]int categoryId)
         {
-            if (!await _articleServices.CategoryRepository.CategoryIsExistAsync(categoryId)) return NotFound();
+            if (!await _articleServices.CategoryRepository.CategoryIsExistAsync(categoryId))
+                return NotFound();
 
             await _articleServices.CategoryRepository.DeleteCategoryAsync(categoryId);
             await _articleServices.SaveAsync();
@@ -207,12 +215,14 @@ namespace Saleos.Controllers
         {
             var model = new EditorPageViewModel
             {
-                ArticleDto = new ArticleDto(),
-                TagDtos = await _articleServices.TagRepository.GetTagAsync() ?? new List<TagDto>()
+                Articles = new ArticleDto(),
+                Tags = await _articleServices.TagRepository.GetTagAsync() ?? new List<TagDto>(),
+                Categories = await _articleServices.CategoryRepository.GetCategoryAsync(),
             };
             if (await _articleServices.ArticleRepository.ArticleIsExisted(articleId))
             {
-                model.ArticleDto = await _articleServices.ArticleRepository.GetArticleAsync(articleId);
+                model.Articles = await _articleServices.ArticleRepository
+                    .GetArticleAsync(articleId);
             }
             return View(model);
         }

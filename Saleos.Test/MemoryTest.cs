@@ -44,7 +44,7 @@ namespace Saleos.Test
             .UseInMemoryDatabase("Mock ArticleInfoRepository-routine")
             .Options)
         {
-            
+
         }
     }
 

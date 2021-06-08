@@ -28,6 +28,6 @@ namespace Saleos.DTO
                 Id = Id,
                 Content = Content
             };
-        } 
+        }
     }
 }

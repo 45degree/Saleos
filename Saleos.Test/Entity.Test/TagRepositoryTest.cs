@@ -27,11 +27,11 @@ namespace Saleos.Test.Entity.Test
 {
     public abstract class TagRepositoryTest : BaseServicesTest
     {
-        protected TagRepositoryTest(DbContextOptions<HomePageDbContext> contextOptions) 
+        protected TagRepositoryTest(DbContextOptions<HomePageDbContext> contextOptions)
             : base(contextOptions)
         {
         }
-        
+
         [Theory]
         [InlineData(1)]
         [InlineData(2)]
@@ -262,7 +262,7 @@ namespace Saleos.Test.Entity.Test
                 articleServices.DeleteTagFromArticleAsync(articleId, tagId)
             );
         }
-        
+
         [Fact]
         public async Task GetTagsByQueryAsync_TitleIsInData_ReturnArticle()
         {
@@ -306,7 +306,7 @@ namespace Saleos.Test.Entity.Test
             var tags = await articleServices.TagRepository.GetTagsByQueryAsync(queryDto);
             Assert.Equal(3, tags.Count);
         }
-        
+
         //TODO test query string in pagination
     }
 }
