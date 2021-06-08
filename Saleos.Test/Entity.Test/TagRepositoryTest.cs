@@ -60,7 +60,7 @@ namespace Saleos.Test.Entity.Test
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
             var tags= await articleServices.TagRepository.GetTagAsync();
-            Assert.Equal(3, tags.Count);
+            Assert.Equal(_mockData.Tags.Count, tags.Count);
         }
 
         [Theory]
@@ -73,7 +73,7 @@ namespace Saleos.Test.Entity.Test
             ArticleServices articleServices = new ArticleServicesImpl(context);
             var tag = await articleServices.TagRepository.GetTagAsync(tagId);
             Assert.Equal(tagId, tag.Id);
-            Assert.Equal($"Tag {tagId}", tag.Content);
+            Assert.Equal(_mockData.Tags[tagId - 1].Content, tag.Content);
         }
 
         [Theory]
@@ -94,7 +94,7 @@ namespace Saleos.Test.Entity.Test
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
             var count = await articleServices.TagRepository.GetTagsCountAsync();
-            Assert.Equal(3, count);
+            Assert.Equal(_mockData.Tags.Count, count);
         }
 
         [Fact]

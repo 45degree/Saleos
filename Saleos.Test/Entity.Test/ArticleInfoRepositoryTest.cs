@@ -35,15 +35,18 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
+            var realArticle = _mockData.Articles[0];
             var queryDto = new ArticlesQueryDto()
             {
-                Title = "Title 1",
+                Title = realArticle.Title,
             };
-            var article = await articleServices.ArticleInfoRepository.GetArticleInfoByQueryAsync(queryDto);
+            var article = await articleServices.ArticleInfoRepository
+                .GetArticleInfoByQueryAsync(queryDto);
             Assert.Single(article);
-            Assert.Equal(1, article[0].Id);
-            Assert.Equal("Abstract 1", article[0].Abstract);
-            Assert.Equal(3, article[0].Tags.Count);
+            Assert.Equal(realArticle.Id, article[0].Id);
+            Assert.Equal(realArticle.Abstract, article[0].Abstract);
+            Assert.Equal(_mockData.ArticleTags.FindAll(x => x.ArticleId == realArticle.Id).Count,
+                article[0].Tags.Count);
         }
 
         [Theory]
@@ -57,7 +60,8 @@ namespace Saleos.Test.Entity.Test
             {
                 Title = title,
             };
-            var article = await articleServices.ArticleInfoRepository.GetArticleInfoByQueryAsync(queryDto);
+            var article = await articleServices.ArticleInfoRepository
+                .GetArticleInfoByQueryAsync(queryDto);
             Assert.Empty(article);
         }
 
@@ -73,8 +77,9 @@ namespace Saleos.Test.Entity.Test
             {
                 Title = title,
             };
-            var articles = await articleServices.ArticleInfoRepository.GetArticleInfoByQueryAsync(queryDto);
-            Assert.Equal(3, articles.Count);
+            var articles = await articleServices.ArticleInfoRepository
+                .GetArticleInfoByQueryAsync(queryDto);
+            Assert.Equal(_mockData.Articles.Count, articles.Count);
         }
 
         [Fact]
@@ -84,8 +89,9 @@ namespace Saleos.Test.Entity.Test
             ArticleServices articleServices = new ArticleServicesImpl(context);
 
             var articles = await articleServices.ArticleInfoRepository.GetAllArticleInfo();
-            Assert.Equal(3, articles.Count);
-            Assert.Equal(3, articles[0].Tags.Count);
+            Assert.Equal(_mockData.Articles.Count, articles.Count);
+            Assert.Equal(_mockData.ArticleTags.FindAll(x => x.ArticleId == 1).Count,
+                articles[0].Tags.Count);
         }
     }
 }

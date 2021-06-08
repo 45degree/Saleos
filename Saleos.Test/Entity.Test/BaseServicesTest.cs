@@ -22,6 +22,7 @@ namespace Saleos.Test.Entity.Test
     public class BaseServicesTest
     {
         protected DbContextOptions<HomePageDbContext> ContextOptions { get; }
+        protected MockData _mockData = MockData.getInstance();
 
         protected BaseServicesTest(DbContextOptions<HomePageDbContext> contextOptions)
         {
