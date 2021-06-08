@@ -58,7 +58,7 @@ namespace Saleos.Test.Entity.Test
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
             var categories= await articleServices.CategoryRepository.GetCategoryAsync();
-            Assert.Equal(2, categories.Count);
+            Assert.Equal(_mockData.Categories.Count, categories.Count);
         }
 
         [Theory]
@@ -70,7 +70,7 @@ namespace Saleos.Test.Entity.Test
             ArticleServices articleServices = new ArticleServicesImpl(context);
             var categoryDto = await articleServices.CategoryRepository.GetCategoryAsync(categoryId);
             Assert.Equal(categoryId, categoryDto.Id);
-            Assert.Equal($"Category {categoryId}", categoryDto.Content);
+            Assert.Equal(_mockData.Categories[categoryId - 1].Content, categoryDto.Content);
         }
 
         [Theory]
@@ -208,7 +208,7 @@ namespace Saleos.Test.Entity.Test
                 Content = content,
             };
             var categories = await articleServices.CategoryRepository.GetCategoryByQueryAsync(queryDto);
-            Assert.Equal(2, categories.Count);
+            Assert.Equal(_mockData.Categories.Count, categories.Count);
         }
 
         //TODO test query string in pagination

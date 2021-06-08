@@ -22,6 +22,8 @@ namespace Saleos.DTO
     public class ArticleInfoDto
     {
         public int Id { get; set; }
+        public bool IsReprint {get; set;}
+        public string RerpintUrl {get; set;}
         public string Abstract { get; set; }
         public string Title { get; set; }
         public string ImgUrl { get; set; }

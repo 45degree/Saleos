@@ -161,6 +161,8 @@
         $('#submit-button').click(function (){
             let selectedTagId = [];
             let categoryId;
+            let isReprint = article_reprint_dom.selectpicker('val') === '重载'
+            let ReprintUrl = $('#article-reprint-url-content').val()
             let articleContent = window.vditor.getValue();
             let articleTitle = $('#article-title-content').val();
             $('#tag-selector').selectpicker('val').forEach(function (value){
@@ -174,6 +176,8 @@
                 contentType: 'application/json; charset=utf-8',
                 dateType: 'json',
                 data: JSON.stringify({
+                    isReprint: isReprint,
+                    reprintUrl: ReprintUrl,
                     id: @Model.Articles.Id,
                     title: articleTitle,
                     content: articleContent,
