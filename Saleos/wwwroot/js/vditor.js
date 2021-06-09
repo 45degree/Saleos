@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-function initialVditor(initialValue)
+function initialVditor(initialValue, linkPrefix)
 {
     var toolbar;
     toolbar = [
@@ -43,7 +43,7 @@ function initialVditor(initialValue)
         "preview"
     ];
 
-//挂载到全局
+    //挂载到全局
     window.vditor = new Vditor("vditor", {
 
         // 获取焦点方法
@@ -55,6 +55,16 @@ function initialVditor(initialValue)
                     // 或者 return false;
                     event.preventDefault();
                 }
+            }
+        },
+        
+        preview: {
+            markdown: {
+                toc: true,
+                mark: true,
+                footnotes: true,
+                autoSpace: true,
+                linkPrefix: linkPrefix
             }
         },
 
