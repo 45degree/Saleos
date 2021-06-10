@@ -39,14 +39,14 @@ namespace Saleos
                 throw new Exception("Can't get the context");
             }
 
-            await homePageDbContext.Database.EnsureCreatedAsync();
+            if(!await homePageDbContext.Database.EnsureCreatedAsync()) return;
             await homePageDbContext.Database.MigrateAsync();
 
             var category1 = new Category()
             {
                 Content = "Category 1"
             };
-            
+
             var article1 = new Article()
             {
                 Title =  "Title 1",

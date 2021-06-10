@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,7 +41,11 @@ namespace Saleos
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<HomePageDbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(string.Format(Configuration.GetConnectionString("DefaultConnection"),
+                    Configuration["POSTGRES_USER"],
+                    Configuration["POSTGRES_PASSWORD"])
+                )
+            );
 
             services.AddScoped<ArticleServices, ArticleServicesImpl>();
 
@@ -51,7 +56,7 @@ namespace Saleos
                 });
 
             services.AddDatabaseDeveloperPageExceptionFilter();
-            
+
             services.AddControllersWithViews();
         }
 
