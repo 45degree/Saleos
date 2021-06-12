@@ -17,11 +17,11 @@
 version: "3.9"
 services:
     web:
-        build: .
+        build:
+            context: .
+            dockerfile: ./DockerfileDebug
         ports:
-            - "8080:80"
-        command:
-            bash -c "dotnet Saleos.dll"
+            - "5000:5000"
         environment: 
             - POSTGRES_USER=${POSTGRES_USER}
             - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
