@@ -1,202 +1,205 @@
 @model EditorPageViewModel
 @{
-    ViewBag.Title = "title";
-    ViewData["ActiveData"] = "AdminArticle"; // see SideBarPage in Views/Shared/SideBarPage.cs
-    Layout = "_AdminLayout";
+  ViewBag.Title = "title";
+  ViewData["ActiveData"] = "AdminArticle"; // see SideBarPage in Views/Shared/SideBarPage.cs
+  Layout = "_AdminLayout";
 }
 
 @section ExternalCss {
-    <!-- Vditor -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vditor/dist/index.css" />
-    <!--bootstrap-select-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css"/>
+  <!-- Vditor -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vditor/dist/index.css" />
+  <!--bootstrap-select-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css"/>
 }
 
 <!-- Content Header (Page header) -->
 <div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0">Article</h1>
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a asp-action="Article">Home</a></li>
-                    <li class="breadcrumb-item active">Article</li>
-                </ol>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">Article</h1>
+      </div><!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a asp-action="Article">Home</a></li>
+          <li class="breadcrumb-item active">Article</li>
+        </ol>
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
 
 <!-- Main content -->
 <div class="content">
-    <div class="row">
-        <div class="input-group col">
-            <div class="input-group-prepend" style="border: 1px solid #ced4da;">
-                <select class="selectpicker" id="article-reprint" data-width="fit">
-                    <option>原创</option>
-                    <option>转载</option>
-                </select>
-            </div>
-            <input type="text" class="form-control" id="article-title-content" placeholder="Title"
-                   value="@Model.Articles.Title" style="height: 100%;" />
-            <div class="input-group-prepend" id="article-reprint-url" style="margin-left: 10px">
-                <span class="input-group-text" >Url</span>
-            </div>
-            <input type="text" class="form-control" placeholder="Url" id="article-reprint-url-content"
-                   style="height: 100%">
-        </div>
+  <div class="row">
+    <div class="input-group col">
+      <div class="input-group-prepend" style="border: 1px solid #ced4da;">
+        <select class="selectpicker" id="article-reprint" data-width="fit">
+          <option>原创</option>
+          <option>转载</option>
+        </select>
+      </div>
+      <input type="text" class="form-control" id="article-title-content" placeholder="Title"
+           value="@Model.Articles.Title" style="height: 100%;" />
+      <div class="input-group-prepend" id="article-reprint-url" style="margin-left: 10px">
+        <span class="input-group-text" >Url</span>
+      </div>
+      <input type="text" class="form-control" placeholder="Url" id="article-reprint-url-content"
+           style="height: 100%">
     </div>
-    <div style="margin: 10px auto;"></div>
-    <div id="vditor"></div>
-    <input type="hidden" id="article-content" value="@Model.Articles.Content">
-    <div class="row" style="margin-top: 10px;">
-        <div class="input-group col">
-            <div class="input-group-prepend">
-                <span class="input-group-text">分类</span>
-            </div>
-            <div style="border: 1px solid #ced4da; flex-grow: 1;">
-                <select class="selectpicker form-control" id="category-selector" data-live-search="true">
-                    @foreach (var categoryDto in Model.Categories)
-                    {
-                        <option>@categoryDto.Content</option>
-                    }
-                </select>
-            </div>
-        </div>
-        <div class="input-group col">
-            <div class="input-group-prepend">
-                <span class="input-group-text">标签</span>
-            </div>
-            <div style="border: 1px solid #ced4da; flex-grow: 1;">
-                <select class="selectpicker form-control" id="tag-selector" multiple data-live-search="true">
-                    @foreach (var tagDto in Model.Tags)
-                    {
-                        <option data-content="<span class='badge badge-success'>@tagDto.Content</span>">@tagDto.Content</option>
-                    }
-                </select>
-            </div>
-        </div>
+  </div>
+  <div style="margin: 10px auto;"></div>
+  <div id="vditor"></div>
+  <input type="hidden" id="article-content" value="@Model.Articles.Content">
+  <div class="row" style="margin-top: 10px;">
+    <div class="input-group col">
+      <div class="input-group-prepend">
+        <span class="input-group-text">分类</span>
+      </div>
+      <div style="border: 1px solid #ced4da; flex-grow: 1;">
+        <select class="selectpicker form-control" id="category-selector" data-live-search="true">
+          @foreach (var categoryDto in Model.Categories)
+          {
+            <option>@categoryDto.Content</option>
+          }
+        </select>
+      </div>
     </div>
+    <div class="input-group col">
+      <div class="input-group-prepend">
+        <span class="input-group-text">标签</span>
+      </div>
+      <div style="border: 1px solid #ced4da; flex-grow: 1;">
+        <select class="selectpicker form-control" id="tag-selector"
+          multiple data-live-search="true">
+          @foreach (var tagDto in Model.Tags)
+          {
+            <option data-content="<span class='badge badge-success'>@tagDto.Content</span>">
+              @tagDto.Content
+            </option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
 
-    <div style="display: flex; flex-direction: row-reverse; padding: 10px 0;">
-        <button type="button" class="btn btn-primary" id="submit-button">提交</button>
-    </div>
+  <div style="display: flex; flex-direction: row-reverse; padding: 10px 0;">
+    <button type="button" class="btn btn-primary" id="submit-button">提交</button>
+  </div>
 </div>
 <!-- /.content -->
 
 @section ExternalScript {
-    <!-- Bootstrap-select -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
-    <!-- Vditor -->
-    <script src="https://cdn.jsdelivr.net/npm/vditor/dist/index.min.js"></script>
-    <script src="@Url.Content("~/js/vditor.js")"></script>
-    <script type="text/javascript">
-        'use strict';
-        
-        function ToggleReprintTextBox(article_reprint_dom) {
-            if (article_reprint_dom.selectpicker('val') === '转载') {
-                $('#article-reprint-url').show()
-                $('#article-reprint-url-content').show()
-            }
-            else {
-                $('#article-reprint-url').hide()
-                $('#article-reprint-url-content').hide()
-            }
-        }
+  <!-- Bootstrap-select -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"/>
+  <!-- Vditor -->
+  <script src="https://cdn.jsdelivr.net/npm/vditor/dist/index.min.js"></script>
+  <script src="@Url.Content("~/js/vditor.js")"></script>
+  <script type="text/javascript">
+    'use strict';
+    
+    function ToggleReprintTextBox(article_reprint_dom) {
+      if (article_reprint_dom.selectpicker('val') === '转载') {
+        $('#article-reprint-url').show()
+        $('#article-reprint-url-content').show()
+      }
+      else {
+        $('#article-reprint-url').hide()
+        $('#article-reprint-url-content').hide()
+      }
+    }
 
-        let article_reprint_dom = $('#article-reprint')
-        if (JSON.parse('@Html.Raw(Json.Serialize(Model.Articles.IsReprint))')) {
-            article_reprint_dom.selectpicker('val', '转载')
-            $('#article-reprint-url-content').val(
-                JSON.parse('@Html.Raw(Json.Serialize(Model.Articles.RerpintUri))')
-            )
-        }
-        else {
-            article_reprint_dom.selectpicker('val', '原创')
-        }
-        ToggleReprintTextBox(article_reprint_dom)
+    let article_reprint_dom = $('#article-reprint')
+    if (JSON.parse('@Html.Raw(Json.Serialize(Model.Articles.IsReprint))')) {
+      article_reprint_dom.selectpicker('val', '转载')
+      $('#article-reprint-url-content').val(
+        JSON.parse('@Html.Raw(Json.Serialize(Model.Articles.RerpintUri))')
+      )
+    }
+    else {
+      article_reprint_dom.selectpicker('val', '原创')
+    }
+    ToggleReprintTextBox(article_reprint_dom)
 
-        // get all tags
-        let tagsMap = new Map();
-        let allTags = JSON.parse('@Html.Raw(Json.Serialize(Model.Tags))');
-        if (allTags != null) {
-            allTags.forEach(function (tag){
-                tagsMap.set(tag.content, tag.id)
-            });
-        }
+    // get all tags
+    let tagsMap = new Map();
+    let allTags = JSON.parse('@Html.Raw(Json.Serialize(Model.Tags))');
+    if (allTags != null) {
+      allTags.forEach(function (tag){
+        tagsMap.set(tag.content, tag.id)
+      });
+    }
 
-        // get all category
-        let categoryMap = new Map();
-        let allCategory = JSON.parse('@Html.Raw(Json.Serialize(Model.Categories))');
-        if (allCategory != null) {
-            allCategory.forEach(function (category) {
-                categoryMap.set(category.content, category.id)
-            });
-        }
+    // get all category
+    let categoryMap = new Map();
+    let allCategory = JSON.parse('@Html.Raw(Json.Serialize(Model.Categories))');
+    if (allCategory != null) {
+      allCategory.forEach(function (category) {
+        categoryMap.set(category.content, category.id)
+      });
+    }
 
-        // make all selected tags shown in select Box
-        let selectedTags = JSON.parse('@Html.Raw(Json.Serialize(Model.Articles.Tags))')
-        if (selectedTags != null) {
-            selectedTags = selectedTags.map(i => i.content);
-        }
-        else selectedTags = []
-        $('#tag-selector').selectpicker('val', selectedTags);
+    // make all selected tags shown in select Box
+    let selectedTags = JSON.parse('@Html.Raw(Json.Serialize(Model.Articles.Tags))')
+    if (selectedTags != null) {
+      selectedTags = selectedTags.map(i => i.content);
+    }
+    else selectedTags = []
+    $('#tag-selector').selectpicker('val', selectedTags);
 
-        // make all selected tags shown in select Box
-        let selectedCategory = JSON.parse('@Html.Raw(Json.Serialize(Model.Articles.Category))')
-        if (selectedCategory != null) {
-            selectedCategory = selectedCategory.content
-        }
-        else selectedCategory = []
-        $('#category-selector').selectpicker('val', selectedCategory);
+    // make all selected tags shown in select Box
+    let selectedCategory = JSON.parse('@Html.Raw(Json.Serialize(Model.Articles.Category))')
+    if (selectedCategory != null) {
+      selectedCategory = selectedCategory.content
+    }
+    else selectedCategory = []
+    $('#category-selector').selectpicker('val', selectedCategory);
 
-        article_reprint_dom.on('changed.bs.select', function () {
-            ToggleReprintTextBox(article_reprint_dom)
-        })
+    article_reprint_dom.on('changed.bs.select', function () {
+      ToggleReprintTextBox(article_reprint_dom)
+    })
 
-        // it stores the article's content in order to pass the value to this javascript
-        $(document).ready(function (){
-            initialVditor($('#article-content').val(), '@Url.Content("~")', @Model.Articles.Id)
-        });
-    </script>
+    // it stores the article's content in order to pass the value to this javascript
+    $(document).ready(function (){
+      initialVditor($('#article-content').val(), '@Url.Content("~")', @Model.Articles.Id)
+    });
+  </script>
 }
 
 @section CustomScript {
-    <script type="text/javascript">
-        'use strict';
-        $('#submit-button').click(function (){
-            let selectedTagId = [];
-            let categoryId;
-            let isReprint = article_reprint_dom.selectpicker('val') === '转载'
-            let ReprintUri = $('#article-reprint-url-content').val()
-            let articleContent = window.vditor.getValue();
-            let articleTitle = $('#article-title-content').val();
-            $('#tag-selector').selectpicker('val').forEach(function (value){
-                let id = tagsMap.get(value)
-                selectedTagId.push(id)
-            })
-            categoryId = categoryMap.get($('#category-selector').selectpicker('val'))
-            $.ajax({
-                url: '@Url.Action("AddOrUpdateArticle", "Admin")',
-                type: 'POST',
-                contentType: 'application/json; charset=utf-8',
-                dateType: 'json',
-                data: JSON.stringify({
-                    isReprint: isReprint,
-                    reprintUri: ReprintUri,
-                    id: @Model.Articles.Id,
-                    title: articleTitle,
-                    content: articleContent,
-                    newTags: selectedTagId,
-                    categoryId: categoryId,
-                }),
-                success: function() {
-                    location.reload();
-                }
-            })
-        })
-    </script>
+  <script type="text/javascript">
+    'use strict';
+    $('#submit-button').click(function (){
+      let selectedTagId = [];
+      let categoryId;
+      let isReprint = article_reprint_dom.selectpicker('val') === '转载'
+      let ReprintUri = $('#article-reprint-url-content').val()
+      let articleContent = window.vditor.getValue();
+      let articleTitle = $('#article-title-content').val();
+      $('#tag-selector').selectpicker('val').forEach(function (value){
+        let id = tagsMap.get(value)
+        selectedTagId.push(id)
+      })
+      categoryId = categoryMap.get($('#category-selector').selectpicker('val'))
+      $.ajax({
+        url: '@Url.Action("AddOrUpdateArticle", "Admin")',
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        dateType: 'json',
+        data: JSON.stringify({
+          isReprint: isReprint,
+          reprintUri: ReprintUri,
+          id: @Model.Articles.Id,
+          title: articleTitle,
+          content: articleContent,
+          newTags: selectedTagId,
+          categoryId: categoryId,
+        }),
+        success: function() {
+          location.reload();
+        }
+      })
+    })
+  </script>
 }

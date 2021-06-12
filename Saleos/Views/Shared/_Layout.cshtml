@@ -2,41 +2,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - Saleos</title>
-    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <link href="@Url.Content("~/css/site.css")" rel="stylesheet">
-    <link href="@Url.Content("~/css/MainLayout.css")" rel="stylesheet">
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>@ViewData["Title"] - Saleos</title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link href="@Url.Content("~/css/site.css")" rel="stylesheet">
+  <link href="@Url.Content("~/css/MainLayout.css")" rel="stylesheet">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 </head>
 
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark"
-         style="opacity: 0.8; position: fixed; z-index: 1; width: 100%;">
-        <div class="container">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark"
+     style="opacity: 0.8; position: fixed; z-index: 1; width: 100%;">
+    <div class="container">
 
-            <span href="#" class="navbar-brand">Saleos</span>
+      <span href="#" class="navbar-brand">Saleos</span>
 
-            <button class="navbar-toggler" data-toggle="collapse" data-target="#navbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-            <div class="collapse navbar-collapse" id="navbar">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="navbar-link" href="#">首页</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="navbar-link" href="#">第二页</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="navbar-link" href="#">首页</a>
+          </li>
+          <li class="nav-item">
+            <a class="navbar-link" href="#">第二页</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 </header>
 
 <div class="banner">
@@ -45,45 +45,45 @@
 <br/>
 
 <div class="container">
-    <div class="row">
-        <div class="col-xl">
-            @RenderBody()
-        </div>
-        <div class="col-xl-4 d-none d-xl-block">
-            <div class="container" style="position: sticky; top: 0;">
-
-                <!-- 个人信息 -->
-                <div class="UserInfo">
-                    <div class="photo-1"></div>
-                    <div class="photo-2">
-                        <img src="@Url.Content("~/img/User.png")" />
-                    </div>
-                    <div class="User-Details">
-                        <p>我的个人博客</p>
-                    </div>
-                </div>
-
-                <br/>
-
-                <!-- tags -->
-                <div class="tags-panel">
-                    <div style="border-bottom: 1px solid black;">tags</div>
-                    <div>
-                        @foreach (var tag in (List<TagDto>) ViewData["Tags"])
-                        {
-                            <a href="#" class="badge badge-pill badge-primary">@tag.Content</a>
-                        }
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="row">
+    <div class="col-xl">
+      @RenderBody()
     </div>
+    <div class="col-xl-4 d-none d-xl-block">
+      <div class="container" style="position: sticky; top: 0;">
+
+        <!-- 个人信息 -->
+        <div class="UserInfo">
+          <div class="photo-1"></div>
+          <div class="photo-2">
+            <img src="@Url.Content("~/img/User.png")" />
+          </div>
+          <div class="User-Details">
+            <p>我的个人博客</p>
+          </div>
+        </div>
+
+        <br/>
+
+        <!-- tags -->
+        <div class="tags-panel">
+          <div style="border-bottom: 1px solid black;">tags</div>
+          <div>
+            @foreach (var tag in (List<TagDto>) ViewData["Tags"])
+            {
+              <a href="#" class="badge badge-pill badge-primary">@tag.Content</a>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2021 - Saleos
-    </div>
+  <div class="container">
+    &copy; 2021 - Saleos
+  </div>
 </footer>
 
 @await RenderSectionAsync("Scripts", required: false)

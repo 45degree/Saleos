@@ -1,39 +1,39 @@
 ﻿@model List<Saleos.DTO.ArticleInfoDto>
 
 @{
-    ViewData["Title"] = "Home Page";
+  ViewData["Title"] = "Home Page";
 }
 
 @foreach (var articleInfoDto in Model)
 {
-    <div class="home-article-info" style="margin-bottom: 10px">
-            <div class="article-main-info">
-                <div class="article-img">
-                    <img src="./img/thumb_1.webp" alt=""/>
-                </div>
-                <div class="article-info-content">
-                    <h2>@articleInfoDto.Title</h2>
-                    <p>@articleInfoDto.Abstract</p>
-                </div>
-            </div>
-            <div class="article-extra-info clearfix">
-                <div class="article-create-time">
-                    <i class="bi bi-calendar3" style="padding-right: 2px;"></i>
-                    @articleInfoDto.CreateTime
-                </div>
-                <div class="article-tags">
-                    @foreach (var tags in articleInfoDto.Tags)
-                    {
-                        <i class="bi bi-tags-fill"></i>
-                        <a href="#" style="margin-left: 5px">@tags.Content</a>
-                    }
-                </div>
-                <div class="read-whole-article">
-                    <a href="./ArticleDisplay.html">
-                        阅读全文
-                        <i class="bi bi-arrow-right-circle-fill" style="margin-left: 5px"></i>
-                    </a>
-                </div>
-            </div>
-    </div>
+  <div class="home-article-info" style="margin-bottom: 10px">
+      <div class="article-main-info">
+        <div class="article-img">
+          <img src="./img/thumb_1.webp" alt=""/>
+        </div>
+        <div class="article-info-content">
+          <h2>@articleInfoDto.Title</h2>
+          <p>@articleInfoDto.Abstract</p>
+        </div>
+      </div>
+      <div class="article-extra-info clearfix">
+        <div class="article-create-time">
+          <i class="bi bi-calendar3" style="padding-right: 2px;"></i>
+          @articleInfoDto.CreateTime
+        </div>
+        <div class="article-tags">
+          @foreach (var tags in articleInfoDto.Tags)
+          {
+            <i class="bi bi-tags-fill"></i>
+            <a href="#" style="margin-left: 5px">@tags.Content</a>
+          }
+        </div>
+        <div class="read-whole-article">
+          <a href="./ArticleDisplay.html">
+            阅读全文
+            <i class="bi bi-arrow-right-circle-fill" style="margin-left: 5px"></i>
+          </a>
+        </div>
+      </div>
+  </div>
 }
