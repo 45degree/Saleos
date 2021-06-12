@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-function initialVditor(initialValue, linkPrefix)
+function initialVditor(initialValue, linkPrefix, articleId)
 {
     var toolbar;
     toolbar = [
@@ -107,15 +107,10 @@ function initialVditor(initialValue, linkPrefix)
         // 文件上传配置
         upload: {
             accept: "image/*,.mp3, .wav, .rar",
-            token: "test",
-            url: "/api/upload/editor",
-            linkToImgUrl: "/api/upload/fetch",
-            filename(name) {
-                return name
-                    .replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, "")
-                    .replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, "")
-                    .replace("/\\s/g", "");
-            },
+            url: "/api/image/upload/" + articleId,
+            max: 2 * 1024 * 1024,
+            multiple: false,
+            fieldName: "files"
         },
 
         after() {

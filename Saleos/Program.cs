@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-using System;
-using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -23,25 +22,10 @@ namespace Saleos
 {
     public static class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            var seed = args.Contains("/seed");
-            if (seed)
-            {
-                args = args.Except(new[] {"/seed"}).ToArray();
-            }
-
             var host = CreateHostBuilder(args).Build();
-
-            if (seed)
-            {
-                Console.WriteLine("Seeding database...");
-                SeedData.EnsureSeedData(host.Services).Wait();
-                Console.WriteLine("Done seeding database.");
-                return ;
-            }
-
-            Console.WriteLine("Starting host...");
+            await SeedData.EnsureSeedData(host.Services);
             host.Run();
         }
 

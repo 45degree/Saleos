@@ -23,8 +23,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Minio;
 using Saleos.Entity.Data;
 using Saleos.Entity.Services.CoreServices;
+using Saleos.ImageStorage;
 
 namespace Saleos
 {
@@ -46,7 +48,7 @@ namespace Saleos
                     Configuration["POSTGRES_PASSWORD"])
                 )
             );
-
+            services.AddScoped<IImageStorage, MinioImageStorage>();
             services.AddScoped<ArticleServices, ArticleServicesImpl>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -57,7 +59,7 @@ namespace Saleos
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

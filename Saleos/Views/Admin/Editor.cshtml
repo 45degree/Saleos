@@ -159,7 +159,7 @@
 
         // it stores the article's content in order to pass the value to this javascript
         $(document).ready(function (){
-            initialVditor($('#article-content').val(), '@Url.Content("~")')
+            initialVditor($('#article-content').val(), '@Url.Content("~")', @Model.Articles.Id)
         });
     </script>
 }
