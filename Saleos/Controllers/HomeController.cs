@@ -44,6 +44,16 @@ namespace Saleos.Controllers
             return View(articleInfos);
         }
 
+        public async Task<IActionResult> Article(int articleId = 1)
+        {
+            var article = await ArticleServices.ArticleRepository.GetArticleAsync(articleId);
+            var model = new ArticleViewModel()
+            {
+                article = article,
+            };
+            return View(model);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

@@ -9,8 +9,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
   <link href="@Url.Content("~/css/site.css")" rel="stylesheet">
   <link href="@Url.Content("~/css/MainLayout.css")" rel="stylesheet">
-  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+  @RenderSection("ExternalCss", required: false)
 </head>
 
 <body>
@@ -86,6 +85,8 @@
   </div>
 </footer>
 
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

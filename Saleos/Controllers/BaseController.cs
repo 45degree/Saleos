@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Saleos.DTO;
 using Saleos.Entity.Services.CoreServices;
 
 namespace Saleos.Controllers
@@ -33,13 +35,13 @@ namespace Saleos.Controllers
             ArticleServices = articleServices;
         }
 
-        public override async void OnActionExecuted(ActionExecutedContext context)
+        public override void OnActionExecuted(ActionExecutedContext context)
         {
             // TODO initial the UserInfo's info
             ViewData[""] = "";
 
             // TODO initial the TagsList's info
-            ViewData["Tags"] = await ArticleServices.TagRepository.GetTagAsync();
+            ViewData["Tags"] = ArticleServices.TagRepository.GetTagAsync().GetAwaiter().GetResult();
 
             base.OnActionExecuted(context);
         }
