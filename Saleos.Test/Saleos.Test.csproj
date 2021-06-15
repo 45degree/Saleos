@@ -14,14 +14,15 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="coverlet.collector" Version="1.3.0">
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-            <PrivateAssets>all</PrivateAssets>
+        <PackageReference Include="coverlet.msbuild" Version="3.0.3">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Saleos.Entity\Saleos.Entity.csproj" />
+      <ProjectReference Include="..\Saleos\Saleos.csproj" />
     </ItemGroup>
 
 </Project>
