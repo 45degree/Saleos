@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Saleos.DTO;
@@ -92,6 +93,45 @@ namespace Saleos.Test.Entity.Test
             Assert.Equal(_mockData.Articles.Count, articles.Count);
             Assert.Equal(_mockData.ArticleTags.FindAll(x => x.ArticleId == 1).Count,
                 articles[0].Tags.Count);
+        }
+
+        [Fact]
+        public async Task GetArticleInfoByQueryAsync_SimplePaging_GetArticles()
+        {
+            await using var context = new HomePageDbContext(ContextOptions);
+            ArticleServices articleServices = new ArticleServicesImpl(context);
+            var queryDto = new ArticlesQueryDto()
+            {
+                PageNumber = 1,
+                PageSize = 2,
+            };
+            var articles = await articleServices.ArticleInfoRepository
+                .GetArticleInfoByQueryAsync(queryDto);
+            Assert.Equal(2,articles.Count);
+            Assert.Equal(_mockData.Articles[0].Id, articles[0].Id);
+            Assert.Equal(_mockData.Articles[1].Id, articles[1].Id);
+
+            queryDto.PageNumber = 2;
+            articles = await articleServices.ArticleInfoRepository
+                .GetArticleInfoByQueryAsync(queryDto);
+            Assert.Single(articles);
+            Assert.Equal(_mockData.Articles[2].Id, articles[0].Id);
+            Assert.Single(articles);
+        }
+
+        [Fact]
+        public async Task GetArticleInfoByQueryAsync_PageNumberIsOutOfRange_GetEmpty()
+        {
+            await using var context = new HomePageDbContext(ContextOptions);
+            ArticleServices articleServices = new ArticleServicesImpl(context);
+            var queryDto = new ArticlesQueryDto()
+            {
+                PageNumber = 2,
+                PageSize = 3,
+            };
+            var articles = await articleServices.ArticleInfoRepository
+                .GetArticleInfoByQueryAsync(queryDto);
+            Assert.Empty(articles);
         }
     }
 }
