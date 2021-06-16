@@ -42,7 +42,7 @@ namespace Saleos.Test.Entity
         private void Seed()
         {
             using var context = new HomePageDbContext(ContextOptions);
-            SeedDate(context);
+            MockData.SeedData(context);
         }
 
         [Fact]
@@ -97,23 +97,6 @@ namespace Saleos.Test.Entity
             var article = tag.ArticleTag[0].Article;
             Assert.Equal(1, articleId);
             Assert.Equal(_mockData.Articles[0].Content, article.Content);
-        }
-
-        /// <summary>
-        /// generator test data in the database
-        /// </summary>
-        public static void SeedDate(HomePageDbContext context)
-        {
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
-
-            var mockData = MockData.getInstance();
-
-            context.Article.AddRange(mockData.Articles);
-            context.Tags.AddRange(mockData.Tags);
-            context.Categories.AddRange(mockData.Categories);
-            context.ArticleTags.AddRange(mockData.ArticleTags);
-            context.SaveChanges();
         }
     }
 }

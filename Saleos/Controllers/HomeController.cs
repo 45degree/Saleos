@@ -40,12 +40,22 @@ namespace Saleos.Controllers
             {
                 PageNumber = page
             };
-            var articleInfos =  await ArticleServices.ArticleInfoRepository.GetArticleInfoByQueryAsync(articlesQueryDAO);
+            var articleInfos =  await ArticleServices.ArticleInfoRepository
+                .GetArticleInfoByQueryAsync(articlesQueryDAO);
+
+            if(articleInfos.Count == 0)
+            {
+                return RedirectToAction($"{nameof(Index)}", new {page = 1});
+            }
             return View(articleInfos);
         }
 
         public async Task<IActionResult> Article(int articleId = 1)
         {
+            if(!await ArticleServices.ArticleRepository.ArticleIsExisted(articleId))
+            {
+                return RedirectToAction($"{nameof(Article)}", new {articleId = 1});
+            }
             var article = await ArticleServices.ArticleRepository.GetArticleAsync(articleId);
             var model = new ArticleViewModel()
             {
@@ -57,7 +67,10 @@ namespace Saleos.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+            return View(new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            });
         }
     }
 }

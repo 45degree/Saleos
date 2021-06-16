@@ -33,7 +33,7 @@ namespace Saleos.Test.Entity
         private void Seed()
         {
             using var context = new HomePageDbContext(ContextOptions);
-            EntityTest.SeedDate(context);
+            MockData.SeedData(context);
         }
     }
 }

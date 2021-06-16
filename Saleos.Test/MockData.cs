@@ -17,8 +17,9 @@
 using System;
 using System.Collections.Generic;
 using Saleos.Entity;
+using Saleos.Entity.Data;
 
-namespace Saleos.Test.Entity
+namespace Saleos.Test
 {
     public class MockData
     {
@@ -102,6 +103,23 @@ namespace Saleos.Test.Entity
         public static MockData getInstance()
         {
             return _instance;
+        }
+
+        /// <summary>
+        /// generator test data in the database
+        /// </summary>
+        public static void SeedData(HomePageDbContext context)
+        {
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+
+            var mockData = MockData.getInstance();
+
+            context.Article.AddRange(mockData.Articles);
+            context.Tags.AddRange(mockData.Tags);
+            context.Categories.AddRange(mockData.Categories);
+            context.ArticleTags.AddRange(mockData.ArticleTags);
+            context.SaveChanges();
         }
     }
 }
