@@ -25,7 +25,6 @@ namespace Saleos.ImageStorage
     public class MinioImageStorage : IImageStorage
     {
         private MinioClient _minioClient;
-        private IConfiguration _configuration;
         private string _bucketName;
 
         public MinioImageStorage(IConfiguration configuration)

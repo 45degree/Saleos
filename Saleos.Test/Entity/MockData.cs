@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using Saleos.Entity;
 
-namespace Saleos.Test.Entity.Test
+namespace Saleos.Test.Entity
 {
     public class MockData
     {

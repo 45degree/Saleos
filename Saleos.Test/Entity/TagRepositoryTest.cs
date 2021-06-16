@@ -18,12 +18,12 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Saleos.DTO;
+using Saleos.DAO;
 using Saleos.Entity.Data;
 using Saleos.Entity.Services.CoreServices;
 using Xunit;
 
-namespace Saleos.Test.Entity.Test
+namespace Saleos.Test.Entity
 {
     public abstract class TagRepositoryTest : BaseServicesTest
     {
@@ -102,7 +102,7 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var newTag = new TagAddDto()
+            var newTag = new TagAddDAO()
             {
                 Content = "Tag 4"
             };
@@ -126,7 +126,7 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var updateTag = new TagUpdateDto()
+            var updateTag = new TagUpdateDAO()
             {
                 Id = 1,
                 Content = "Changed Tag 1",
@@ -268,11 +268,11 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var queryDto = new TagQueryDto()
+            var queryDAO = new TagQueryDAO()
             {
                 Content = "Tag 1",
             };
-            var tags = await articleServices.TagRepository.GetTagsByQueryAsync(queryDto);
+            var tags = await articleServices.TagRepository.GetTagsByQueryAsync(queryDAO);
             Assert.Single(tags);
             Assert.Equal("Tag 1", tags[0].Content);
         }
@@ -284,11 +284,11 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var queryDto = new TagQueryDto()
+            var queryDAO = new TagQueryDAO()
             {
                 Content = content,
             };
-            var tags = await articleServices.TagRepository.GetTagsByQueryAsync(queryDto);
+            var tags = await articleServices.TagRepository.GetTagsByQueryAsync(queryDAO);
             Assert.Empty(tags);
         }
 
@@ -299,11 +299,11 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var queryDto = new TagQueryDto()
+            var queryDAO = new TagQueryDAO()
             {
                 Content = content,
             };
-            var tags = await articleServices.TagRepository.GetTagsByQueryAsync(queryDto);
+            var tags = await articleServices.TagRepository.GetTagsByQueryAsync(queryDAO);
             Assert.Equal(3, tags.Count);
         }
 

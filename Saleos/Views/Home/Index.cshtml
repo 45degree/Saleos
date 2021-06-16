@@ -1,10 +1,10 @@
-﻿@model List<Saleos.DTO.ArticleInfoDto>
+﻿@model HomeIndexViewModel
 
 @{
   ViewData["Title"] = "Home Page";
 }
 
-@foreach (var articleInfoDto in Model)
+@foreach (var articleInfoDAO in Model.articleInfos)
 {
   <div class="home-article-info" style="margin-bottom: 10px">
       <div class="article-main-info">
@@ -12,24 +12,24 @@
           <img src="./img/thumb_1.webp" alt=""/>
         </div>
         <div class="article-info-content">
-          <h2>@articleInfoDto.Title</h2>
-          <p>@articleInfoDto.Abstract</p>
+          <h2>@articleInfoDAO.Title</h2>
+          <p>@articleInfoDAO.Abstract</p>
         </div>
       </div>
       <div class="article-extra-info clearfix">
         <div class="article-create-time">
           <i class="bi bi-calendar3" style="padding-right: 2px;"></i>
-          @articleInfoDto.CreateTime
+          @articleInfoDAO.CreateTime
         </div>
         <div class="article-tags">
-          @foreach (var tags in articleInfoDto.Tags)
+          @foreach (var tags in articleInfoDAO.Tags)
           {
             <i class="bi bi-tags-fill"></i>
             <a href="#" style="margin-left: 5px">@tags.Content</a>
           }
         </div>
         <div class="read-whole-article">
-          <a asp-action="Article">
+          <a asp-action="Article" asp-route-articleId="@articleInfoDAO.Id">
             阅读全文
             <i class="bi bi-arrow-right-circle-fill" style="margin-left: 5px"></i>
           </a>
@@ -37,3 +37,38 @@
       </div>
   </div>
 }
+
+<div class="row" style="margin-top: 20px">
+  <div class="col" style="display: flex; flex-direction: row-reverse;">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        @if(@Model.currentPage > 1)
+        {
+          <li class="page-item"><a class="page-link" href="#">@(Model.currentPage-1)</a></li>
+        }
+        <li class="page-item">
+          <a class="page-link active" asp-action="Index" asp-route-page="@Model.currentPage">
+            @Model.currentPage
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" asp-action="Index" asp-route-page="@(Model.currentPage+1)">
+            @(Model.currentPage+1)
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

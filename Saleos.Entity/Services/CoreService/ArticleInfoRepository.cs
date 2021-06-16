@@ -19,9 +19,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Saleos.DTO;
+using Saleos.DAO;
 using Saleos.Entity.Data;
-using Saleos.Entity.DtoExtension;
+using Saleos.Entity.DAOExtension;
 
 namespace Saleos.Entity.Services.CoreServices
 {
@@ -34,7 +34,7 @@ namespace Saleos.Entity.Services.CoreServices
             _homePageDbContext = homePageDbContext;
         }
 
-        public async Task<List<ArticleInfoDto>> GetArticleInfoByQueryAsync(ArticlesQueryDto query)
+        public async Task<List<ArticleInfoDAO>> GetArticleInfoByQueryAsync(ArticlesQueryDAO query)
         {
             if (query == null)
                 throw new ArgumentNullException($"{nameof(query)} 为null或则全是空格");
@@ -54,16 +54,16 @@ namespace Saleos.Entity.Services.CoreServices
             queryString = queryString.Include(x => x.ArticleTags)
                 .ThenInclude(x => x.Tag);
 
-            return await queryString.Select(x => x.GetArticleInfoDtoFromArticle()).ToListAsync();
+            return await queryString.Select(x => x.GetArticleInfoDAOFromArticle()).ToListAsync();
         }
 
-        public async Task<List<ArticleInfoDto>> GetAllArticleInfo()
+        public async Task<List<ArticleInfoDAO>> GetAllArticleInfo()
         {
             return await _homePageDbContext.Article
                 .Include(x => x.ArticleTags)
                 .ThenInclude(x => x.Tag)
-                .Select(x => x.GetArticleInfoDtoFromArticle())
+                .Select(x => x.GetArticleInfoDAOFromArticle())
                 .ToListAsync();
         }
-    } 
+    }
 }

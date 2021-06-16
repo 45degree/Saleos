@@ -14,38 +14,38 @@
  * limitations under the License.
  */
 
-using Saleos.DTO;
+using Saleos.DAO;
 
-namespace Saleos.Entity.DtoExtension
+namespace Saleos.Entity.DAOExtension
 {
-    public static class CategoryDtoExtension
+    public static class CategoryDAOExtension
     {
-        public static CategoryDto GetCategoryDtoFromCategory(this Category category)
+        public static CategoryDAO GetCategoryDAOFromCategory(this Category category)
         {
             if (category == null) return null;
-            return new CategoryDto()
+            return new CategoryDAO()
             {
                 Id = category.Id,
                 Content = category.Content
             };
         }
 
-        public static Category GetCategoryFromCategoryDto(this CategoryDto categoryDto)
+        public static Category GetCategoryFromCategoryDAO(this CategoryDAO categoryDAO)
         {
-            if (categoryDto == null) return null;
+            if (categoryDAO == null) return null;
             return new Category
             {
-                Id = categoryDto.Id,
-                Content = categoryDto.Content,
+                Id = categoryDAO.Id,
+                Content = categoryDAO.Content,
             };
         }
 
-        public static Category GetCategoryFromCateGoryAddDto(this CategoryAddDto categoryAddDto)
+        public static Category GetCategoryFromCateGoryAddDAO(this CategoryAddDAO categoryAddDAO)
         {
-            if (categoryAddDto == null) return null;
+            if (categoryAddDAO == null) return null;
             return new Category()
             {
-                Content = categoryAddDto.Content,
+                Content = categoryAddDAO.Content,
             };
         }
     }

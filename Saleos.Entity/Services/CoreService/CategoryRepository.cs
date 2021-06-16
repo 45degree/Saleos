@@ -19,21 +19,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Saleos.DTO;
+using Saleos.DAO;
 using Saleos.Entity.Data;
-using Saleos.Entity.DtoExtension;
+using Saleos.Entity.DAOExtension;
 
 namespace Saleos.Entity.Services.CoreServices
 {
     public class CategoryRepository : ICategoryRepository
     {
         private readonly HomePageDbContext _homePageDbContext;
-        
+
         public CategoryRepository(HomePageDbContext homePageDbContext)
         {
             _homePageDbContext = homePageDbContext;
         }
-        
+
         public async Task<bool> CategoryIsExistAsync(int categoryId)
         {
             return await _homePageDbContext.Categories.AnyAsync(x => x.Id == categoryId);
@@ -44,51 +44,51 @@ namespace Saleos.Entity.Services.CoreServices
             return await _homePageDbContext.Categories.CountAsync();
         }
 
-        public async Task<List<CategoryDto>> GetCategoryAsync()
+        public async Task<List<CategoryDAO>> GetCategoryAsync()
         {
             return await _homePageDbContext.Categories
-                .Select(x => x.GetCategoryDtoFromCategory())
+                .Select(x => x.GetCategoryDAOFromCategory())
                 .ToListAsync();
         }
 
-        public async Task<CategoryDto> GetCategoryAsync(int categoryId)
+        public async Task<CategoryDAO> GetCategoryAsync(int categoryId)
         {
             if(!await CategoryIsExistAsync(categoryId))
                 throw new IndexOutOfRangeException($"{nameof(categoryId)} is out of range");
-            
+
             return await _homePageDbContext.Categories
                 .Where(x => x.Id == categoryId)
-                .Select(x => x.GetCategoryDtoFromCategory())
+                .Select(x => x.GetCategoryDAOFromCategory())
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<List<CategoryDto>> GetCategoryByQueryAsync(CategoryQueryDto categoryQueryDto)
+        public async Task<List<CategoryDAO>> GetCategoryByQueryAsync(CategoryQueryDAO categoryQueryDAO)
         {
             var queryString = _homePageDbContext.Categories as IQueryable<Category>;
 
             // Filter Title
-            if (!string.IsNullOrWhiteSpace(categoryQueryDto.Content))
+            if (!string.IsNullOrWhiteSpace(categoryQueryDAO.Content))
             {
-                queryString = queryString.Where(x => categoryQueryDto.Content.Equals(x.Content));
+                queryString = queryString.Where(x => categoryQueryDAO.Content.Equals(x.Content));
             }
-            
+
             return await queryString.OrderBy(x => x.Id)
-                .Skip(categoryQueryDto.PageSize * (categoryQueryDto.PageNumber - 1))
-                .Take(categoryQueryDto.PageSize)
-                .Select(x => x.GetCategoryDtoFromCategory())
+                .Skip(categoryQueryDAO.PageSize * (categoryQueryDAO.PageNumber - 1))
+                .Take(categoryQueryDAO.PageSize)
+                .Select(x => x.GetCategoryDAOFromCategory())
                 .ToListAsync();
         }
 
-        public async Task AddCategoryAsync(CategoryAddDto categoryAddDto)
+        public async Task AddCategoryAsync(CategoryAddDAO categoryAddDAO)
         {
-            if (categoryAddDto == null) throw new ArgumentNullException($"{nameof(categoryAddDto)} is null");
-            await _homePageDbContext.Categories.AddAsync(categoryAddDto.GetCategoryFromCateGoryAddDto());
+            if (categoryAddDAO == null) throw new ArgumentNullException($"{nameof(categoryAddDAO)} is null");
+            await _homePageDbContext.Categories.AddAsync(categoryAddDAO.GetCategoryFromCateGoryAddDAO());
         }
 
-        public async Task UpdateCategoryAsync(CategoryUpdateDto categoryUpdateDto)
+        public async Task UpdateCategoryAsync(CategoryUpdateDAO categoryUpdateDAO)
         {
-            var category = await _homePageDbContext.Categories.SingleOrDefaultAsync(x => x.Id == categoryUpdateDto.Id);
-            category.Content = categoryUpdateDto.Content;
+            var category = await _homePageDbContext.Categories.SingleOrDefaultAsync(x => x.Id == categoryUpdateDAO.Id);
+            category.Content = categoryUpdateDAO.Content;
         }
 
         public async Task DeleteCategoryAsync(int categoryId)

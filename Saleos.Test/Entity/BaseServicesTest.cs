@@ -14,20 +14,26 @@
  * limitations under the License.
  */
 
-namespace Saleos.DTO
-{
-    public class TagDto
-    {
-        public int Id { get; set; }
-        public string Content { get; set; }
+using Microsoft.EntityFrameworkCore;
+using Saleos.Entity.Data;
 
-        public object Clone()
+namespace Saleos.Test.Entity
+{
+    public class BaseServicesTest
+    {
+        protected DbContextOptions<HomePageDbContext> ContextOptions { get; }
+        protected MockData _mockData = MockData.getInstance();
+
+        protected BaseServicesTest(DbContextOptions<HomePageDbContext> contextOptions)
         {
-            return new TagDto()
-            {
-                Id = Id,
-                Content = Content
-            };
+            ContextOptions = contextOptions;
+            Seed();
+        }
+
+        private void Seed()
+        {
+            using var context = new HomePageDbContext(ContextOptions);
+            EntityTest.SeedDate(context);
         }
     }
 }

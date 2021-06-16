@@ -14,30 +14,14 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace Saleos.DTO
+namespace Saleos.DAO
 {
-    public class ArticleUpdateDto
+    public class ArticleInfoUpdateDAO
     {
-        [Required]
-        public int Id { get; set; }
-
         public string Title { get; set; }
 
-        public string Content { get; set; }
+        public string ImgUrl { get; set; }
 
-        [Required]
-        public DateTime LastModifiedTime { get; set; }
-
-        public List<int> Tags { get; set; }
-
-        public int CategoryId { get; set; }
-
-        public bool IsReprint { get; set; }
-
-        public string ReprintUri { get; set; }
+        public string Abstract { get; set; }
     }
 }

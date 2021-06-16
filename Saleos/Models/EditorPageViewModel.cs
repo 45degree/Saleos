@@ -15,14 +15,14 @@
  */
 
 using System.Collections.Generic;
-using Saleos.DTO;
+using Saleos.DAO;
 
 namespace Saleos.Models
 {
     public class EditorPageViewModel
     {
-        public List<TagDto> Tags { get; set; }
-        public List<CategoryDto> Categories { get; set; }
-        public ArticleDto Articles { get; set; }
+        public List<TagDAO> Tags { get; set; }
+        public List<CategoryDAO> Categories { get; set; }
+        public ArticleDAO Articles { get; set; }
     }
 }

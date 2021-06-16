@@ -15,12 +15,12 @@
  */
 
 using System.Collections.Generic;
-using Saleos.DTO;
+using Saleos.DAO;
 
 namespace Saleos.Models
 {
     public class CategoryPageViewModel
     {
-        public List<CategoryDto> Categories { get; set; }
+        public List<CategoryDAO> Categories { get; set; }
     }
 }

@@ -21,7 +21,7 @@ using Saleos.Entity;
 using Saleos.Entity.Data;
 using Xunit;
 
-namespace Saleos.Test.Entity.Test
+namespace Saleos.Test.Entity
 {
     /// <summary>
     /// 这个类主要用于

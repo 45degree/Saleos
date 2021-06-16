@@ -17,12 +17,12 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Saleos.DTO;
+using Saleos.DAO;
 using Saleos.Entity.Data;
 using Saleos.Entity.Services.CoreServices;
 using Xunit;
 
-namespace Saleos.Test.Entity.Test
+namespace Saleos.Test.Entity
 {
     public abstract class CategoryRepositoryTest : BaseServicesTest
     {
@@ -68,9 +68,9 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var categoryDto = await articleServices.CategoryRepository.GetCategoryAsync(categoryId);
-            Assert.Equal(categoryId, categoryDto.Id);
-            Assert.Equal(_mockData.Categories[categoryId - 1].Content, categoryDto.Content);
+            var categoryDAO = await articleServices.CategoryRepository.GetCategoryAsync(categoryId);
+            Assert.Equal(categoryId, categoryDAO.Id);
+            Assert.Equal(_mockData.Categories[categoryId - 1].Content, categoryDAO.Content);
         }
 
         [Theory]
@@ -99,15 +99,15 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var newCategory = new CategoryAddDto()
+            var newCategory = new CategoryAddDAO()
             {
                 Content = "Category 4"
             };
             await articleServices.CategoryRepository.AddCategoryAsync(newCategory);
             await articleServices.SaveAsync();
 
-            var categoryDto = await articleServices.CategoryRepository.GetCategoryAsync(3);
-            Assert.Equal("Category 4", categoryDto.Content);
+            var categoryDAO = await articleServices.CategoryRepository.GetCategoryAsync(3);
+            Assert.Equal("Category 4", categoryDAO.Content);
         }
 
         [Fact]
@@ -123,7 +123,7 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var updateCategory = new CategoryUpdateDto()
+            var updateCategory = new CategoryUpdateDAO()
             {
                 Id = 1,
                 Content = "Changed Category 1",
@@ -172,11 +172,11 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var queryDto = new CategoryQueryDto()
+            var queryDAO = new CategoryQueryDAO()
             {
                 Content = "Category 1",
             };
-            var categories = await articleServices.CategoryRepository.GetCategoryByQueryAsync(queryDto);
+            var categories = await articleServices.CategoryRepository.GetCategoryByQueryAsync(queryDAO);
             Assert.Single(categories);
             Assert.Equal("Category 1", categories[0].Content);
         }
@@ -188,11 +188,11 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var queryDto = new CategoryQueryDto()
+            var queryDAO = new CategoryQueryDAO()
             {
                 Content = content,
             };
-            var categories = await articleServices.CategoryRepository.GetCategoryByQueryAsync(queryDto);
+            var categories = await articleServices.CategoryRepository.GetCategoryByQueryAsync(queryDAO);
             Assert.Empty(categories);
         }
 
@@ -203,11 +203,11 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var queryDto = new CategoryQueryDto()
+            var queryDAO = new CategoryQueryDAO()
             {
                 Content = content,
             };
-            var categories = await articleServices.CategoryRepository.GetCategoryByQueryAsync(queryDto);
+            var categories = await articleServices.CategoryRepository.GetCategoryByQueryAsync(queryDAO);
             Assert.Equal(_mockData.Categories.Count, categories.Count);
         }
 

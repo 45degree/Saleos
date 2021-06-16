@@ -15,12 +15,12 @@
  */
 
 using System.Collections.Generic;
-using Saleos.DTO;
+using Saleos.DAO;
 
 namespace Saleos.Models
 {
     public class TagPageViewModel
     {
-        public List<TagDto> Tags { get; set; }
+        public List<TagDAO> Tags { get; set; }
     }
 }

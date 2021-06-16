@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saleos.Entity", "Saleos.Entity\Saleos.Entity.csproj", "{A43F5160-F342-4454-96A9-8DB294E7C545}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saleos.DTO", "Saleos.DTO\Saleos.DTO.csproj", "{F3A63B35-07BA-4917-828C-5E1583EDDE33}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saleos.DAO", "Saleos.DAO\Saleos.DAO.csproj", "{F3A63B35-07BA-4917-828C-5E1583EDDE33}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saleos", "Saleos\Saleos.csproj", "{FD64C175-F87F-4899-8DF8-6698D48B3AB3}"
 EndProject

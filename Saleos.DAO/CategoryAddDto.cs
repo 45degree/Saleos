@@ -14,26 +14,10 @@
  * limitations under the License.
  */
 
-using Saleos.DTO;
-
-namespace Saleos.Entity.DtoExtension
+namespace Saleos.DAO
 {
-    public static class TagDtoExtension
+    public class CategoryAddDAO
     {
-        public static TagDto GetTagDtoFromTag(this Tag tag)
-        {
-            var tagDto = new TagDto()
-            {
-                Id = tag.Id,
-                Content = tag.Content,
-            };
-            return tagDto;
-        }
-
-        public static Tag GetTagFromTagAddDto(this TagAddDto addDto)
-        {
-            var tag = new Tag() { Content = addDto.Content };
-            return tag;
-        }
+        public string Content { get; set; }
     }
 }

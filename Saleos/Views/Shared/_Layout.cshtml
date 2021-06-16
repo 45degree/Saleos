@@ -1,4 +1,4 @@
-﻿@using Saleos.DTO
+﻿@using Saleos.DAO
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,10 +27,7 @@
       <div class="collapse navbar-collapse" id="navbar">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="navbar-link" href="#">首页</a>
-          </li>
-          <li class="nav-item">
-            <a class="navbar-link" href="#">第二页</a>
+            <a class="navbar-link" asp-action="Index">首页</a>
           </li>
         </ul>
       </div>
@@ -68,7 +65,7 @@
         <div class="tags-panel">
           <div style="border-bottom: 1px solid black;">tags</div>
           <div>
-            @foreach (var tag in (List<TagDto>) ViewData["Tags"])
+            @foreach (var tag in (List<TagDAO>) ViewData["Tags"])
             {
               <a href="#" class="badge badge-pill badge-primary">@tag.Content</a>
             }

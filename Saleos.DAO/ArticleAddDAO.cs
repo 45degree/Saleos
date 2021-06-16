@@ -14,11 +14,29 @@
  * limitations under the License.
  */
 
-namespace Saleos.DTO
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace Saleos.DAO
 {
-    public class CategoryDto
+    public class ArticleAddDAO
     {
-        public int Id { get; set; }
+        [Required]
+        public string Title { get; set; }
+
+        [Required]
         public string Content { get; set; }
+
+        [Required]
+        public DateTime CreateTime { get; set; }
+
+        public int CategoryId { get; set; }
+
+        public List<int> Tags { get; set; }
+
+        public bool IsReprint { get; set; }
+
+        public string ReprintUri { get; set; }
     }
 }

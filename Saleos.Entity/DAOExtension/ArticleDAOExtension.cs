@@ -18,50 +18,50 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Saleos.DTO;
+using Saleos.DAO;
 using Saleos.Entity.Data;
 
-namespace Saleos.Entity.DtoExtension
+namespace Saleos.Entity.DAOExtension
 {
-    public static class ArticleDtoExtension
+    public static class ArticleDAOExtension
     {
-       public static async Task<Article> GetArticleFromArticleAddDto(this ArticleAddDto addDto, HomePageDbContext context)
+       public static async Task<Article> GetArticleFromArticleAddDAO(this ArticleAddDAO addDAO, HomePageDbContext context)
        {
-            var category = await context.Categories.SingleOrDefaultAsync(x => x.Id == addDto.CategoryId);
+            var category = await context.Categories.SingleOrDefaultAsync(x => x.Id == addDAO.CategoryId);
             var article = new Article
             {
-                Content = addDto.Content,
-                Title = addDto.Title,
+                Content = addDAO.Content,
+                Title = addDAO.Title,
                 Category = category,
-                CreateTime = addDto.CreateTime,
-                LastModifiedTime = addDto.CreateTime,
-                IsReprint = addDto.IsReprint,
-                ReprintUri = addDto.ReprintUri
+                CreateTime = addDAO.CreateTime,
+                LastModifiedTime = addDAO.CreateTime,
+                IsReprint = addDAO.IsReprint,
+                ReprintUri = addDAO.ReprintUri
             };
             return article;
         }
 
-        public static ArticleDto GetArticleDtoFromArticle(this Article article)
+        public static ArticleDAO GetArticleDAOFromArticle(this Article article)
         {
-            var articleDto =  new ArticleDto()
+            var articleDAO =  new ArticleDAO()
             {
                 Id = article.Id,
                 Title = article.Title,
                 Abstract = article.Abstract,
                 ImgUrl = article.ImageUrl,
-                Category = article.Category.GetCategoryDtoFromCategory(),
+                Category = article.Category.GetCategoryDAOFromCategory(),
                 Content = article.Content,
                 CreateTime = article.CreateTime,
                 LastModifiedTime = article.LastModifiedTime,
-                Tags = new List<TagDto>(),
+                Tags = new List<TagDAO>(),
                 IsReprint = article.IsReprint,
                 RerpintUri = article.ReprintUri,
             };
             foreach (var articleTag in article.ArticleTags)
             {
-                articleDto.Tags.Add(articleTag.Tag.GetTagDtoFromTag());
+                articleDAO.Tags.Add(articleTag.Tag.GetTagDAOFromTag());
             }
-            return articleDto;
+            return articleDAO;
         }
     }
 }

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-namespace Saleos.DTO
+namespace Saleos.DAO
 {
-    public abstract class BaseQueryDto
+    public abstract class BaseQueryDAO
     {
         /**
          * Paging Query Information

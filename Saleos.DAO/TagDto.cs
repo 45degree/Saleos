@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 
-namespace Saleos.DTO
+namespace Saleos.DAO
 {
-    public class TagUpdateDto
+    public class TagDAO
     {
         public int Id { get; set; }
         public string Content { get; set; }
+
+        public object Clone()
+        {
+            return new TagDAO()
+            {
+                Id = Id,
+                Content = Content
+            };
+        }
     }
 }

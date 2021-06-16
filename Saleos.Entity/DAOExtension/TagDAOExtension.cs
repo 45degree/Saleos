@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-using Microsoft.EntityFrameworkCore;
-using Saleos.Entity.Data;
+using Saleos.DAO;
 
-namespace Saleos.Test.Entity.Test
+namespace Saleos.Entity.DAOExtension
 {
-    public class BaseServicesTest
+    public static class TagDAOExtension
     {
-        protected DbContextOptions<HomePageDbContext> ContextOptions { get; }
-        protected MockData _mockData = MockData.getInstance();
-
-        protected BaseServicesTest(DbContextOptions<HomePageDbContext> contextOptions)
+        public static TagDAO GetTagDAOFromTag(this Tag tag)
         {
-            ContextOptions = contextOptions;
-            Seed();
+            var tagDAO = new TagDAO()
+            {
+                Id = tag.Id,
+                Content = tag.Content,
+            };
+            return tagDAO;
         }
 
-        private void Seed()
+        public static Tag GetTagFromTagAddDAO(this TagAddDAO addDAO)
         {
-            using var context = new HomePageDbContext(ContextOptions);
-            EntityTest.SeedDate(context);
+            var tag = new Tag() { Content = addDAO.Content };
+            return tag;
         }
     }
 }

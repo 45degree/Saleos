@@ -15,15 +15,15 @@
  */
 
 using System.Collections.Generic;
-using Saleos.DTO;
+using Saleos.DAO;
 
-namespace Saleos.Entity.DtoExtension
+namespace Saleos.Entity.DAOExtension
 {
-    public static class ArticleInfoDtoExtension
+    public static class ArticleInfoDAOExtension
     {
-        public static ArticleInfoDto GetArticleInfoDtoFromArticle(this Article article)
+        public static ArticleInfoDAO GetArticleInfoDAOFromArticle(this Article article)
         {
-            var articleInfoDto = new ArticleInfoDto()
+            var articleInfoDAO = new ArticleInfoDAO()
             {
                 Id = article.Id,
                 Abstract = article.Abstract,
@@ -31,14 +31,14 @@ namespace Saleos.Entity.DtoExtension
                 ImgUrl = article.ImageUrl,
                 CreateTime = article.CreateTime,
                 LastModifiedTime = article.LastModifiedTime,
-                Tags = new List<TagDto>(),
+                Tags = new List<TagDAO>(),
             };
             foreach (var articleTag in article.ArticleTags)
             {
-                articleInfoDto.Tags.Add(articleTag.Tag.GetTagDtoFromTag());
+                articleInfoDAO.Tags.Add(articleTag.Tag.GetTagDAOFromTag());
             }
 
-            return articleInfoDto;
-        } 
+            return articleInfoDAO;
+        }
     }
 }

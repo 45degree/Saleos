@@ -19,9 +19,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Saleos.DTO;
+using Saleos.DAO;
 using Saleos.Entity.Data;
-using Saleos.Entity.DtoExtension;
+using Saleos.Entity.DAOExtension;
 
 namespace Saleos.Entity.Services.CoreServices
 {
@@ -39,7 +39,7 @@ namespace Saleos.Entity.Services.CoreServices
             return await _homePageDbContext.Article.AnyAsync(x => x.Id == articleId);
         }
 
-        public async Task<ArticleDto> GetArticleAsync(int articleId)
+        public async Task<ArticleDAO> GetArticleAsync(int articleId)
         {
             if (articleId <= 0)
                 throw new IndexOutOfRangeException($"{articleId} is out of range");
@@ -49,7 +49,7 @@ namespace Saleos.Entity.Services.CoreServices
                 .Include(x => x.Category)
                 .Include(x => x.ArticleTags)
                 .ThenInclude(x => x.Tag)
-                .Select(x => x.GetArticleDtoFromArticle())
+                .Select(x => x.GetArticleDAOFromArticle())
                 .FirstOrDefaultAsync();
         }
 
@@ -58,13 +58,13 @@ namespace Saleos.Entity.Services.CoreServices
             return await _homePageDbContext.Article.CountAsync();
         }
 
-        public async Task AddArticleAsync(ArticleAddDto article)
+        public async Task AddArticleAsync(ArticleAddDAO article)
         {
             if (article == null) throw new ArgumentNullException($"{nameof(article)} is null");
-            await _homePageDbContext.Article.AddAsync(await article.GetArticleFromArticleAddDto(_homePageDbContext));
+            await _homePageDbContext.Article.AddAsync(await article.GetArticleFromArticleAddDAO(_homePageDbContext));
         }
 
-        public async Task UpdateArticleAsync(ArticleUpdateDto articleUpdate)
+        public async Task UpdateArticleAsync(ArticleUpdateDAO articleUpdate)
         {
             if (articleUpdate == null) throw new ArgumentNullException($"{nameof(articleUpdate)} is null");
 

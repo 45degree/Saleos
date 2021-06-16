@@ -16,12 +16,12 @@
 
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Saleos.DTO;
+using Saleos.DAO;
 using Saleos.Entity.Data;
 using Saleos.Entity.Services.CoreServices;
 using Xunit;
 
-namespace Saleos.Test.Entity.Test
+namespace Saleos.Test.Entity
 {
     public abstract class ArticleInfoRepositoryTest : BaseServicesTest
     {
@@ -36,12 +36,12 @@ namespace Saleos.Test.Entity.Test
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
             var realArticle = _mockData.Articles[0];
-            var queryDto = new ArticlesQueryDto()
+            var queryDAO = new ArticlesQueryDAO()
             {
                 Title = realArticle.Title,
             };
             var article = await articleServices.ArticleInfoRepository
-                .GetArticleInfoByQueryAsync(queryDto);
+                .GetArticleInfoByQueryAsync(queryDAO);
             Assert.Single(article);
             Assert.Equal(realArticle.Id, article[0].Id);
             Assert.Equal(realArticle.Abstract, article[0].Abstract);
@@ -56,12 +56,12 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var queryDto = new ArticlesQueryDto()
+            var queryDAO = new ArticlesQueryDAO()
             {
                 Title = title,
             };
             var article = await articleServices.ArticleInfoRepository
-                .GetArticleInfoByQueryAsync(queryDto);
+                .GetArticleInfoByQueryAsync(queryDAO);
             Assert.Empty(article);
         }
 
@@ -73,12 +73,12 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var queryDto = new ArticlesQueryDto()
+            var queryDAO = new ArticlesQueryDAO()
             {
                 Title = title,
             };
             var articles = await articleServices.ArticleInfoRepository
-                .GetArticleInfoByQueryAsync(queryDto);
+                .GetArticleInfoByQueryAsync(queryDAO);
             Assert.Equal(_mockData.Articles.Count, articles.Count);
         }
 
@@ -92,6 +92,45 @@ namespace Saleos.Test.Entity.Test
             Assert.Equal(_mockData.Articles.Count, articles.Count);
             Assert.Equal(_mockData.ArticleTags.FindAll(x => x.ArticleId == 1).Count,
                 articles[0].Tags.Count);
+        }
+
+        [Fact]
+        public async Task GetArticleInfoByQueryAsync_SimplePaging_GetArticles()
+        {
+            await using var context = new HomePageDbContext(ContextOptions);
+            ArticleServices articleServices = new ArticleServicesImpl(context);
+            var queryDAO = new ArticlesQueryDAO()
+            {
+                PageNumber = 1,
+                PageSize = 2,
+            };
+            var articles = await articleServices.ArticleInfoRepository
+                .GetArticleInfoByQueryAsync(queryDAO);
+            Assert.Equal(2,articles.Count);
+            Assert.Equal(_mockData.Articles[0].Id, articles[0].Id);
+            Assert.Equal(_mockData.Articles[1].Id, articles[1].Id);
+
+            queryDAO.PageNumber = 2;
+            articles = await articleServices.ArticleInfoRepository
+                .GetArticleInfoByQueryAsync(queryDAO);
+            Assert.Single(articles);
+            Assert.Equal(_mockData.Articles[2].Id, articles[0].Id);
+            Assert.Single(articles);
+        }
+
+        [Fact]
+        public async Task GetArticleInfoByQueryAsync_PageNumberIsOutOfRange_GetEmpty()
+        {
+            await using var context = new HomePageDbContext(ContextOptions);
+            ArticleServices articleServices = new ArticleServicesImpl(context);
+            var queryDAO = new ArticlesQueryDAO()
+            {
+                PageNumber = 2,
+                PageSize = 3,
+            };
+            var articles = await articleServices.ArticleInfoRepository
+                .GetArticleInfoByQueryAsync(queryDAO);
+            Assert.Empty(articles);
         }
     }
 }

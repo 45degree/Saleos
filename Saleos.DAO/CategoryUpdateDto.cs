@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-namespace Saleos.DTO
+namespace Saleos.DAO
 {
-    public class ArticleInfoUpdateDto
+    public class CategoryUpdateDAO
     {
-        public string Title { get; set; }
-
-        public string ImgUrl { get; set; }
-
-        public string Abstract { get; set; }
+        public int Id { get; set; }
+        public string Content { get; set; }
     }
 }

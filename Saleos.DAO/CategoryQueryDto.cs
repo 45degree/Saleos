@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-namespace Saleos.DTO
+namespace Saleos.DAO
 {
-    public class TagAddDto
+    public class CategoryQueryDAO : BaseQueryDAO
     {
         public string Content { get; set; }
     }

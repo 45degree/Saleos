@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Saleos.DTO\Saleos.DTO.csproj" />
+      <ProjectReference Include="..\Saleos.DAO\Saleos.DAO.csproj" />
       <ProjectReference Include="..\Saleos.Entity\Saleos.Entity.csproj" />
     </ItemGroup>
 

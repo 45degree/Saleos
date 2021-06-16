@@ -85,7 +85,7 @@ namespace Saleos.Controllers
                 }
             };
 
-            var json = GenerateImageReturnDto(files.Name, webFile);
+            var json = GenerateImageReturnDAO(files.Name, webFile);
             return Ok(json);
         }
 
@@ -102,7 +102,7 @@ namespace Saleos.Controllers
         /// </summary>
         /// <see cref="https://b3log.org/vditor/demo/advanced-upload.html"/>
         /// <see cref="https://ld246.com/article/1549638745630#options-upload"/>
-        private JObject GenerateImageReturnDto(string originalFile, string webFile)
+        private JObject GenerateImageReturnDAO(string originalFile, string webFile)
         {
             var json = new JObject {{"msg", ""}, {"code", 0}};
             var data = new JObject();

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-namespace Saleos.DTO
+namespace Saleos.DAO
 {
-    public class CategoryQueryDto : BaseQueryDto
+    public class ArticlesQueryDAO : BaseQueryDAO
     {
-        public string Content { get; set; }
+        public string Title { get; set; }
     }
 }

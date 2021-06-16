@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Saleos.DTO;
+using Saleos.DAO;
 
 namespace Saleos.Entity.Services.CoreServices
 {
@@ -46,7 +46,7 @@ namespace Saleos.Entity.Services.CoreServices
         /// <returns>
         /// Tag的集合
         /// </returns>
-        public Task<List<CategoryDto>> GetCategoryAsync();
+        public Task<List<CategoryDAO>> GetCategoryAsync();
 
         /// <summary>
         /// 通过id异步获取Tag
@@ -56,29 +56,29 @@ namespace Saleos.Entity.Services.CoreServices
         /// <exception cref="IndexOutOfRangeException">
         /// 当tagId没有对应的tag时抛出该异常，例如tagId小于等于0，或则大于数据库中最大Id
         /// </exception>
-        public Task<CategoryDto> GetCategoryAsync(int categoryId);
+        public Task<CategoryDAO> GetCategoryAsync(int categoryId);
 
         /// <summary>
         /// Get Tags by query
         /// </summary>
-        /// <param name="categoryQueryDto"></param>
+        /// <param name="categoryQueryDAO"></param>
         /// <returns></returns>
-        public Task<List<CategoryDto>> GetCategoryByQueryAsync(CategoryQueryDto categoryQueryDto);
+        public Task<List<CategoryDAO>> GetCategoryByQueryAsync(CategoryQueryDAO categoryQueryDAO);
 
         /// <summary>
         /// 添加tag
         /// </summary>
-        /// <param name="categoryAddDto">需要被添加的tag</param>
+        /// <param name="categoryAddDAO">需要被添加的tag</param>
         /// <exception cref="ArgumentNullException">
         /// tag为null时抛出该异常
         /// </exception>
-        public Task AddCategoryAsync(CategoryAddDto categoryAddDto);
+        public Task AddCategoryAsync(CategoryAddDAO categoryAddDAO);
 
         /// <summary>
         /// 更新tag
         /// </summary>
-        /// <param name="categoryUpdateDto">更新后的tag</param>
-        public Task UpdateCategoryAsync(CategoryUpdateDto categoryUpdateDto);
+        /// <param name="categoryUpdateDAO">更新后的tag</param>
+        public Task UpdateCategoryAsync(CategoryUpdateDAO categoryUpdateDAO);
 
         /// <summary>
         /// 删除一个tag
@@ -87,6 +87,6 @@ namespace Saleos.Entity.Services.CoreServices
         /// <exception cref="IndexOutOfRangeException">
         /// 当tagId没有对应的tag时抛出该异常，例如tagId小于等于0，或则大于数据库中最大Id
         /// </exception>
-        public Task DeleteCategoryAsync(int categoryId); 
+        public Task DeleteCategoryAsync(int categoryId);
     }
 }

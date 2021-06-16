@@ -17,7 +17,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Saleos.DTO;
+using Saleos.DAO;
 using Saleos.Entity.Services.CoreServices;
 
 namespace Saleos.Controllers

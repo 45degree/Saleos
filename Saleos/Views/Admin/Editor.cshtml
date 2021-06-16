@@ -59,9 +59,9 @@
       </div>
       <div style="border: 1px solid #ced4da; flex-grow: 1;">
         <select class="selectpicker form-control" id="category-selector" data-live-search="true">
-          @foreach (var categoryDto in Model.Categories)
+          @foreach (var categoryDAO in Model.Categories)
           {
-            <option>@categoryDto.Content</option>
+            <option>@categoryDAO.Content</option>
           }
         </select>
       </div>
@@ -73,10 +73,10 @@
       <div style="border: 1px solid #ced4da; flex-grow: 1;">
         <select class="selectpicker form-control" id="tag-selector"
           multiple data-live-search="true">
-          @foreach (var tagDto in Model.Tags)
+          @foreach (var tagDAO in Model.Tags)
           {
-            <option data-content="<span class='badge badge-success'>@tagDto.Content</span>">
-              @tagDto.Content
+            <option data-content="<span class='badge badge-success'>@tagDAO.Content</span>">
+              @tagDAO.Content
             </option>
           }
         </select>

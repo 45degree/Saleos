@@ -17,15 +17,15 @@
 using System;
 using System.Collections.Generic;
 
-namespace Saleos.DTO
+namespace Saleos.DAO
 {
-    public class ArticleDto : ArticleInfoDto, ICloneable
+    public class ArticleDAO : ArticleInfoDAO, ICloneable
     {
         public string Content { get; set; }
 
         public object Clone()
         {
-            var articleDto = new ArticleDto()
+            var articleDAO = new ArticleDAO()
             {
                 Id = Id,
                 Title = Title,
@@ -35,15 +35,15 @@ namespace Saleos.DTO
                 Content = Content,
                 CreateTime = CreateTime,
                 LastModifiedTime = LastModifiedTime,
-                Tags = new List<TagDto>(),
+                Tags = new List<TagDAO>(),
             };
 
-            foreach (var tagDto in Tags)
+            foreach (var tagDAO in Tags)
             {
-                articleDto.Tags.Add(tagDto.Clone() as TagDto);
+                articleDAO.Tags.Add(tagDAO.Clone() as TagDAO);
             }
 
-            return articleDto;
+            return articleDAO;
         }
     }
 }

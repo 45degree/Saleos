@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Saleos.DTO;
+using Saleos.DAO;
 
 namespace Saleos.Entity.Services.CoreServices
 {
@@ -31,12 +31,12 @@ namespace Saleos.Entity.Services.CoreServices
         /// <exception cref="ArgumentNullException">
         /// query为null时抛出该异常
         /// </exception>
-        public Task<List<ArticleInfoDto>> GetArticleInfoByQueryAsync(ArticlesQueryDto query);
+        public Task<List<ArticleInfoDAO>> GetArticleInfoByQueryAsync(ArticlesQueryDAO query);
 
         /// <summary>
         /// get all the article's information in database
         /// </summary>
         /// <returns> the collection of the article's information </returns>
-        public Task<List<ArticleInfoDto>> GetAllArticleInfo(); 
+        public Task<List<ArticleInfoDAO>> GetAllArticleInfo();
     }
 }

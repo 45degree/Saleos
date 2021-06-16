@@ -19,12 +19,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Saleos.DTO;
+using Saleos.DAO;
 using Saleos.Entity.Data;
 using Saleos.Entity.Services.CoreServices;
 using Xunit;
 
-namespace Saleos.Test.Entity.Test
+namespace Saleos.Test.Entity
 {
     public abstract class ArticleRepositoryTest : BaseServicesTest
     {
@@ -98,42 +98,6 @@ namespace Saleos.Test.Entity.Test
         }
 
         [Fact]
-        public async Task GetArticleByQueryAsync_SimplePaging_GetArticles()
-        {
-            await using var context = new HomePageDbContext(ContextOptions);
-            ArticleServices articleServices = new ArticleServicesImpl(context);
-            var queryDto = new ArticlesQueryDto()
-            {
-                PageNumber = 1,
-                PageSize = 2,
-            };
-            var articles = await articleServices.ArticleInfoRepository.GetArticleInfoByQueryAsync(queryDto);
-            Assert.Equal(2,articles.Count);
-            Assert.Equal(_mockData.Articles[0].Id, articles[0].Id);
-            Assert.Equal(_mockData.Articles[1].Id, articles[1].Id);
-
-            queryDto.PageNumber = 2;
-            articles = await articleServices.ArticleInfoRepository.GetArticleInfoByQueryAsync(queryDto);
-            Assert.Single(articles);
-            Assert.Equal(_mockData.Articles[2].Id, articles[0].Id);
-        }
-
-        [Fact]
-        public async Task GetArticleByQueryAsync_PageNumberIsOutOfRange_GetEmpty()
-        {
-            await using var context = new HomePageDbContext(ContextOptions);
-            ArticleServices articleServices = new ArticleServicesImpl(context);
-            var queryDto = new ArticlesQueryDto()
-            {
-                PageNumber = 2,
-                PageSize = 3,
-            };
-            var articles = await articleServices.ArticleInfoRepository.GetArticleInfoByQueryAsync(queryDto);
-            Assert.Empty(articles);
-        }
-
-
-        [Fact]
         public async void GetArticleCountAsync_ReturnArticleCount()
         {
             await using var context = new HomePageDbContext(ContextOptions);
@@ -147,7 +111,7 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var newArticle = new ArticleAddDto()
+            var newArticle = new ArticleAddDAO()
             {
                 Title = "Title 4",
                 Content = "Content 4",
@@ -182,7 +146,7 @@ namespace Saleos.Test.Entity.Test
         {
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
-            var articleUpdate = new ArticleUpdateDto()
+            var articleUpdate = new ArticleUpdateDAO()
             {
                 Id = 3,
                 Content = "Changed Content 3",

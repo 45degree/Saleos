@@ -18,7 +18,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Saleos.DTO;
+using Saleos.DAO;
 using Saleos.Entity.Services.CoreServices;
 using Saleos.Models;
 
@@ -36,11 +36,11 @@ namespace Saleos.Controllers
 
         public async Task<IActionResult> Index(int page)
         {
-            var articlesQueryDto = new ArticlesQueryDto()
+            var articlesQueryDAO = new ArticlesQueryDAO()
             {
                 PageNumber = page
             };
-            var articleInfos =  await ArticleServices.ArticleInfoRepository.GetArticleInfoByQueryAsync(articlesQueryDto);
+            var articleInfos =  await ArticleServices.ArticleInfoRepository.GetArticleInfoByQueryAsync(articlesQueryDAO);
             return View(articleInfos);
         }
 

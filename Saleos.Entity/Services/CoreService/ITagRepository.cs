@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Saleos.DTO;
+using Saleos.DAO;
 
 namespace Saleos.Entity.Services.CoreServices
 {
@@ -46,7 +46,7 @@ namespace Saleos.Entity.Services.CoreServices
         /// <returns>
         /// Tag的集合
         /// </returns>
-        public Task<List<TagDto>> GetTagAsync();
+        public Task<List<TagDAO>> GetTagAsync();
 
         /// <summary>
         /// 通过id异步获取Tag
@@ -56,14 +56,14 @@ namespace Saleos.Entity.Services.CoreServices
         /// <exception cref="IndexOutOfRangeException">
         /// 当tagId没有对应的tag时抛出该异常，例如tagId小于等于0，或则大于数据库中最大Id
         /// </exception>
-        public Task<TagDto> GetTagAsync(int tagId);
+        public Task<TagDAO> GetTagAsync(int tagId);
 
         /// <summary>
         /// Get Tags by query
         /// </summary>
-        /// <param name="tagQueryDto"></param>
+        /// <param name="tagQueryDAO"></param>
         /// <returns></returns>
-        public Task<List<TagDto>> GetTagsByQueryAsync(TagQueryDto tagQueryDto);
+        public Task<List<TagDAO>> GetTagsByQueryAsync(TagQueryDAO tagQueryDAO);
 
         /// <summary>
         /// 添加tag
@@ -72,13 +72,13 @@ namespace Saleos.Entity.Services.CoreServices
         /// <exception cref="ArgumentNullException">
         /// tag为null时抛出该异常
         /// </exception>
-        public Task AddTagAsync(TagAddDto tag);
+        public Task AddTagAsync(TagAddDAO tag);
 
         /// <summary>
         /// 更新tag
         /// </summary>
         /// <param name="tag">更新后的tag</param>
-        public Task UpdateTagAsync(TagUpdateDto tag);
+        public Task UpdateTagAsync(TagUpdateDAO tag);
 
         /// <summary>
         /// 删除一个tag
@@ -87,6 +87,6 @@ namespace Saleos.Entity.Services.CoreServices
         /// <exception cref="IndexOutOfRangeException">
         /// 当tagId没有对应的tag时抛出该异常，例如tagId小于等于0，或则大于数据库中最大Id
         /// </exception>
-        public Task DeleteTagAsync(int tagId); 
+        public Task DeleteTagAsync(int tagId);
     }
 }

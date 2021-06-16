@@ -11,6 +11,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Saleos.DTO\Saleos.DTO.csproj" />
+      <ProjectReference Include="..\Saleos.DAO\Saleos.DAO.csproj" />
     </ItemGroup>
 </Project>

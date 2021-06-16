@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Saleos.DTO;
+using Saleos.DAO;
 using Saleos.Entity.Services.CoreServices;
 using Saleos.Models;
 
@@ -40,13 +40,13 @@ namespace Saleos.Controllers
         [Route("Article")]
         public async Task<IActionResult> Article([FromQuery]int page = 1)
         {
-            var queryDto = new ArticlesQueryDto()
+            var queryDAO = new ArticlesQueryDAO()
             {
                 PageNumber = page,
                 PageSize = 10,
             };
             var articleInfos = await _articleServices.ArticleInfoRepository
-                .GetArticleInfoByQueryAsync(queryDto);
+                .GetArticleInfoByQueryAsync(queryDAO);
             return View(articleInfos);
         }
 
@@ -68,7 +68,7 @@ namespace Saleos.Controllers
             if (postModel.Id == 0)
             {
                 // a new article
-                var articleAddDto = new ArticleAddDto()
+                var articleAddDAO = new ArticleAddDAO()
                 {
                     Title = postModel.Title,
                     Content = postModel.Content,
@@ -78,13 +78,13 @@ namespace Saleos.Controllers
                     IsReprint = postModel.IsReprint,
                     ReprintUri = postModel.ReprintUri,
                 };
-                await _articleServices.ArticleRepository.AddArticleAsync(articleAddDto);
+                await _articleServices.ArticleRepository.AddArticleAsync(articleAddDAO);
                 await _articleServices.SaveAsync();
             }
             else
             {
                 // a existed article
-                var articleUpdateDto = new ArticleUpdateDto()
+                var articleUpdateDAO = new ArticleUpdateDAO()
                 {
                     Id = postModel.Id,
                     Title = postModel.Title,
@@ -95,7 +95,7 @@ namespace Saleos.Controllers
                     IsReprint = postModel.IsReprint,
                     ReprintUri = postModel.ReprintUri,
                 };
-                await _articleServices.ArticleRepository.UpdateArticleAsync(articleUpdateDto);
+                await _articleServices.ArticleRepository.UpdateArticleAsync(articleUpdateDAO);
                 await _articleServices.SaveAsync();
             }
 
@@ -105,12 +105,12 @@ namespace Saleos.Controllers
         [Route("Tags")]
         public async Task<IActionResult> Tags([FromQuery]int page = 1)
         {
-            var queryDto = new TagQueryDto()
+            var queryDAO = new TagQueryDAO()
             {
                 PageNumber = page,
                 PageSize = 10
             };
-            var tags = await _articleServices.TagRepository.GetTagsByQueryAsync(queryDto);
+            var tags = await _articleServices.TagRepository.GetTagsByQueryAsync(queryDAO);
             var tagPageViewModel = new TagPageViewModel()
             {
                 Tags = tags,
@@ -126,22 +126,22 @@ namespace Saleos.Controllers
             if (tagPagePostModel.Id == 0)
             {
                 // a new tag
-                var addTagDto = new TagAddDto()
+                var addTagDAO = new TagAddDAO()
                 {
                     Content = tagPagePostModel.Content,
                 };
-                await _articleServices.TagRepository.AddTagAsync(addTagDto);
+                await _articleServices.TagRepository.AddTagAsync(addTagDAO);
                 await _articleServices.SaveAsync();
             }
             else
             {
                 // a existed tag
-                var updateTagDto = new TagUpdateDto()
+                var updateTagDAO = new TagUpdateDAO()
                 {
                     Id = tagPagePostModel.Id,
                     Content = tagPagePostModel.Content,
                 };
-                await _articleServices.TagRepository.UpdateTagAsync(updateTagDto);
+                await _articleServices.TagRepository.UpdateTagAsync(updateTagDAO);
                 await _articleServices.SaveAsync();
             }
             return RedirectToAction($"{nameof(Tags)}");
@@ -160,12 +160,12 @@ namespace Saleos.Controllers
         [Route("Category")]
         public async Task<IActionResult> Category([FromQuery]int page)
         {
-            var queryDto = new CategoryQueryDto()
+            var queryDAO = new CategoryQueryDAO()
             {
                 PageNumber = page,
                 PageSize = 10
             };
-            var categories = await _articleServices.CategoryRepository.GetCategoryByQueryAsync(queryDto);
+            var categories = await _articleServices.CategoryRepository.GetCategoryByQueryAsync(queryDAO);
 
             var categoryPageViewModel = new CategoryPageViewModel()
             {
@@ -182,21 +182,21 @@ namespace Saleos.Controllers
             if (!ModelState.IsValid) return RedirectToAction($"{nameof(Category)}");
             if (categoryPagePostModel.Id == 0)
             {
-                var categoryAddDto = new CategoryAddDto()
+                var categoryAddDAO = new CategoryAddDAO()
                 {
                     Content = categoryPagePostModel.Content
                 };
-                await _articleServices.CategoryRepository.AddCategoryAsync(categoryAddDto);
+                await _articleServices.CategoryRepository.AddCategoryAsync(categoryAddDAO);
                 await _articleServices.SaveAsync();
             }
             else
             {
-                var categoryUpdateDto = new CategoryUpdateDto()
+                var categoryUpdateDAO = new CategoryUpdateDAO()
                 {
                     Id = categoryPagePostModel.Id,
                     Content = categoryPagePostModel.Content
                 };
-                await _articleServices.CategoryRepository.UpdateCategoryAsync(categoryUpdateDto);
+                await _articleServices.CategoryRepository.UpdateCategoryAsync(categoryUpdateDAO);
                 await _articleServices.SaveAsync();
             }
 
@@ -219,8 +219,8 @@ namespace Saleos.Controllers
         {
             var model = new EditorPageViewModel
             {
-                Articles = new ArticleDto(),
-                Tags = await _articleServices.TagRepository.GetTagAsync() ?? new List<TagDto>(),
+                Articles = new ArticleDAO(),
+                Tags = await _articleServices.TagRepository.GetTagAsync() ?? new List<TagDAO>(),
                 Categories = await _articleServices.CategoryRepository.GetCategoryAsync(),
             };
             if (await _articleServices.ArticleRepository.ArticleIsExisted(articleId))

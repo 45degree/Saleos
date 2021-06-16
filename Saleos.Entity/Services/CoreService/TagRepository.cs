@@ -19,9 +19,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Saleos.DTO;
+using Saleos.DAO;
 using Saleos.Entity.Data;
-using Saleos.Entity.DtoExtension;
+using Saleos.Entity.DAOExtension;
 
 namespace Saleos.Entity.Services.CoreServices
 {
@@ -44,16 +44,16 @@ namespace Saleos.Entity.Services.CoreServices
             return await _homePageDbContext.Tags.CountAsync();
         }
 
-        public async Task<List<TagDto>> GetTagAsync()
+        public async Task<List<TagDAO>> GetTagAsync()
         {
             return await _homePageDbContext.Tags
                 .Include(x => x.ArticleTag)
                 .ThenInclude(x => x.Article)
-                .Select(x => x.GetTagDtoFromTag())
+                .Select(x => x.GetTagDAOFromTag())
                 .ToListAsync();
         }
 
-        public async Task<TagDto> GetTagAsync(int tagId)
+        public async Task<TagDAO> GetTagAsync(int tagId)
         {
             if (!await TagIsExistAsync(tagId))
                 throw new IndexOutOfRangeException("tagId 超出索引范围");
@@ -62,37 +62,37 @@ namespace Saleos.Entity.Services.CoreServices
                 .Where(x => x.Id == tagId)
                 .Include(x => x.ArticleTag)
                 .ThenInclude(x => x.Article)
-                .Select(x => x.GetTagDtoFromTag())
+                .Select(x => x.GetTagDAOFromTag())
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<List<TagDto>> GetTagsByQueryAsync(TagQueryDto tagQueryDto)
+        public async Task<List<TagDAO>> GetTagsByQueryAsync(TagQueryDAO tagQueryDAO)
         {
             var queryString = _homePageDbContext.Tags as IQueryable<Tag>;
 
             // Filter Title
-            if (!string.IsNullOrWhiteSpace(tagQueryDto.Content))
+            if (!string.IsNullOrWhiteSpace(tagQueryDAO.Content))
             {
-                queryString = queryString.Where(x => tagQueryDto.Content.Equals(x.Content));
+                queryString = queryString.Where(x => tagQueryDAO.Content.Equals(x.Content));
             }
-            
+
             return await queryString.OrderBy(x => x.Id)
-                .Skip(tagQueryDto.PageSize * (tagQueryDto.PageNumber - 1))
-                .Take(tagQueryDto.PageSize)
-                .Select(x => x.GetTagDtoFromTag())
+                .Skip(tagQueryDAO.PageSize * (tagQueryDAO.PageNumber - 1))
+                .Take(tagQueryDAO.PageSize)
+                .Select(x => x.GetTagDAOFromTag())
                 .ToListAsync();
         }
 
-        public async Task AddTagAsync(TagAddDto tagAddDto)
+        public async Task AddTagAsync(TagAddDAO tagAddDAO)
         {
-            if (tagAddDto == null) throw new ArgumentNullException($"{nameof(tagAddDto)} 为空");
-            await _homePageDbContext.Tags.AddAsync(tagAddDto.GetTagFromTagAddDto());
+            if (tagAddDAO == null) throw new ArgumentNullException($"{nameof(tagAddDAO)} 为空");
+            await _homePageDbContext.Tags.AddAsync(tagAddDAO.GetTagFromTagAddDAO());
         }
 
-        public async Task UpdateTagAsync(TagUpdateDto tagUpdateDto)
+        public async Task UpdateTagAsync(TagUpdateDAO tagUpdateDAO)
         {
-            var tag = await _homePageDbContext.Tags.SingleOrDefaultAsync(x => x.Id == tagUpdateDto.Id);
-            tag.Content = tagUpdateDto.Content;
+            var tag = await _homePageDbContext.Tags.SingleOrDefaultAsync(x => x.Id == tagUpdateDAO.Id);
+            tag.Content = tagUpdateDAO.Content;
         }
 
         public async Task DeleteTagAsync(int tagId)
@@ -112,6 +112,6 @@ namespace Saleos.Entity.Services.CoreServices
             }
 
             _homePageDbContext.Remove(tag);
-        } 
+        }
     }
 }

@@ -1,9 +1,9 @@
-using Saleos.DTO;
+using Saleos.DAO;
 
 namespace Saleos.Models
 {
     public class ArticleViewModel
     {
-        public ArticleDto article {get; set;}
+        public ArticleDAO article {get; set;}
     }
 }
