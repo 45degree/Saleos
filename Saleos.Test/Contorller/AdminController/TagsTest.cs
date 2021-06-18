@@ -20,46 +20,48 @@ using Microsoft.AspNetCore.Mvc;
 using Saleos.Controllers;
 using Saleos.DAO;
 using Saleos.Entity.Services.CoreServices;
+using Saleos.Models;
 using Xunit;
 
 namespace Saleos.Test.Controller.AdminControllerTest
 {
-    public class ArticleTest : HomePageControllerTest
+    public class TagsTest : HomePageControllerTest
     {
-        public ArticleTest() : base("Mock AdminController-Article-routin")
+        public TagsTest() : base("Mock AdminController-Tags-routin")
         {
         }
 
         [Theory]
         [InlineData(2)]
+        [InlineData(3)]
         [InlineData(int.MaxValue)]
-        public async Task Article_PageOutOfRange_RedirectToFirstPage(int pageId)
+        public async Task Tags_PageOutOfRange_RedirectToFirstPage(int pageId)
         {
             using var context = getContext();
             var articleServices = new ArticleServicesImpl(context);
             var controller = new AdminController(articleServices);
 
-            var result = await controller.Article(pageId);
+            var result = await controller.Tags(pageId);
 
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Article", redirectResult.ActionName);
+            Assert.Equal("Tags", redirectResult.ActionName);
             Assert.Equal(1, redirectResult.RouteValues["page"]);
         }
 
         [Fact]
-        public async Task Article_ValidPage_GetViewResult()
+        public async Task Tags_ValidPage_GetViewResult()
         {
             using var context = getContext();
             var articleServices = new ArticleServicesImpl(context);
             var controller = new AdminController(articleServices);
 
-            var result = await controller.Article(1);
+            var result = await controller.Tags(1);
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsType<List<ArticleInfoDAO>>(viewResult.Model);
-            Assert.Equal(3, model.Count);
+            var model = Assert.IsType<TagPageViewModel>(viewResult.Model);
+            Assert.Equal(3, model.Tags.Count);
         }
     }
 }

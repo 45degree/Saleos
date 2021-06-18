@@ -62,7 +62,8 @@ namespace Saleos.Entity.Services.CoreServices
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<List<CategoryDAO>> GetCategoryByQueryAsync(CategoryQueryDAO categoryQueryDAO)
+        public async Task<List<CategoryDAO>> GetCategoryByQueryAsync(
+            CategoryQueryDAO categoryQueryDAO)
         {
             var queryString = _homePageDbContext.Categories as IQueryable<Category>;
 
@@ -70,6 +71,12 @@ namespace Saleos.Entity.Services.CoreServices
             if (!string.IsNullOrWhiteSpace(categoryQueryDAO.Content))
             {
                 queryString = queryString.Where(x => categoryQueryDAO.Content.Equals(x.Content));
+            }
+
+            // whether is overflow
+            if(int.MaxValue / categoryQueryDAO.PageSize < categoryQueryDAO.PageNumber)
+            {
+                return new List<CategoryDAO>();
             }
 
             return await queryString.OrderBy(x => x.Id)
@@ -81,13 +88,18 @@ namespace Saleos.Entity.Services.CoreServices
 
         public async Task AddCategoryAsync(CategoryAddDAO categoryAddDAO)
         {
-            if (categoryAddDAO == null) throw new ArgumentNullException($"{nameof(categoryAddDAO)} is null");
-            await _homePageDbContext.Categories.AddAsync(categoryAddDAO.GetCategoryFromCateGoryAddDAO());
+            if (categoryAddDAO == null)
+            {
+                throw new ArgumentNullException($"{nameof(categoryAddDAO)} is null");
+            }
+            await _homePageDbContext.Categories
+                .AddAsync(categoryAddDAO.GetCategoryFromCateGoryAddDAO());
         }
 
         public async Task UpdateCategoryAsync(CategoryUpdateDAO categoryUpdateDAO)
         {
-            var category = await _homePageDbContext.Categories.SingleOrDefaultAsync(x => x.Id == categoryUpdateDAO.Id);
+            var category = await _homePageDbContext.Categories
+                .SingleOrDefaultAsync(x => x.Id == categoryUpdateDAO.Id);
             category.Content = categoryUpdateDAO.Content;
         }
 

@@ -14,52 +14,63 @@
  * limitations under the License.
  */
 
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Saleos.Controllers;
-using Saleos.DAO;
 using Saleos.Entity.Services.CoreServices;
+using Saleos.Models;
 using Xunit;
 
 namespace Saleos.Test.Controller.AdminControllerTest
 {
-    public class ArticleTest : HomePageControllerTest
+    public class EditorTest : HomePageControllerTest
     {
-        public ArticleTest() : base("Mock AdminController-Article-routin")
+        public EditorTest() : base("Mock AdminController-Editor-routin")
         {
         }
 
         [Theory]
-        [InlineData(2)]
+        [InlineData(-1)]
+        [InlineData(0)]
+        [InlineData(4)]
+        [InlineData(5)]
         [InlineData(int.MaxValue)]
-        public async Task Article_PageOutOfRange_RedirectToFirstPage(int pageId)
+        [InlineData(int.MinValue)]
+        public async Task Editor_ArticleIdOutOfRange_RedirectToNewPageEditor(int articleId)
         {
             using var context = getContext();
             var articleServices = new ArticleServicesImpl(context);
             var controller = new AdminController(articleServices);
 
-            var result = await controller.Article(pageId);
+            var result = await controller.Editor(articleId);
 
             // Assert
-            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Article", redirectResult.ActionName);
-            Assert.Equal(1, redirectResult.RouteValues["page"]);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsType<EditorPageViewModel>(viewResult.Model);
+            Assert.Equal(0, model.Article.Id);
+            Assert.Null(model.Article.Content);
+            Assert.Null(model.Article.Tags);
+            Assert.Null(model.Article.Category);
+            Assert.Equal(2, model.Categories.Count);
+            Assert.Equal(3, model.Tags.Count);
         }
 
         [Fact]
-        public async Task Article_ValidPage_GetViewResult()
+        public async Task Editor_ValidArticleId_GetViewResult()
         {
             using var context = getContext();
             var articleServices = new ArticleServicesImpl(context);
             var controller = new AdminController(articleServices);
 
-            var result = await controller.Article(1);
+            var result = await controller.Editor(1);
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsType<List<ArticleInfoDAO>>(viewResult.Model);
-            Assert.Equal(3, model.Count);
+            var model = Assert.IsType<EditorPageViewModel>(viewResult.Model);
+            Assert.Equal(1, model.Article.Id);
+            Assert.Equal(2, model.Categories.Count);
+            Assert.Equal(3, model.Tags.Count);
         }
     }
 }

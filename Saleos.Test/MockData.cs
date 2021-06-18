@@ -56,6 +56,7 @@ namespace Saleos.Test
             };
             Articles = new List<Article>(){
                 new Article() {
+                    Id = 1,
                     Title =  "Title 1",
                     Abstract = "Abstract 1",
                     Content = "Content 1",
@@ -66,6 +67,7 @@ namespace Saleos.Test
                     LastModifiedTime = DateTime.Today
                 },
                 new Article() {
+                    Id = 2,
                     Title =  "Title 2",
                     Abstract = "Abstract 2",
                     Content = "Content 2",
@@ -77,6 +79,7 @@ namespace Saleos.Test
                     LastModifiedTime = DateTime.Today
                 },
                 new Article() {
+                    Id = 3,
                     Title =  "Title 3",
                     Abstract = "Abstract 3",
                     Content = "Content 3",
@@ -98,11 +101,11 @@ namespace Saleos.Test
             };
         }
 
-        private static MockData _instance = new MockData();
+        // private static MockData _instance = new MockData();
 
         public static MockData getInstance()
         {
-            return _instance;
+            return new MockData();
         }
 
         /// <summary>

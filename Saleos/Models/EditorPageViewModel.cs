@@ -23,6 +23,6 @@ namespace Saleos.Models
     {
         public List<TagDAO> Tags { get; set; }
         public List<CategoryDAO> Categories { get; set; }
-        public ArticleDAO Articles { get; set; }
+        public ArticleDAO Article { get; set; }
     }
 }

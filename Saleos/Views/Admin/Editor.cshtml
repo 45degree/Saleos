@@ -41,7 +41,7 @@
         </select>
       </div>
       <input type="text" class="form-control" id="article-title-content" placeholder="Title"
-           value="@Model.Articles.Title" style="height: 100%;" />
+           value="@Model.Article.Title" style="height: 100%;" />
       <div class="input-group-prepend" id="article-reprint-url" style="margin-left: 10px">
         <span class="input-group-text" >Url</span>
       </div>
@@ -51,7 +51,7 @@
   </div>
   <div style="margin: 10px auto;"></div>
   <div id="vditor"></div>
-  <input type="hidden" id="article-content" value="@Model.Articles.Content">
+  <input type="hidden" id="article-content" value="@Model.Article.Content">
   <div class="row" style="margin-top: 10px;">
     <div class="input-group col">
       <div class="input-group-prepend">
@@ -111,10 +111,10 @@
     }
 
     let article_reprint_dom = $('#article-reprint')
-    if (JSON.parse('@Html.Raw(Json.Serialize(Model.Articles.IsReprint))')) {
+    if (JSON.parse('@Html.Raw(Json.Serialize(Model.Article.IsReprint))')) {
       article_reprint_dom.selectpicker('val', '转载')
       $('#article-reprint-url-content').val(
-        JSON.parse('@Html.Raw(Json.Serialize(Model.Articles.RerpintUri))')
+        JSON.parse('@Html.Raw(Json.Serialize(Model.Article.RerpintUri))')
       )
     }
     else {
@@ -141,7 +141,7 @@
     }
 
     // make all selected tags shown in select Box
-    let selectedTags = JSON.parse('@Html.Raw(Json.Serialize(Model.Articles.Tags))')
+    let selectedTags = JSON.parse('@Html.Raw(Json.Serialize(Model.Article.Tags))')
     if (selectedTags != null) {
       selectedTags = selectedTags.map(i => i.content);
     }
@@ -149,7 +149,7 @@
     $('#tag-selector').selectpicker('val', selectedTags);
 
     // make all selected tags shown in select Box
-    let selectedCategory = JSON.parse('@Html.Raw(Json.Serialize(Model.Articles.Category))')
+    let selectedCategory = JSON.parse('@Html.Raw(Json.Serialize(Model.Article.Category))')
     if (selectedCategory != null) {
       selectedCategory = selectedCategory.content
     }
@@ -162,7 +162,7 @@
 
     // it stores the article's content in order to pass the value to this javascript
     $(document).ready(function (){
-      initialVditor($('#article-content').val(), '@Url.Content("~")', @Model.Articles.Id)
+      initialVditor($('#article-content').val(), '@Url.Content("~")', @Model.Article.Id)
     });
   </script>
 }
@@ -190,7 +190,7 @@
         data: JSON.stringify({
           isReprint: isReprint,
           reprintUri: ReprintUri,
-          id: @Model.Articles.Id,
+          id: @Model.Article.Id,
           title: articleTitle,
           content: articleContent,
           newTags: selectedTagId,

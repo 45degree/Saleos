@@ -28,7 +28,7 @@ namespace Saleos.Test.Controller.HomeControllerTest
             var mockLogger = new Mock<ILogger<HomeController>>();
             var controller = new HomeController(articleServices, mockLogger.Object);
 
-            var result = await controller.Article(-1);
+            var result = await controller.Article(articleId);
 
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);

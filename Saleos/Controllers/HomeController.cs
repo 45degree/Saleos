@@ -47,7 +47,12 @@ namespace Saleos.Controllers
             {
                 return RedirectToAction($"{nameof(Index)}", new {page = 1});
             }
-            return View(articleInfos);
+
+            var model = new HomeIndexViewModel()
+            {
+                articleInfos = articleInfos,
+            };
+            return View(model);
         }
 
         public async Task<IActionResult> Article(int articleId = 1)

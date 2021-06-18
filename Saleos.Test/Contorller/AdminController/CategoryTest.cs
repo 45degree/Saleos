@@ -14,52 +14,52 @@
  * limitations under the License.
  */
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Saleos.Controllers;
-using Saleos.DAO;
 using Saleos.Entity.Services.CoreServices;
+using Saleos.Models;
 using Xunit;
 
 namespace Saleos.Test.Controller.AdminControllerTest
 {
-    public class ArticleTest : HomePageControllerTest
+    public class CategoryTest : HomePageControllerTest
     {
-        public ArticleTest() : base("Mock AdminController-Article-routin")
+        public CategoryTest() : base("Mock AdminController-Category-routin")
         {
         }
 
         [Theory]
         [InlineData(2)]
+        [InlineData(3)]
         [InlineData(int.MaxValue)]
-        public async Task Article_PageOutOfRange_RedirectToFirstPage(int pageId)
+        public async Task Category_PageOutOfRange_RedirectToFirstPage(int pageId)
         {
             using var context = getContext();
             var articleServices = new ArticleServicesImpl(context);
             var controller = new AdminController(articleServices);
 
-            var result = await controller.Article(pageId);
+            var result = await controller.Category(pageId);
 
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Article", redirectResult.ActionName);
+            Assert.Equal("Category", redirectResult.ActionName);
             Assert.Equal(1, redirectResult.RouteValues["page"]);
         }
 
         [Fact]
-        public async Task Article_ValidPage_GetViewResult()
+        public async Task Category_ValidPage_GetViewResult()
         {
             using var context = getContext();
             var articleServices = new ArticleServicesImpl(context);
             var controller = new AdminController(articleServices);
 
-            var result = await controller.Article(1);
+            var result = await controller.Category(1);
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsType<List<ArticleInfoDAO>>(viewResult.Model);
-            Assert.Equal(3, model.Count);
+            var model = Assert.IsType<CategoryPageViewModel>(viewResult.Model);
+            Assert.Equal(_mockData.Categories.Count, model.Categories.Count);
         }
     }
 }

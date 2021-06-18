@@ -47,23 +47,38 @@ namespace Saleos.Controllers
             };
             var articleInfos = await _articleServices.ArticleInfoRepository
                 .GetArticleInfoByQueryAsync(queryDAO);
+
+            if(articleInfos.Count == 0)
+            {
+                return RedirectToAction($"{nameof(Article)}", new {page = 1});
+            }
             return View(articleInfos);
         }
 
         [HttpDelete, Route("Article/{articleId:int}")]
         public async Task<IActionResult> DeleteArticle([FromRoute] int articleId)
         {
-            if (!await _articleServices.ArticleRepository.ArticleIsExisted(articleId)) return NotFound();
+            if (!await _articleServices.ArticleRepository.ArticleIsExisted(articleId))
+            {
+                return NotFound();
+            }
             await _articleServices.ArticleRepository.DeleteArticleAsync(articleId);
             await _articleServices.SaveAsync();
             return NoContent();
         }
 
-        // TODO need to improve
         [HttpPost, Route("Article")]
         public async Task<IActionResult> AddOrUpdateArticle([FromBody]EditorPagePostModel postModel)
         {
             if (!ModelState.IsValid) return RedirectToAction($"{nameof(Article)}");
+
+            foreach(var tagId in postModel.NewTags)
+            {
+                if(!await _articleServices.TagRepository.TagIsExistAsync(tagId))
+                {
+                    return NotFound();
+                }
+            }
 
             if (postModel.Id == 0)
             {
@@ -83,6 +98,11 @@ namespace Saleos.Controllers
             }
             else
             {
+                if(!await _articleServices.ArticleRepository.ArticleIsExisted(postModel.Id))
+                {
+                    return NotFound();
+                }
+
                 // a existed article
                 var articleUpdateDAO = new ArticleUpdateDAO()
                 {
@@ -111,6 +131,10 @@ namespace Saleos.Controllers
                 PageSize = 10
             };
             var tags = await _articleServices.TagRepository.GetTagsByQueryAsync(queryDAO);
+            if(tags.Count == 0)
+            {
+                return RedirectToAction($"{nameof(Tags)}", new {page = 1});
+            }
             var tagPageViewModel = new TagPageViewModel()
             {
                 Tags = tags,
@@ -120,7 +144,8 @@ namespace Saleos.Controllers
 
         [HttpPost]
         [Route("Tags")]
-        public async Task<IActionResult> AddOrUpdateTags([FromBody] TagPagePostModel tagPagePostModel)
+        public async Task<IActionResult> AddOrUpdateTags(
+            [FromBody] TagPagePostModel tagPagePostModel)
         {
             if (!ModelState.IsValid) return RedirectToAction($"{nameof(Tags)}");
             if (tagPagePostModel.Id == 0)
@@ -135,6 +160,11 @@ namespace Saleos.Controllers
             }
             else
             {
+                if(!await _articleServices.TagRepository.TagIsExistAsync(tagPagePostModel.Id))
+                {
+                    return NotFound();
+                }
+
                 // a existed tag
                 var updateTagDAO = new TagUpdateDAO()
                 {
@@ -150,7 +180,10 @@ namespace Saleos.Controllers
         [HttpDelete("Tags/{tagId:int}")]
         public async Task<IActionResult> DeleteTag([FromRoute] int tagId)
         {
-            if (!await _articleServices.TagRepository.TagIsExistAsync(tagId)) return NotFound();
+            if (!await _articleServices.TagRepository.TagIsExistAsync(tagId))
+            {
+                return NotFound();
+            }
             await _articleServices.TagRepository.DeleteTagAsync(tagId);
             await _articleServices.SaveAsync();
             return NoContent();
@@ -158,14 +191,20 @@ namespace Saleos.Controllers
 
         [HttpGet]
         [Route("Category")]
-        public async Task<IActionResult> Category([FromQuery]int page)
+        public async Task<IActionResult> Category([FromQuery]int page = 1)
         {
             var queryDAO = new CategoryQueryDAO()
             {
                 PageNumber = page,
                 PageSize = 10
             };
-            var categories = await _articleServices.CategoryRepository.GetCategoryByQueryAsync(queryDAO);
+            var categories = await _articleServices.CategoryRepository
+                .GetCategoryByQueryAsync(queryDAO);
+
+            if(categories.Count == 0)
+            {
+                return RedirectToAction($"{nameof(Category)}", new {page = 1});
+            }
 
             var categoryPageViewModel = new CategoryPageViewModel()
             {
@@ -177,9 +216,13 @@ namespace Saleos.Controllers
 
         [HttpPost]
         [Route("Category")]
-        public async Task<IActionResult> AddOrUpdateCategory([FromBody] CategoryPagePostModel categoryPagePostModel)
+        public async Task<IActionResult> AddOrUpdateCategory(
+            [FromBody] CategoryPagePostModel categoryPagePostModel)
         {
-            if (!ModelState.IsValid) return RedirectToAction($"{nameof(Category)}");
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction($"{nameof(Category)}");
+            }
             if (categoryPagePostModel.Id == 0)
             {
                 var categoryAddDAO = new CategoryAddDAO()
@@ -191,6 +234,11 @@ namespace Saleos.Controllers
             }
             else
             {
+                if(!await _articleServices.CategoryRepository
+                    .CategoryIsExistAsync(categoryPagePostModel.Id))
+                {
+                    return NotFound();
+                }
                 var categoryUpdateDAO = new CategoryUpdateDAO()
                 {
                     Id = categoryPagePostModel.Id,
@@ -219,13 +267,13 @@ namespace Saleos.Controllers
         {
             var model = new EditorPageViewModel
             {
-                Articles = new ArticleDAO(),
+                Article = new ArticleDAO(),
                 Tags = await _articleServices.TagRepository.GetTagAsync() ?? new List<TagDAO>(),
                 Categories = await _articleServices.CategoryRepository.GetCategoryAsync(),
             };
             if (await _articleServices.ArticleRepository.ArticleIsExisted(articleId))
             {
-                model.Articles = await _articleServices.ArticleRepository
+                model.Article = await _articleServices.ArticleRepository
                     .GetArticleAsync(articleId);
             }
             return View(model);

@@ -63,7 +63,7 @@ namespace Saleos.Test.Entity
             Assert.Equal(_mockData.Articles[0].Content, article1.Content);
             Assert.Equal(_mockData.Articles[0].Abstract, article1.Abstract);
             Assert.Equal(_mockData.Articles[0].Category.Content, article1.Category.Content);
-            Assert.Equal(_mockData.ArticleTags.FindAll(x => x.ArticleId == 1).Count,
+            Assert.Equal(_mockData.ArticleTags.FindAll(x => x.Article.Id == 1).Count,
                 article1.Tags.Count);
 
             var article2 = await articleServices.ArticleRepository.GetArticleAsync(2);
@@ -72,7 +72,7 @@ namespace Saleos.Test.Entity
             Assert.Equal(_mockData.Articles[1].Content, article2.Content);
             Assert.Equal(_mockData.Articles[1].Abstract, article2.Abstract);
             Assert.Equal(_mockData.Articles[1].Category.Content, article2.Category.Content);
-            Assert.Equal(_mockData.ArticleTags.FindAll(x => x.ArticleId == 2).Count,
+            Assert.Equal(_mockData.ArticleTags.FindAll(x => x.Article.Id == 2).Count,
                 article2.Tags.Count);
         }
 

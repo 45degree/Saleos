@@ -47,6 +47,12 @@ namespace Saleos.Entity.Services.CoreServices
                 queryString = queryString.Where(x => query.Title.Equals(x.Title));
             }
 
+            // whether is overflow
+            if(int.MaxValue / query.PageSize < query.PageNumber)
+            {
+                return new List<ArticleInfoDAO>();
+            }
+
             queryString = queryString.OrderBy(x => x.Id)
                 .Skip(query.PageSize * (query.PageNumber - 1))
                 .Take(query.PageSize);

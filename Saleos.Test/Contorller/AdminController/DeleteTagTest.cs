@@ -14,52 +14,55 @@
  * limitations under the License.
  */
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Saleos.Controllers;
-using Saleos.DAO;
 using Saleos.Entity.Services.CoreServices;
 using Xunit;
 
 namespace Saleos.Test.Controller.AdminControllerTest
 {
-    public class ArticleTest : HomePageControllerTest
+    public class DeleteTagTest : HomePageControllerTest
     {
-        public ArticleTest() : base("Mock AdminController-Article-routin")
+        public DeleteTagTest() : base("Mock AdminController-DeleteTagTest-routin")
         {
         }
 
         [Theory]
-        [InlineData(2)]
+        [InlineData(4)]
+        [InlineData(5)]
+        [InlineData(0)]
+        [InlineData(-1)]
         [InlineData(int.MaxValue)]
-        public async Task Article_PageOutOfRange_RedirectToFirstPage(int pageId)
+        [InlineData(int.MinValue)]
+        public async Task DeleteTag_TagIdIsOutOfRange_GetNotFound(int tagId)
         {
             using var context = getContext();
             var articleServices = new ArticleServicesImpl(context);
             var controller = new AdminController(articleServices);
 
-            var result = await controller.Article(pageId);
+            var result = await controller.DeleteTag(tagId);
 
             // Assert
-            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Article", redirectResult.ActionName);
-            Assert.Equal(1, redirectResult.RouteValues["page"]);
+            Assert.IsType<NotFoundResult>(result);
         }
 
-        [Fact]
-        public async Task Article_ValidPage_GetViewResult()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        public async Task DeleteTag_ValidTagId_DeleteTagInDatabase(int tagId)
         {
             using var context = getContext();
             var articleServices = new ArticleServicesImpl(context);
             var controller = new AdminController(articleServices);
 
-            var result = await controller.Article(1);
+            var result = await controller.DeleteTag(tagId);
 
-            //Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsType<List<ArticleInfoDAO>>(viewResult.Model);
-            Assert.Equal(3, model.Count);
+            // Assert
+            Assert.IsType<NoContentResult>(result);
+            Assert.False(await context.Tags.AnyAsync( x => x.Id == tagId));
         }
     }
 }

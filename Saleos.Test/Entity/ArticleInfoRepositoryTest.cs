@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Saleos.DAO;
@@ -46,7 +45,7 @@ namespace Saleos.Test.Entity
             Assert.Single(article);
             Assert.Equal(realArticle.Id, article[0].Id);
             Assert.Equal(realArticle.Abstract, article[0].Abstract);
-            Assert.Equal(_mockData.ArticleTags.FindAll(x => x.ArticleId == realArticle.Id).Count,
+            Assert.Equal(_mockData.ArticleTags.FindAll(x => x.Article.Id == realArticle.Id).Count,
                 article[0].Tags.Count);
         }
 
@@ -91,7 +90,7 @@ namespace Saleos.Test.Entity
 
             var articles = await articleServices.ArticleInfoRepository.GetAllArticleInfo();
             Assert.Equal(_mockData.Articles.Count, articles.Count);
-            Assert.Equal(_mockData.ArticleTags.FindAll(x => x.ArticleId == 1).Count,
+            Assert.Equal(_mockData.ArticleTags.FindAll(x => x.Article.Id == 1).Count,
                 articles[0].Tags.Count);
         }
 
