@@ -46,8 +46,10 @@ namespace Saleos.Test.Controller.HomeControllerTest
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var articleInfos = Assert.IsAssignableFrom<HomeIndexViewModel>(viewResult.Model);
-            Assert.Equal(3, articleInfos.articleInfos.Count);
+            var model = Assert.IsAssignableFrom<HomeIndexViewModel>(viewResult.Model);
+            Assert.Equal(1, model.CurrentPage);
+            Assert.Equal(1, model.MaxPage);
+            Assert.Equal(3, model.articleInfos.Count);
         }
     }
 }

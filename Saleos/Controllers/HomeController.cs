@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -34,11 +35,12 @@ namespace Saleos.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index(int page)
+        public async Task<IActionResult> Index(int page = 1)
         {
             var articlesQueryDAO = new ArticlesQueryDAO()
             {
-                PageNumber = page
+                PageNumber = page,
+                PageSize = 5
             };
             var articleInfos =  await ArticleServices.ArticleInfoRepository
                 .GetArticleInfoByQueryAsync(articlesQueryDAO);
@@ -48,9 +50,14 @@ namespace Saleos.Controllers
                 return RedirectToAction($"{nameof(Index)}", new {page = 1});
             }
 
+            int articleCount = await ArticleServices.ArticleRepository.GetArticleCountAsync();
+            double maxPage = Convert.ToDouble(articleCount) / articlesQueryDAO.PageSize;
+
             var model = new HomeIndexViewModel()
             {
                 articleInfos = articleInfos,
+                CurrentPage = page,
+                MaxPage = (int)Math.Ceiling(maxPage),
             };
             return View(model);
         }

@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Saleos.Controllers;
 using Saleos.DAO;
 using Saleos.Entity.Services.CoreServices;
+using Saleos.Models;
 using Xunit;
 
 namespace Saleos.Test.Controller.AdminControllerTest
@@ -58,8 +59,8 @@ namespace Saleos.Test.Controller.AdminControllerTest
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsType<List<ArticleInfoDAO>>(viewResult.Model);
-            Assert.Equal(3, model.Count);
+            var model = Assert.IsType<AdminArticleViewModel>(viewResult.Model);
+            Assert.Equal(3, model.articleInfos.Count);
         }
     }
 }

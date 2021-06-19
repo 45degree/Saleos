@@ -3,9 +3,9 @@ using Saleos.DAO;
 
 namespace Saleos.Models
 {
-    public class HomeIndexViewModel
+    public class AdminArticleViewModel
     {
-        public List<ArticleInfoDAO> articleInfos { get; set; }
+        public List<ArticleInfoDAO> articleInfos { get;set; }
         public int CurrentPage { get; set; }
         public int MaxPage { get; set; }
     }

@@ -1,4 +1,6 @@
-@model List<Saleos.DAO.ArticleInfoDAO>
+@model AdminArticleViewModel
+@using Saleos.Views.Shared
+
 @{
   ViewBag.Title = "title";
   ViewData["ActiveData"] = "AdminArticle"; // see SideBarPage in Views/Shared/SideBarPage.cs
@@ -48,7 +50,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                @foreach (var articleInfo in Model)
+                @foreach (var articleInfo in Model.articleInfos)
                 {
                   <tr>
                     <td>@articleInfo.Id</td>
@@ -74,18 +76,41 @@
         <div class="col" style="display:flex; flex-direction:row-reverse;">
           <nav aria-label="Page navigation example">
             <ul class="pagination">
-              <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
+              <li class="page-item @Pagination.Disabled(Model.CurrentPage - 1, Model.MaxPage)">
+                <a class="page-link" asp-action="Article"
+                  asp-route-page="@(Model.CurrentPage - 1)" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
               </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              @if(@Model.CurrentPage > 1)
+              {
+                <li class="page-item">
+                  <a class="page-link" asp-action="Article"
+                    asp-route-page="@(Model.CurrentPage - 1)">
+                    @(Model.CurrentPage - 1)
+                  </a>
+                </li>
+              }
               <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
+                <a class="page-link" asp-action="Article"
+                  asp-route-page="@(Model.CurrentPage)">
+                  @(Model.CurrentPage)
+                </a>
+              </li>
+              @if(Model.CurrentPage + 1 <= Model.MaxPage)
+              {
+                <li class="page-item">
+                  <a class="page-link" asp-action="Article" 
+                    asp-route-page="@(Model.CurrentPage + 1)">
+                    @(Model.CurrentPage + 1)
+                  </a>
+                </li>
+              }
+              <li class="page-item @Pagination.Disabled(Model.CurrentPage + 1, Model.MaxPage)">
+                <a class="page-link" asp-action="Article"
+                  asp-route-page="@(Model.CurrentPage + 1)" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
               </li>
             </ul>
           </nav>

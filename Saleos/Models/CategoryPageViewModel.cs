@@ -22,5 +22,7 @@ namespace Saleos.Models
     public class CategoryPageViewModel
     {
         public List<CategoryDAO> Categories { get; set; }
+        public int CurrentPage { get; set; }
+        public int MaxPage { get; set; }
     }
 }

@@ -52,7 +52,17 @@ namespace Saleos.Controllers
             {
                 return RedirectToAction($"{nameof(Article)}", new {page = 1});
             }
-            return View(articleInfos);
+
+            int articleCount = await _articleServices.ArticleRepository.GetArticleCountAsync();
+            double maxPage = Convert.ToDouble(articleCount) / queryDAO.PageSize;
+
+            var model = new AdminArticleViewModel
+            {
+                articleInfos = articleInfos,
+                CurrentPage = page,
+                MaxPage = (int)Math.Ceiling(maxPage),
+            };
+            return View(model);
         }
 
         [HttpDelete, Route("Article/{articleId:int}")]
@@ -135,9 +145,15 @@ namespace Saleos.Controllers
             {
                 return RedirectToAction($"{nameof(Tags)}", new {page = 1});
             }
+
+            var tagCount = await _articleServices.TagRepository.GetTagsCountAsync();
+
+            double maxPage = Convert.ToDouble(tagCount) / queryDAO.PageSize;
             var tagPageViewModel = new TagPageViewModel()
             {
                 Tags = tags,
+                CurrentPage = page,
+                MaxPage = (int)Math.Ceiling(maxPage),
             };
             return View(tagPageViewModel);
         }
@@ -206,9 +222,14 @@ namespace Saleos.Controllers
                 return RedirectToAction($"{nameof(Category)}", new {page = 1});
             }
 
+            var categoryCount = await _articleServices.CategoryRepository.GetCategoryCountAsync();
+            double maxPage = Convert.ToDouble(categoryCount) / queryDAO.PageSize;
+
             var categoryPageViewModel = new CategoryPageViewModel()
             {
                 Categories = categories,
+                CurrentPage = page,
+                MaxPage = (int)Math.Ceiling(maxPage),
             };
 
             return View(categoryPageViewModel);

@@ -22,5 +22,7 @@ namespace Saleos.Models
     public class TagPageViewModel
     {
         public List<TagDAO> Tags { get; set; }
+        public int CurrentPage { get; set; }
+        public int MaxPage { get; set; }
     }
 }
