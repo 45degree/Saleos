@@ -53,14 +53,15 @@
                 @foreach (var articleInfo in Model.articleInfos)
                 {
                   <tr>
-                    <td>@articleInfo.Id</td>
-                    <td>@articleInfo.Title</td>
-                    <td>@articleInfo.CreateTime</td>
-                    <td>@articleInfo.LastModifiedTime</td>
+                    <td class="article-id">@articleInfo.Id</td>
+                    <td class="article-title">@articleInfo.Title</td>
+                    <td class="article-create-time">@articleInfo.CreateTime</td>
+                    <td class="article-last-modified-time">@articleInfo.LastModifiedTime</td>
                     <td>
                       <a asp-action="Editor" asp-route-articleId="@articleInfo.Id"
-                         type="button" class="btn btn-outline-primary btn-sm">修改</a>
-                      <button type="button" class="btn btn-outline-danger btn-sm">删除</button>
+                        type="button" class="btn btn-outline-primary btn-sm">修改</a>
+                      <button type="button" class="btn btn-outline-danger btn-sm
+                        article-delete-button">删除</button>
                     </td>
                   </tr>
                 }
@@ -120,3 +121,21 @@
     </div><!-- /.container-fluid -->
   </div>
   <!-- /.content -->
+
+@section CustomScript {
+  <script type="text/javascript">
+    $('.article-delete-button').click(function(){
+      let id = $(this).parent().siblings('.article-id').text()
+      $.ajax({
+        url: '@Url.Action("Article", "Admin")' + '/' + id,
+        type: 'DELETE',
+        success: function() {
+          location.reload()
+        },
+        error: function(){
+          alert('Not Found')
+        }
+      })
+    })
+  </script>
+}
