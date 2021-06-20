@@ -152,9 +152,9 @@
     let selectedCategory = JSON.parse('@Html.Raw(Json.Serialize(Model.Article.Category))')
     if (selectedCategory != null) {
       selectedCategory = selectedCategory.content
+      $('#category-selector').selectpicker('val', selectedCategory);
     }
-    else selectedCategory = []
-    $('#category-selector').selectpicker('val', selectedCategory);
+    else $('#category-selector').selectpicker('val');
 
     article_reprint_dom.on('changed.bs.select', function () {
       ToggleReprintTextBox(article_reprint_dom)
