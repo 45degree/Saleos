@@ -38,5 +38,12 @@ namespace Saleos.Entity.Services.CoreServices
         /// </summary>
         /// <returns> the collection of the article's information </returns>
         public Task<List<ArticleInfoDAO>> GetAllArticleInfo();
+
+        /// <summary>
+        /// get articleInfo by article id
+        /// </summary>
+        /// <param name="articleId">the article's id</param>
+        /// <returns>article's infomation</returns>
+        public Task<ArticleInfoDAO> GetArticleInfo(int articleId);
     }
 }

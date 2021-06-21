@@ -132,5 +132,31 @@ namespace Saleos.Test.Entity
                 .GetArticleInfoByQueryAsync(queryDAO);
             Assert.Empty(articles);
         }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(0)]
+        [InlineData(4)]
+        [InlineData(5)]
+        [InlineData(int.MaxValue)]
+        [InlineData(int.MinValue)]
+        public async Task GetArticleInfo_ArticleIdIsOutOfRange_GetEmpty(int articleId)
+        {
+            await using var context = new HomePageDbContext(ContextOptions);
+            var articleServices = new ArticleServicesImpl(context);
+            Assert.Null(await articleServices.ArticleInfoRepository.GetArticleInfo(articleId));
+        }
+
+        [Fact]
+        public async Task GetArticleInfo_ValidArticleId_GetArticleInfo()
+        {
+            await using var context = new HomePageDbContext(ContextOptions);
+            var articleServices = new ArticleServicesImpl(context);
+            var articleInfo = await articleServices.ArticleInfoRepository.GetArticleInfo(1);
+
+            Assert.NotNull(articleInfo);
+            Assert.Equal(1, articleInfo.Id);
+            Assert.Equal(3, articleInfo.Tags.Count);
+        }
     }
 }

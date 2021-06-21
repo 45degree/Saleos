@@ -71,5 +71,15 @@ namespace Saleos.Entity.Services.CoreServices
                 .Select(x => x.GetArticleInfoDAOFromArticle())
                 .ToListAsync();
         }
+
+        public async Task<ArticleInfoDAO> GetArticleInfo(int articleId)
+        {
+            return await _homePageDbContext.Article
+                .Where(x => x.Id == articleId)
+                .Include(x => x.ArticleTags)
+                .ThenInclude(x => x.Tag)
+                .Select(x => x.GetArticleInfoDAOFromArticle())
+                .SingleOrDefaultAsync();
+        }
     }
 }
