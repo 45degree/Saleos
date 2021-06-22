@@ -18,10 +18,16 @@ namespace Saleos.DAO
 {
     public class ArticleInfoUpdateDAO
     {
+        public int Id { get; set; }
+
         public string Title { get; set; }
 
-        public string ImgUrl { get; set; }
+        public string ImageUrl { get; set; }
 
         public string Abstract { get; set; }
+
+        public bool IsReprint { get; set; }
+
+        public string ReprintUrl { get; set; }
     }
 }

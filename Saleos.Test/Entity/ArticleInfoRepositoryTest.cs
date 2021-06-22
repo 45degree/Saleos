@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Saleos.DAO;
@@ -88,7 +89,7 @@ namespace Saleos.Test.Entity
             await using var context = new HomePageDbContext(ContextOptions);
             ArticleServices articleServices = new ArticleServicesImpl(context);
 
-            var articles = await articleServices.ArticleInfoRepository.GetAllArticleInfo();
+            var articles = await articleServices.ArticleInfoRepository.GetAllArticleInfoAsync();
             Assert.Equal(_mockData.Articles.Count, articles.Count);
             Assert.Equal(_mockData.ArticleTags.FindAll(x => x.Article.Id == 1).Count,
                 articles[0].Tags.Count);
@@ -144,7 +145,7 @@ namespace Saleos.Test.Entity
         {
             await using var context = new HomePageDbContext(ContextOptions);
             var articleServices = new ArticleServicesImpl(context);
-            Assert.Null(await articleServices.ArticleInfoRepository.GetArticleInfo(articleId));
+            Assert.Null(await articleServices.ArticleInfoRepository.GetArticleInfoAsync(articleId));
         }
 
         [Fact]
@@ -152,11 +153,37 @@ namespace Saleos.Test.Entity
         {
             await using var context = new HomePageDbContext(ContextOptions);
             var articleServices = new ArticleServicesImpl(context);
-            var articleInfo = await articleServices.ArticleInfoRepository.GetArticleInfo(1);
+            var articleInfo = await articleServices.ArticleInfoRepository.GetArticleInfoAsync(1);
 
             Assert.NotNull(articleInfo);
             Assert.Equal(1, articleInfo.Id);
             Assert.Equal(3, articleInfo.Tags.Count);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        public async Task UpdateArticleInfo_ValidArticleInfoUpdateDAO_ThrowException(int articleId)
+        {
+            await using var context = new HomePageDbContext(ContextOptions);
+            var articleServices = new ArticleServicesImpl(context);
+
+            var articleInfoUpdateDAO = new ArticleInfoUpdateDAO
+            {
+                Id = articleId,
+                Title = "new Title",
+                IsReprint = true,
+                ReprintUrl = "http://new.url"
+            };
+
+            await articleServices.ArticleInfoRepository.UpdateArticleInfoAsync(articleInfoUpdateDAO);
+            await articleServices.SaveAsync();
+
+            var article = await context.Article.SingleOrDefaultAsync(x => x.Id == articleId);
+            var originalArticle = _mockData.Articles.SingleOrDefault(x => x.Id == articleId);
+            Assert.Equal("new Title", article.Title);
+            Assert.Equal(true, article.IsReprint);
+            Assert.Equal("http://new.url", article.ReprintUri);
+            Assert.Equal(originalArticle.ImageUrl, article.ImageUrl);
         }
     }
 }

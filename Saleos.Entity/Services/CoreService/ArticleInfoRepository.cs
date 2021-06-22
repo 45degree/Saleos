@@ -63,7 +63,7 @@ namespace Saleos.Entity.Services.CoreServices
             return await queryString.Select(x => x.GetArticleInfoDAOFromArticle()).ToListAsync();
         }
 
-        public async Task<List<ArticleInfoDAO>> GetAllArticleInfo()
+        public async Task<List<ArticleInfoDAO>> GetAllArticleInfoAsync()
         {
             return await _homePageDbContext.Article
                 .Include(x => x.ArticleTags)
@@ -72,7 +72,7 @@ namespace Saleos.Entity.Services.CoreServices
                 .ToListAsync();
         }
 
-        public async Task<ArticleInfoDAO> GetArticleInfo(int articleId)
+        public async Task<ArticleInfoDAO> GetArticleInfoAsync(int articleId)
         {
             return await _homePageDbContext.Article
                 .Where(x => x.Id == articleId)
@@ -80,6 +80,38 @@ namespace Saleos.Entity.Services.CoreServices
                 .ThenInclude(x => x.Tag)
                 .Select(x => x.GetArticleInfoDAOFromArticle())
                 .SingleOrDefaultAsync();
+        }
+
+        public async Task UpdateArticleInfoAsync(ArticleInfoUpdateDAO articleInfoUpdateDAO)
+        {
+            if(articleInfoUpdateDAO == null)
+            {
+                throw new ArgumentNullException($"{nameof(articleInfoUpdateDAO)} is null");
+            }
+
+            var article = await _homePageDbContext.Article
+                .SingleOrDefaultAsync(x => x.Id == articleInfoUpdateDAO.Id);
+
+            if(articleInfoUpdateDAO.Title != null)
+            {
+                article.Title = articleInfoUpdateDAO.Title;
+            }
+
+            if(articleInfoUpdateDAO.Abstract != null)
+            {
+                article.Abstract = articleInfoUpdateDAO.Abstract;
+            }
+
+            if(articleInfoUpdateDAO.ImageUrl != null)
+            {
+                article.ImageUrl = articleInfoUpdateDAO.ImageUrl;
+            }
+
+            article.IsReprint = articleInfoUpdateDAO.IsReprint;
+            if(articleInfoUpdateDAO.IsReprint)
+            {
+                article.ReprintUri = articleInfoUpdateDAO.ReprintUrl;
+            }
         }
     }
 }

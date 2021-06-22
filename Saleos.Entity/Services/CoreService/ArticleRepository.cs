@@ -61,14 +61,17 @@ namespace Saleos.Entity.Services.CoreServices
         public async Task AddArticleAsync(ArticleAddDAO article)
         {
             if (article == null) throw new ArgumentNullException($"{nameof(article)} is null");
-            await _homePageDbContext.Article.AddAsync(await article.GetArticleFromArticleAddDAO(_homePageDbContext));
+            await _homePageDbContext.Article
+                .AddAsync(await article.GetArticleFromArticleAddDAO(_homePageDbContext));
         }
 
         public async Task UpdateArticleAsync(ArticleUpdateDAO articleUpdate)
         {
-            if (articleUpdate == null) throw new ArgumentNullException($"{nameof(articleUpdate)} is null");
+            if (articleUpdate == null)
+                throw new ArgumentNullException($"{nameof(articleUpdate)} is null");
 
-            var article = await _homePageDbContext.Article.SingleOrDefaultAsync(x => x.Id == articleUpdate.Id);
+            var article = await _homePageDbContext.Article
+                .SingleOrDefaultAsync(x => x.Id == articleUpdate.Id);
             article.LastModifiedTime = articleUpdate.LastModifiedTime;
 
             if (articleUpdate.Content != null) article.Content = articleUpdate.Content;
@@ -83,9 +86,8 @@ namespace Saleos.Entity.Services.CoreServices
             }
             if (articleUpdate.Tags != null)
             {
-                await _homePageDbContext.ArticleTags.Where(x => x.ArticleId == articleUpdate.Id).ForEachAsync(
-                    x=> _homePageDbContext.Remove(x)
-                );
+                await _homePageDbContext.ArticleTags.Where(x => x.ArticleId == articleUpdate.Id)
+                    .ForEachAsync( x=> _homePageDbContext.Remove(x));
                 article.ArticleTags = new List<ArticleTag>();
                 foreach (var tagId in articleUpdate.Tags)
                 {
