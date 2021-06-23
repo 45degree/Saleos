@@ -132,6 +132,66 @@ namespace Saleos.Controllers
             return RedirectToAction($"{nameof(Article)}");
         }
 
+        [HttpGet]
+        [Route("ArticleInfo")]
+        public async Task<IActionResult> ArticleInfo([FromQuery] int page = 1)
+        {
+            var queryDAO = new ArticlesQueryDAO()
+            {
+                PageNumber = page,
+                PageSize = 10,
+            };
+            var articleInfos = await _articleServices.ArticleInfoRepository
+                .GetArticleInfoByQueryAsync(queryDAO);
+
+            if(articleInfos.Count == 0)
+            {
+                return RedirectToAction($"{nameof(ArticleInfo)}", new {page = 1});
+            }
+
+            int articleCount = await _articleServices.ArticleRepository.GetArticleCountAsync();
+            double maxPage = Convert.ToDouble(articleCount) / queryDAO.PageSize;
+
+            var model = new AdminArticleInfoViewModel
+            {
+                articleInfos = articleInfos,
+                CurrentPage = page,
+                MaxPage = (int)Math.Ceiling(maxPage),
+            };
+            return View(model);
+        }
+
+        [HttpPut]
+        [Route("ArticleInfo")]
+        public async Task<IActionResult> UpdateArticleInfo(
+            [FromBody] AdminArticleInfoUpdateModel model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return RedirectToAction($"{nameof(ArticleInfo)}", new { page = 1});
+            }
+
+            if( !await _articleServices.ArticleRepository.ArticleIsExisted(model.Id) )
+            {
+                return NotFound();
+            }
+
+            // new article info DAO
+            var articleUpdateDAO = new ArticleInfoUpdateDAO
+            {
+                Id = model.Id,
+                Title = model.Title,
+                Abstract = model.Abstract,
+                ImageUrl = model.ImageUrl,
+                IsReprint = model.IsReprint,
+                ReprintUrl = model.ReprintUrl,
+            };
+
+            await _articleServices.ArticleInfoRepository.UpdateArticleInfoAsync(articleUpdateDAO);
+            await _articleServices.SaveAsync();
+            return NoContent();
+        }
+
         [Route("Tags")]
         public async Task<IActionResult> Tags([FromQuery]int page = 1)
         {
@@ -297,6 +357,20 @@ namespace Saleos.Controllers
                 model.Article = await _articleServices.ArticleRepository
                     .GetArticleAsync(articleId);
             }
+            return View(model);
+        }
+
+        [Route("ArticleInfoEditor")]
+        public async Task<IActionResult> ArticleInfoEditor([FromQuery] int articleId = 0)
+        {
+            if(!await _articleServices.ArticleRepository.ArticleIsExisted(articleId))
+            {
+                return RedirectToAction($"{nameof(ArticleInfo)}", new { page = 1 });
+            }
+            var model = new AdminArticleInfoEditorViewModel
+            {
+                articleInfo = await _articleServices.ArticleInfoRepository.GetArticleInfoAsync(articleId)
+            };
             return View(model);
         }
     }

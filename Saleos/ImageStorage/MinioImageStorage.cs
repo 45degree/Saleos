@@ -31,7 +31,7 @@ namespace Saleos.ImageStorage
         {
             _minioClient = new MinioClient(configuration["Minio:endpoint"],
                 configuration["Minio:accessKey"],
-                configuration["Minio:security"]).WithSSL();
+                configuration["Minio:security"]);
 
             _bucketName = configuration["Minio:bucketName"] ?? "article";
 

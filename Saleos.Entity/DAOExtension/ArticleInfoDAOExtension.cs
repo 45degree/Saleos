@@ -32,6 +32,9 @@ namespace Saleos.Entity.DAOExtension
                 CreateTime = article.CreateTime,
                 LastModifiedTime = article.LastModifiedTime,
                 Tags = new List<TagDAO>(),
+                IsReprint = article.IsReprint,
+                RerpintUri = article.ReprintUri,
+                Category = article.Category.GetCategoryDAOFromCategory(),
             };
             foreach (var articleTag in article.ArticleTags)
             {
