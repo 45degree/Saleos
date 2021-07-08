@@ -50,7 +50,7 @@ namespace Saleos.Test.Controller.AdminControllerTest
                 Content = "new category",
             };
 
-            var result = await controller.AddOrUpdateCategory(model);
+            var result = await controller.Index(model);
             Assert.IsType<NotFoundResult>(result);
         }
 
@@ -67,7 +67,7 @@ namespace Saleos.Test.Controller.AdminControllerTest
                 Content = "new Category",
             };
 
-            var result = await controller.AddOrUpdateCategory(model);
+            var result = await controller.Index(model);
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal(nameof(controller.Index), redirectResult.ActionName);
 
@@ -87,7 +87,7 @@ namespace Saleos.Test.Controller.AdminControllerTest
                 Content = "new Category",
             };
 
-            var result = await controller.AddOrUpdateCategory(model);
+            var result = await controller.Index(model);
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal(nameof(controller.Index), redirectResult.ActionName);
 

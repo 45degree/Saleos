@@ -48,7 +48,7 @@ namespace Saleos.Test.Controller.AdminControllerTest
                 Content = "new Content"
             };
 
-            var result = await controller.AddOrUpdateTag(model);
+            var result = await controller.Index(model);
             Assert.IsType<NotFoundResult>(result);
         }
 
@@ -65,7 +65,7 @@ namespace Saleos.Test.Controller.AdminControllerTest
                 Content = "new Content",
             };
 
-            var result = await controller.AddOrUpdateTag(model);
+            var result = await controller.Index(model);
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal(nameof(controller.Index), redirectResult.ActionName);
 
@@ -85,7 +85,7 @@ namespace Saleos.Test.Controller.AdminControllerTest
                 Content = "new Title",
             };
 
-            var result = await controller.AddOrUpdateTag(model);
+            var result = await controller.Index(model);
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal(nameof(controller.Index), redirectResult.ActionName);
 

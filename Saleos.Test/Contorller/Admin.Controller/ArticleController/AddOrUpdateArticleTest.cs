@@ -50,7 +50,7 @@ namespace Saleos.Test.Controller.AdminControllerTest
                 NewTags = new List<int>() {1, 2, 3},
             };
 
-            var result = await controller.AddOrUpdateArticle(model);
+            var result = await controller.Index(model);
             Assert.IsType<NotFoundResult>(result);
         }
 
@@ -72,7 +72,7 @@ namespace Saleos.Test.Controller.AdminControllerTest
                 NewTags = new List<int>(tagIds),
             };
 
-            var result = await controller.AddOrUpdateArticle(model);
+            var result = await controller.Index(model);
             Assert.IsType<NotFoundResult>(result);
         }
 
@@ -90,7 +90,7 @@ namespace Saleos.Test.Controller.AdminControllerTest
                 NewTags = new List<int>(),
             };
 
-            var result = await controller.AddOrUpdateArticle(model);
+            var result = await controller.Index(model);
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal(nameof(controller.Index), redirectResult.ActionName);
 
@@ -111,7 +111,7 @@ namespace Saleos.Test.Controller.AdminControllerTest
                 NewTags = new List<int>(),
             };
 
-            var result = await controller.AddOrUpdateArticle(model);
+            var result = await controller.Index(model);
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal(nameof(controller.Index), redirectResult.ActionName);
 
