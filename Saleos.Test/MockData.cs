@@ -103,7 +103,7 @@ namespace Saleos.Test
 
         // private static MockData _instance = new MockData();
 
-        public static MockData getInstance()
+        public static MockData GetInstance()
         {
             return new MockData();
         }
@@ -116,7 +116,7 @@ namespace Saleos.Test
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
-            var mockData = MockData.getInstance();
+            var mockData = MockData.GetInstance();
 
             context.Article.AddRange(mockData.Articles);
             context.Tags.AddRange(mockData.Tags);

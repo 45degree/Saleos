@@ -26,24 +26,24 @@ namespace Saleos.Controllers
     /// this controller is used to initial the common data in _Layout.html.
     /// all controllers that use _Layout.html should inherit this class
     /// </summary>
-    public abstract class BaseController : Controller
-    {
-        protected ArticleServices ArticleServices;
+    // public abstract class BaseController : Controller
+    // {
+    //     protected ArticleServices ArticleServices;
 
-        protected BaseController(ArticleServices articleServices)
-        {
-            ArticleServices = articleServices;
-        }
+    //     protected BaseController(ArticleServices articleServices)
+    //     {
+    //         ArticleServices = articleServices;
+    //     }
 
-        public override void OnActionExecuted(ActionExecutedContext context)
-        {
-            // TODO initial the UserInfo's info
-            ViewData[""] = "";
+    //     public override void OnActionExecuted(ActionExecutedContext context)
+    //     {
+    //         // TODO initial the UserInfo's info
+    //         ViewData[""] = "";
 
-            // TODO initial the TagsList's info
-            ViewData["Tags"] = ArticleServices.TagRepository.GetTagAsync().GetAwaiter().GetResult();
+    //         // TODO initial the TagsList's info
+    //         ViewData["Tags"] = ArticleServices.TagRepository.GetTagAsync().GetAwaiter().GetResult();
 
-            base.OnActionExecuted(context);
-        }
-    }
+    //         base.OnActionExecuted(context);
+    //     }
+    // }
 }

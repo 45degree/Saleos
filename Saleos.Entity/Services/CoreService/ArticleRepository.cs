@@ -60,7 +60,7 @@ namespace Saleos.Entity.Services.CoreServices
 
         public async Task AddArticleAsync(ArticleAddDAO article)
         {
-            if (article == null) throw new ArgumentNullException($"{nameof(article)} is null");
+            if (article == null) throw new ArgumentNullException(nameof(article));
             await _homePageDbContext.Article
                 .AddAsync(await article.GetArticleFromArticleAddDAO(_homePageDbContext));
         }
@@ -68,7 +68,7 @@ namespace Saleos.Entity.Services.CoreServices
         public async Task UpdateArticleAsync(ArticleUpdateDAO articleUpdate)
         {
             if (articleUpdate == null)
-                throw new ArgumentNullException($"{nameof(articleUpdate)} is null");
+                throw new ArgumentNullException(nameof(articleUpdate));
 
             var article = await _homePageDbContext.Article
                 .SingleOrDefaultAsync(x => x.Id == articleUpdate.Id);

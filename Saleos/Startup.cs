@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using System;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,10 +22,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Minio;
 using Saleos.Entity.Data;
 using Saleos.Entity.Services.CoreServices;
-using Saleos.ImageStorage;
+using Saleos.Entity.Services.ImageStorage;
 
 namespace Saleos
 {
@@ -59,7 +57,7 @@ namespace Saleos
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddControllersWithViews().AddNewtonsoftJson();
+            services.AddControllers().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

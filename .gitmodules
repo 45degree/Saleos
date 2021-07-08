@@ -1,0 +1,3 @@
+[submodule "SaleosClient"]
+	path = SaleosClient
+	url = https://github.com/45degree/SaleosClient.git

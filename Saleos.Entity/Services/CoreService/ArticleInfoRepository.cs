@@ -37,7 +37,7 @@ namespace Saleos.Entity.Services.CoreServices
         public async Task<List<ArticleInfoDAO>> GetArticleInfoByQueryAsync(ArticlesQueryDAO query)
         {
             if (query == null)
-                throw new ArgumentNullException($"{nameof(query)} 为null或则全是空格");
+                throw new ArgumentNullException(nameof(query));
 
             var queryString = _homePageDbContext.Article as IQueryable<Article>;
 
@@ -86,7 +86,7 @@ namespace Saleos.Entity.Services.CoreServices
         {
             if(articleInfoUpdateDAO == null)
             {
-                throw new ArgumentNullException($"{nameof(articleInfoUpdateDAO)} is null");
+                throw new ArgumentNullException(nameof(articleInfoUpdateDAO));
             }
 
             var article = await _homePageDbContext.Article

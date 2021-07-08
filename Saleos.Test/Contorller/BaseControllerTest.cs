@@ -17,7 +17,7 @@ namespace Saleos.Test.Controller
             dbContextFactory.SeedDate(_dbContextOptions);
         }
 
-        protected T getContext() => _dbContextFactory.CreateDbContext(_dbContextOptions);
+        protected T GetContext() => _dbContextFactory.CreateDbContext(_dbContextOptions);
     }
 
     public interface IDbContextFactory<T> where T: DbContext

@@ -91,7 +91,7 @@ namespace Saleos.Entity.Services.CoreServices
 
         public async Task AddTagAsync(TagAddDAO tagAddDAO)
         {
-            if (tagAddDAO == null) throw new ArgumentNullException($"{nameof(tagAddDAO)} 为空");
+            if (tagAddDAO == null) throw new ArgumentNullException(nameof(tagAddDAO));
             await _homePageDbContext.Tags.AddAsync(tagAddDAO.GetTagFromTagAddDAO());
         }
 

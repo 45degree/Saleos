@@ -90,7 +90,7 @@ namespace Saleos.Entity.Services.CoreServices
         {
             if (categoryAddDAO == null)
             {
-                throw new ArgumentNullException($"{nameof(categoryAddDAO)} is null");
+                throw new ArgumentNullException(nameof(categoryAddDAO));
             }
             await _homePageDbContext.Categories
                 .AddAsync(categoryAddDAO.GetCategoryFromCateGoryAddDAO());

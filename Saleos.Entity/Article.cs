@@ -75,6 +75,11 @@ namespace Saleos.Entity
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            if (validationContext is null)
+            {
+                throw new ArgumentNullException(nameof(validationContext));
+            }
+
             if (IsReprint && string.IsNullOrEmpty(ReprintUri)) yield return new ValidationResult("需要提供原文章uri地址");
         }
     }

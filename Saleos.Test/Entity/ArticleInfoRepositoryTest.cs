@@ -181,7 +181,7 @@ namespace Saleos.Test.Entity
             var article = await context.Article.SingleOrDefaultAsync(x => x.Id == articleId);
             var originalArticle = _mockData.Articles.SingleOrDefault(x => x.Id == articleId);
             Assert.Equal("new Title", article.Title);
-            Assert.Equal(true, article.IsReprint);
+            Assert.True(article.IsReprint);
             Assert.Equal("http://new.url", article.ReprintUri);
             Assert.Equal(originalArticle.ImageUrl, article.ImageUrl);
         }

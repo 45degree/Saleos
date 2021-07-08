@@ -1,0 +1,112 @@
+@model AdminArticleInfoViewModel
+@using Saleos.Views.Shared
+@{
+  ViewBag.Title = "title";
+  ViewData["ActiveData"] = "AdminArticleInfo"; // see SideBarPage in Views/Shared/SideBarPage.cs
+}
+
+ <!-- Content Header (Page header) -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">Article</h1>
+      </div><!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a asp-action="Article">Home</a></li>
+          <li class="breadcrumb-item active">Article</li>
+        </ol>
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body table-responsive p-0">
+            <table class="table table-striped table-valign-middle">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Title</th>
+                  <th>CreateTime</th>
+                  <th>LastModifiedTime</th>
+                  <th>Operator</th>
+                </tr>
+              </thead>
+              <tbody>
+              @foreach (var articleInfo in Model.ArticleInfos)
+              {
+                <tr>
+                  <td class="article-id">@articleInfo.Id</td>
+                  <td class="article-title">@articleInfo.Title</td>
+                  <td class="article-create-time">@articleInfo.CreateTime</td>
+                  <td class="article-last-modified-time">@articleInfo.LastModifiedTime</td>
+                  <td>
+                    <a asp-action="ArticleInfoEditor" asp-route-articleId="@articleInfo.Id"
+                      type="button" class="btn btn-outline-primary btn-sm">修改</a>
+                  </td>
+                </tr>
+              }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+      <div class="col" style="display:flex; flex-direction:row-reverse;">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item @Pagination.Disabled(Model.CurrentPage - 1, Model.MaxPage)">
+              <a class="page-link" asp-action="ArticleInfo"
+                asp-route-page="@(Model.CurrentPage - 1)" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            @if(@Model.CurrentPage > 1)
+            {
+              <li class="page-item">
+                <a class="page-link" asp-action="ArticleInfo"
+                  asp-route-page="@(Model.CurrentPage - 1)">
+                  @(Model.CurrentPage - 1)
+                </a>
+              </li>
+            }
+            <li class="page-item">
+              <a class="page-link" asp-action="ArticleInfo"
+                asp-route-page="@(Model.CurrentPage)">
+                @(Model.CurrentPage)
+              </a>
+            </li>
+            @if(Model.CurrentPage + 1 <= Model.MaxPage)
+            {
+              <li class="page-item">
+                <a class="page-link" asp-action="ArticleInfo" 
+                  asp-route-page="@(Model.CurrentPage + 1)">
+                  @(Model.CurrentPage + 1)
+                </a>
+              </li>
+            }
+            <li class="page-item @Pagination.Disabled(Model.CurrentPage + 1, Model.MaxPage)">
+              <a class="page-link" asp-action="ArticleInfo"
+                asp-route-page="@(Model.CurrentPage + 1)" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+  </div><!-- /.container-fluid -->
+</div>
+<!-- /.content -->

@@ -31,7 +31,7 @@ namespace Saleos.Test.Entity
     public abstract class EntityTest
     {
         private DbContextOptions<HomePageDbContext> ContextOptions { get; }
-        private MockData _mockData = MockData.getInstance();
+        private readonly MockData _mockData = MockData.GetInstance();
 
         protected EntityTest(DbContextOptions<HomePageDbContext> contextOptions)
         {

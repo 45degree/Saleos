@@ -24,6 +24,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Saleos.Entity\Saleos.Entity.csproj" />
       <ProjectReference Include="..\Saleos\Saleos.csproj" />
+      <ProjectReference Include="..\Saleos.Admin\Saleos.Admin.csproj" />
     </ItemGroup>
 
 </Project>

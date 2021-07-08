@@ -22,11 +22,9 @@ namespace Saleos
 {
     public static class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
-            await SeedData.EnsureSeedData(host.Services);
-            host.Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>

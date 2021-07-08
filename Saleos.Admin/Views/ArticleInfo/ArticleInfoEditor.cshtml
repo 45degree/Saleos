@@ -1,0 +1,176 @@
+@model AdminArticleInfoEditorViewModel
+@{
+  ViewBag.Title = "title";
+  ViewData["ActiveData"] = "AdminArticleInfo"; // see SideBarPage in Views/Shared/SideBarPage.cs
+}
+
+@section ExternalCss {
+  <link rel="stylesheet" href="@Url.Content("~/css/ArticleInfoEditor.css")">
+}
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">Article Info Display</h1>
+      </div><!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a asp-action="Article">Home</a></li>
+          <li class="breadcrumb-item active">Article Info Display</li>
+        </ol>
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<div class="content">
+  <div class="container">
+    <div class="row">
+      <div class="col-7 mx-auto">
+        <form id="update-article-info">
+          <div class="form-group">
+            <label for="article-title">Title</label>
+            <input type="text" class="form-control" id="article-title"
+              value="@Model.ArticleInfo.Title">
+          </div>
+              
+          <div class="form-group">
+            <label for="article-type">Article Type</label>
+            <div id="article-type">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="article-type"
+                  id="article-type-original" value="original">
+                <label class="form-check-label" for="article-type-original">original</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="article-type"
+                  id="article-type-reprint" value="reprint">
+                <label class="form-check-label" for="article-type-reprint">reprint</label>
+              </div>
+            </div>
+            <input type="url" class="form-control" id="reprint-url"
+              value="@(Model.ArticleInfo.RerpintUri)"/>
+          </div>
+
+          <div class="form-group">
+            <label for="article-visibility">visibility</label>
+            <div class="form-check form-check" id="article-visibility">
+              <input class="form-check-input" type="checkbox" id="article-visible-check">
+              <label class="form-check-label" for="article-visible-check">visible</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="article-abstract">Abstract</label>   
+            <textarea class="form-control" id="article-abstract" cols="30"
+              rows="10">@(Html.Raw(Model.ArticleInfo.Abstract))</textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="">image</label>
+            <!-- Upload image input -->
+            <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
+              <input id="upload-image" type="file"
+                onchange="readURL(this, @(Model.ArticleInfo.Id));"
+                class="form-control border-0">
+              <label id="upload-label" for="upload-image" class="font-weight-light text-muted">
+                Choose file
+              </label>
+              <div class="input-group-append">
+                <label for="upload-image" class="btn btn-light m-0 rounded-pill px-4">
+                  <i class="fa fa-cloud-upload mr-2 text-muted"></i>
+                  <small class="text-uppercase font-weight-bold text-muted">
+                    Choose file
+                  </small>
+                </label>
+              </div>
+            </div>
+
+            <!-- Uploaded image area -->
+            <div class="image-area mt-4">
+              <img id="imageResult" src="@(Model.ArticleInfo.ImgUrl)" alt="" 
+                class="img-fluid rounded shadow-sm mx-auto d-block">
+            </div>
+          </div>
+
+          <button id="submit" type="button" class="btn btn-primary" style="float: right;">
+            submit
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- /.content -->
+</div>
+
+@section ExternalScript {
+  <script type="text/javascript" src="@Url.Content("~/js/ArticleInfoEditor.js")"></script>
+}
+
+@section CustomScript {
+  <script type="text/javascript">
+    // check the article's type
+    function checkArticleType(isReprint) {
+      if(isReprint) {
+        $('#article-type-reprint').prop('checked', true).trigger('click')
+        $('#reprint-url').show()
+      }
+      else {
+        $('#article-type-original').prop('checked', true).trigger('click')
+        $('#reprint-url').hide()
+      }
+    }
+    checkArticleType(@Html.Raw(Json.Serialize(Model.ArticleInfo.IsReprint)))
+    
+    // load image
+    let imgUrl = @Html.Raw(Json.Serialize(Model.ArticleInfo.ImgUrl))
+    if (imgUrl) {
+      $('#imageResult').prop('src', imgUrl)
+      $('#upload-label').text('File name: ' + imgUrl)
+    }
+
+    // hidden reprint url when original button is checked
+    $('#article-type-original').click(function() {
+      $('#reprint-url').hide()
+    })
+    $('#article-type-reprint').click(function() {
+      $('#reprint-url').show()
+    })
+
+    $('#submit').click(function(){
+      let id = @(Model.ArticleInfo.Id);
+      let title = $('#article-title').val();
+      let articleType = $('input[name=article-type]:checked', '#update-article-info').val()
+      let abstract = $('#article-abstract').val();
+
+      // update article infomation
+      $.ajax({
+        url: '@(Url.Action("Index", "ArticleInfo"))',
+        type: 'PUT',
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({
+          id: id,
+          title: title,
+          abstract: abstract,
+          isReprint: articleType === 'reprint',
+          reprintUrl: $('#reprint-url').val(),
+          imageUrl: $('#imageResult').attr('src'),
+          visibily: $('#article-visible-check').is(':checked')
+        }),
+        success: function() {
+          location.reload()
+          alert('update success')
+        },
+        error: function() {
+          alert('update failed')
+        }
+      })
+    })
+
+  </script>
+}

@@ -1,5 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saleos.Entity", "Saleos.Entity\Saleos.Entity.csproj", "{A43F5160-F342-4454-96A9-8DB294E7C545}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saleos.DAO", "Saleos.DAO\Saleos.DAO.csproj", "{F3A63B35-07BA-4917-828C-5E1583EDDE33}"
@@ -7,6 +8,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saleos", "Saleos\Saleos.csproj", "{FD64C175-F87F-4899-8DF8-6698D48B3AB3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saleos.Test", "Saleos.Test\Saleos.Test.csproj", "{51CCF485-828D-44C7-840F-96E202254A7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Saleos.Admin", "Saleos.Admin\Saleos.Admin.csproj", "{8765086E-227A-4EED-8428-79A1ED244373}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +33,9 @@ Global
 		{51CCF485-828D-44C7-840F-96E202254A7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51CCF485-828D-44C7-840F-96E202254A7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51CCF485-828D-44C7-840F-96E202254A7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8765086E-227A-4EED-8428-79A1ED244373}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8765086E-227A-4EED-8428-79A1ED244373}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8765086E-227A-4EED-8428-79A1ED244373}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8765086E-227A-4EED-8428-79A1ED244373}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
