@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,10 +28,14 @@ namespace Saleos.Admin
         {
             services.AddControllersWithViews().AddNewtonsoftJson();
 
+            Console.WriteLine($"POSTGRES_HOST : {Configuration["POSTGRES_HOST"]}");
             services.AddDbContext<HomePageDbContext>(options =>
-                options.UseNpgsql(string.Format(Configuration.GetConnectionString("DefaultConnection"),
-                    Configuration["POSTGRES_USER"],
-                    Configuration["POSTGRES_PASSWORD"])
+                options.UseNpgsql(
+                    string.Format(Configuration.GetConnectionString("DefaultConnection"),
+                    Configuration["POSTGRES_HOST"] ?? "localhost",
+                    Configuration["POSTGRES_PORT"] ?? "5432",
+                    Configuration["POSTGRES_USER"] ?? "Saleos",
+                    Configuration["POSTGRES_PASSWORD"] ?? "Saleos")
                 )
             );
             services.AddScoped<IImageStorage, MinioImageStorage>();
@@ -56,7 +61,6 @@ namespace Saleos.Admin
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
