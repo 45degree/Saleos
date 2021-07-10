@@ -25,7 +25,7 @@ namespace Saleos.Test.Controller.AdminControllerTest
 {
     public class DeleteTagTest : HomePageControllerTest
     {
-        public DeleteTagTest() : base("Mock AdminController-DeleteTagTest-routin")
+        public DeleteTagTest() : base("Mock Admin.TagController-DeleteTagTest-routin")
         {
         }
 

@@ -26,7 +26,7 @@ namespace Saleos.Test.Controller.AdminControllerTest
 {
     public class AddOrUpdateTagsTest : HomePageControllerTest
     {
-        public AddOrUpdateTagsTest() : base("Mock AdminController-AddOrUpdateTags-routin")
+        public AddOrUpdateTagsTest() : base("Mock Admin.TagController-AddOrUpdateTags-routin")
         {
         }
 

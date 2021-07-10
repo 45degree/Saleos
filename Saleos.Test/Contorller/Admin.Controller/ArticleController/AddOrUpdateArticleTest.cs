@@ -27,7 +27,8 @@ namespace Saleos.Test.Controller.AdminControllerTest
 {
     public class AddOrUpdateArticleTest : HomePageControllerTest
     {
-        public AddOrUpdateArticleTest() : base("Mock AdminController-AddOrUpdateArticle-routin")
+        public AddOrUpdateArticleTest()
+            : base("Mock Admin.ArticleController-AddOrUpdateArticle-routin")
         {
         }
 

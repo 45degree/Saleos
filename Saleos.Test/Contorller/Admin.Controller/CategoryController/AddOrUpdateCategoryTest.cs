@@ -26,7 +26,8 @@ namespace Saleos.Test.Controller.AdminControllerTest
 {
     public class AddOrUpdateCategoryTest : HomePageControllerTest
     {
-        public AddOrUpdateCategoryTest() : base("Mock AdminController-AddOrUpdateCategory-routin")
+        public AddOrUpdateCategoryTest()
+            : base("Mock Admin.CategoryController-AddOrUpdateCategory-routin")
         {
         }
 

@@ -25,7 +25,7 @@ namespace Saleos.Test.Controller.AdminControllerTest
 {
     public class DeleteArticleTest : HomePageControllerTest
     {
-        public DeleteArticleTest() : base("Mock AdminController-Delete-routin")
+        public DeleteArticleTest() : base("Mock Admin.ArticleController-Delete-routin")
         {
         }
 

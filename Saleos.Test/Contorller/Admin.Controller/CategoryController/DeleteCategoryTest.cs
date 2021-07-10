@@ -25,7 +25,8 @@ namespace Saleos.Test.Controller.AdminControllerTest
 {
     public class DeleteCategoryTest : HomePageControllerTest
     {
-        public DeleteCategoryTest() : base("Mock AdminController-DeleteCategoryTest-routin")
+        public DeleteCategoryTest()
+            : base("Mock Admin.CategoryController-DeleteCategoryTest-routin")
         {
         }
 
