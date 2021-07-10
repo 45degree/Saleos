@@ -69,8 +69,8 @@ namespace Saleos.Controllers
                 var file = files.FileName.Split('.');
                 file[0] = hashcode;
                 newFileName = string.Join(string.Empty,file[0], '.', file[1]);
-                newFileName = Path.Join($"{articleId}/", newFileName);
-                webFile = Path.Join("/api/image", newFileName);
+                newFileName = $"{articleId}/{newFileName}";
+                webFile = $"/api/image/{newFileName}";
             };
 
             using (var minioStream = new MemoryStream())
