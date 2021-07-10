@@ -41,7 +41,7 @@ services:
     saleos_client:
         build: ./SaleosClient
         environment: 
-            - PORT=${SALEOS_CLIENT_PORT}
+            - PORT=80
         depends_on:
             - "saleos"
 
