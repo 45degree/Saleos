@@ -29,15 +29,18 @@ namespace Saleos.Entity.Services.ImageStorage
 
         public MinioImageStorage(IConfiguration configuration)
         {
-            _minioClient = new MinioClient(configuration["Minio:endpoint"],
-                configuration["Minio:accessKey"],
-                configuration["Minio:security"]);
+            _minioClient = new MinioClient(
+                configuration["MINIO_ENDPOINT"] ?? "localhost:9000",
+                configuration["MINIO_ACCESSKEY"] ?? "minioadmin",
+                configuration["MINIO_SECURITY"] ?? "minioadmin"
+            );
 
-            _bucketName = configuration["Minio:bucketName"] ?? "article";
+            _bucketName = configuration["MINIO_BUCKETNAME"] ?? "article";
 
             // check if the bucket exists in Minio, if not exists, create it
-            var BucketExistsTask = _minioClient.BucketExistsAsync(_bucketName).GetAwaiter().GetResult();
-            if(BucketExistsTask) {
+            var BucketExistsTask = _minioClient.BucketExistsAsync(_bucketName)
+                .GetAwaiter().GetResult();
+            if(!BucketExistsTask) {
                 _minioClient.MakeBucketAsync(_bucketName).GetAwaiter();
             }
         }
