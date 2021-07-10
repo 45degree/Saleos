@@ -48,6 +48,7 @@ namespace Saleos.Test.Entity
             Assert.Equal(realArticle.Abstract, article[0].Abstract);
             Assert.Equal(_mockData.ArticleTags.FindAll(x => x.Article.Id == realArticle.Id).Count,
                 article[0].Tags.Count);
+            Assert.Equal(realArticle.Category.Content, article[0].Category.Content);
         }
 
         [Theory]

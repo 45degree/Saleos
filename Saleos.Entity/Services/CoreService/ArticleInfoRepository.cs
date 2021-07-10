@@ -58,7 +58,8 @@ namespace Saleos.Entity.Services.CoreServices
                 .Take(query.PageSize);
 
             queryString = queryString.Include(x => x.ArticleTags)
-                .ThenInclude(x => x.Tag);
+                .ThenInclude(x => x.Tag)
+                .Include(x => x.Category);
 
             return await queryString.Select(x => x.GetArticleInfoDAOFromArticle()).ToListAsync();
         }
@@ -68,6 +69,7 @@ namespace Saleos.Entity.Services.CoreServices
             return await _homePageDbContext.Article
                 .Include(x => x.ArticleTags)
                 .ThenInclude(x => x.Tag)
+                .Include(x => x.Category)
                 .Select(x => x.GetArticleInfoDAOFromArticle())
                 .ToListAsync();
         }
@@ -78,6 +80,7 @@ namespace Saleos.Entity.Services.CoreServices
                 .Where(x => x.Id == articleId)
                 .Include(x => x.ArticleTags)
                 .ThenInclude(x => x.Tag)
+                .Include(x => x.Category)
                 .Select(x => x.GetArticleInfoDAOFromArticle())
                 .SingleOrDefaultAsync();
         }
