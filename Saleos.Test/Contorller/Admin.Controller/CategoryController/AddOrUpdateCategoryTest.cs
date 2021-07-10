@@ -19,9 +19,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Saleos.Admin.Controllers;
 using Saleos.Admin.Models;
-using Saleos.Controllers;
 using Saleos.Entity.Services.CoreServices;
-using Saleos.Models;
 using Xunit;
 
 namespace Saleos.Test.Controller.AdminControllerTest

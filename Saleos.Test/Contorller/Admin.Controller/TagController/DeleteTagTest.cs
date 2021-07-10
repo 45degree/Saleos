@@ -18,7 +18,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Saleos.Admin.Controllers;
-using Saleos.Controllers;
 using Saleos.Entity.Services.CoreServices;
 using Xunit;
 
