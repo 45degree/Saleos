@@ -16,29 +16,64 @@
 
 version: "3.9"
 services:
-    web:
-        build: .
+    nginx:
+        build: ./nginx
         ports:
-            - "8080:80"
-        command:
-            bash -c "dotnet Saleos.dll"
+            - "80:81"
+    saleos:
+        build:
+            context: .
+            dockerfile: ./Saleos/Dockerfile
         environment: 
             - POSTGRES_USER=${POSTGRES_USER}
             - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_HOST=${POSTGRES_HOST}
+            - POSTGRES_PORT=${POSTGRES_PORT}
+            - MINIO_ENDPOINT=${MINIO_ENDPOINT}
+            - MINIO_ACCESSKEY=${MINIO_ACCESSKEY}
+            - MINIO_SECURITY=${MINIO_SECURITY}
+            - MINIO_BUCKETNAME=${MINIO_BUCKETNAME}
         depends_on:
+            - "saleos_admin"
             - "postgres"
             - "minio"
+
+    saleos_client:
+        build: ./SaleosClient
+        environment: 
+            - PORT=${SALEOS_CLIENT_PORT}
+        depends_on:
+            - "saleos"
+
+    saleos_admin:
+        build:
+            context: .
+            dockerfile: ./Saleos.Admin/Dockerfile
+        ports:
+            - ${SALEOS_ADMIN_PORT}:80
+        environment: 
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_HOST=${POSTGRES_HOST}
+            - POSTGRES_PORT=${POSTGRES_PORT}
+            - MINIO_ENDPOINT=${MINIO_ENDPOINT}
+            - MINIO_ACCESSKEY=${MINIO_ACCESSKEY}
+            - MINIO_SECURITY=${MINIO_SECURITY}
+            - MINIO_BUCKETNAME=${MINIO_BUCKETNAME}
+
     minio:
         image: "minio/minio"
         restart: always
         ports:
+            # - "${MINIO_ENDPOINT}:${MINIO_ENDPOINT}"
             - "9000:9000"
         command: "server /data"
+
     postgres:
         image: "postgres"
         restart: always
         ports:
-            - "5432:5432"
+            - "${POSTGRES_PORT}:${POSTGRES_PORT}"
         environment: 
             - POSTGRES_USER=${POSTGRES_USER}
             - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}

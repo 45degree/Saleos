@@ -21,9 +21,9 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["Saleos/Saleos.csproj", "Saleos/"]
-RUN dotnet restore "Saleos/Saleos.csproj"
-COPY . .
+COPY ../Saleos ./Saleos
+COPY ../Saleos.DAO ./Saleos.DAO
+COPY ../Saleos.Entity ./Saleos.Entity
 WORKDIR "/src/Saleos"
 RUN dotnet build "Saleos.csproj" -c Release -o /app/build
 
@@ -32,5 +32,12 @@ RUN dotnet publish "Saleos.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
+ENV POSTGRES_USER=Saleos \
+    POSTGRES_PASSWORD=Saleos \
+    POSTGRES_PORT=5432 \
+    POSTGRES_HOST=localhost \
+    MINIO_ENDPOINT=localhost:9000 \
+    MINIO_ACCESSKEY=minioadmin \
+    MINIO_SECURITY=minioadmin
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Saleos.dll"]
