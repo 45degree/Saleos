@@ -1,0 +1,16 @@
+[Postgres]
+user="Saleos"
+password="Saleos"
+port=5432
+host="localhost"
+
+[minio]
+host="localhost"
+port=9000
+accesskey="minioadmin"
+security="minioadmin"
+bucketname="article"
+
+[Saleos.Admin]
+# the host port which you could visited the admin page
+port=3232
