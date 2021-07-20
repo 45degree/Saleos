@@ -33,6 +33,7 @@ class Config:
         self.__postgres_user: str = "postgres"
         self.__postgres_password: str = "postgres"
         self.__minio_endpoint: str = "localhost:9000"
+        self.__minio_consolePoint: str = "localhost:9001"
         self.__minio_accesskey: str = "saleosadmin"
         self.__minio_security: str = "saleosadmin"
         self.__minio_bucketname: str = "article"
@@ -80,12 +81,13 @@ class Config:
 
         # minio environment variable
         envVariable.append("{}={}\n".format("MINIO_ENDPOINT", self.__minio_endpoint))
+        envVariable.append("{}={}\n".format("MINIO_CONSOLE_PORT", self.__minio_consolePoint))
         envVariable.append("{}={}\n".format("MINIO_ACCESSKEY", self.__minio_accesskey))
         envVariable.append("{}={}\n".format("MINIO_SECURITY", self.__minio_security))
         envVariable.append("{}={}\n".format("MINIO_BUCKETNAME", self.__minio_bucketname))
 
         # saleos.Admin environment variable
-        envVariable.append("{}={}\n".format("SALEOS_CLIENT_PORT", self.__SaleosAdmin_port))
+        envVariable.append("{}={}\n".format("SALEOS_ADMIN_PORT", self.__SaleosAdmin_port))
 
         return envVariable
 
@@ -99,7 +101,8 @@ class Config:
 
     def __parseMinio(self, tomlFile: MutableMapping[str, any]) -> None:
         minioConfig: MutableMapping[str, any] = tomlFile["minio"]
-        self.__minio_endpoint = "{}:{}".format(minioConfig["host"], minioConfig["port"])
+        self.__minio_endpoint = "{}:{}".format(minioConfig["host"], minioConfig["endpoint_port"])
+        self.__minio_consolePoint = minioConfig["console_port"]
         self.__minio_accesskey = minioConfig["accesskey"]
         self.__minio_security = minioConfig["security"]
         self.__minio_bucketname = minioConfig["bucketname"]

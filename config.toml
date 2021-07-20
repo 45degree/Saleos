@@ -6,7 +6,8 @@ host="localhost"
 
 [minio]
 host="localhost"
-port=9000
+endpoint_port=9000
+console_port=9001
 accesskey="minioadmin"
 security="minioadmin"
 bucketname="article"

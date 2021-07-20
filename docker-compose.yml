@@ -65,9 +65,8 @@ services:
         image: "minio/minio"
         restart: always
         ports:
-            # - "${MINIO_ENDPOINT}:${MINIO_ENDPOINT}"
-            - "9000:9000"
-        command: "server /data"
+            - "${MINIO_CONSOLE_PORT}:${MINIO_CONSOLE_PORT}"
+        command: "server /data --address=\"${MINIO_ENDPOINT}\" --console-address=\"${MINIO_CONSOLEPOINT}\""
 
     postgres:
         image: "postgres"
