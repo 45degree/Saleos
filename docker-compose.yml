@@ -60,13 +60,16 @@ services:
             - MINIO_ACCESSKEY=${MINIO_ACCESSKEY}
             - MINIO_SECURITY=${MINIO_SECURITY}
             - MINIO_BUCKETNAME=${MINIO_BUCKETNAME}
+        depends_on:
+            - "postgres"
+            - "minio"
 
     minio:
         image: "minio/minio"
         restart: always
         ports:
             - "${MINIO_CONSOLE_PORT}:${MINIO_CONSOLE_PORT}"
-        command: "server /data --address=\"${MINIO_ENDPOINT}\" --console-address=\"${MINIO_CONSOLEPOINT}\""
+        command: "server /data --address=\"${MINIO_ENDPOINT}\" --console-address=\":${MINIO_CONSOLE_PORT}\""
 
     postgres:
         image: "postgres"

@@ -2,10 +2,10 @@
 user="Saleos"
 password="Saleos"
 port=5432
-host="localhost"
+host="postgres"
 
 [minio]
-host="localhost"
+host="minio"
 endpoint_port=9000
 console_port=9001
 accesskey="minioadmin"
