@@ -73,6 +73,15 @@ class Config:
 
         envVariable: list[str] = []
 
+        # docker config
+
+        ## if you don't use this environment variable, docker will build failed in Linux
+        ## because the forbidden path outside the build context.
+        ## see: https://github.com/docker/cli/issues/3102
+        ##      https://github.com/moby/buildkit/issues/2130
+        ##      https://github.com/moby/buildkit/issues/2131
+        envVariable.append("DOCKER_BUILDKIT=1")
+
         # postgres environment variable
         envVariable.append("{}={}\n".format("POSTGRES_USER", self.__postgres_user))
         envVariable.append("{}={}\n".format("POSTGRES_PASSWORD", self.__postgres_password))
