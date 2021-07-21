@@ -18,12 +18,14 @@ version: "3.9"
 services:
     nginx:
         build: ./nginx
+        restart: always
         ports:
             - "80:81"
     saleos:
         build:
             context: .
             dockerfile: ./Saleos/Dockerfile
+        restart: always
         environment: 
             - POSTGRES_USER=${POSTGRES_USER}
             - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -40,6 +42,7 @@ services:
 
     saleos_client:
         build: ./SaleosClient
+        restart: always
         environment: 
             - PORT=80
         depends_on:
@@ -49,6 +52,7 @@ services:
         build:
             context: .
             dockerfile: ./Saleos.Admin/Dockerfile
+        restart: always
         ports:
             - ${SALEOS_ADMIN_PORT}:80
         environment: 

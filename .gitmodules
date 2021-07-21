@@ -1,3 +1,6 @@
 [submodule "SaleosClient"]
 	path = SaleosClient
 	url = https://github.com/45degree/SaleosClient.git
+[submodule "wait-for-it"]
+	path = wait-for-it
+	url = https://github.com/vishnubob/wait-for-it.git

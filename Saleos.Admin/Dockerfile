@@ -40,4 +40,5 @@ ENV POSTGRES_USER=Saleos \
     MINIO_ACCESSKEY=minioadmin \
     MINIO_SECURITY=minioadmin
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Saleos.Admin.dll"]
+COPY ../wait-for-it ./wait-for-it
+ENTRYPOINT ./wait-for-it/wait-for-it.sh "$POSTGRES_HOST:$POSTGRES_PORT" -- dotnet Saleos.Admin.dll

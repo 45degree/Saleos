@@ -80,7 +80,7 @@ class Config:
         ## see: https://github.com/docker/cli/issues/3102
         ##      https://github.com/moby/buildkit/issues/2130
         ##      https://github.com/moby/buildkit/issues/2131
-        envVariable.append("DOCKER_BUILDKIT=1")
+        envVariable.append("DOCKER_BUILDKIT=1\n")
 
         # postgres environment variable
         envVariable.append("{}={}\n".format("POSTGRES_USER", self.__postgres_user))
