@@ -11,14 +11,17 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License.
+ * limitations under the License.namespace Saleos.Entity.Services
  */
 
-namespace Saleos.Entity
+using System.Threading.Tasks;
+
+namespace Saleos.Entity.Services.IdentityService
 {
-    public static class UserRole
+    public interface IIdentityService
     {
-        public static readonly string Admin = "Admin";
-        public static readonly string General = "General";
+        public Task Login(string username, string password, string role);
+        public Task Logout(string username);
+        public Task CreateCustomer(string username, string password);
     }
 }

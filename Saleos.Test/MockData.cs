@@ -27,9 +27,12 @@ namespace Saleos.Test
         public List<Category> Categories {get; set;}
         public List<Tag> Tags { get; set;}
         public List<ArticleTag> ArticleTags { get; set;}
+        public List<Role> Roles { get; set; }
+        public List<User> Users { get; set; }
 
         private MockData()
         {
+            // Core Data
             Categories = new List<Category>(){
                 new Category() {
                     Id = 1,
@@ -99,6 +102,19 @@ namespace Saleos.Test
                 new ArticleTag {Article = Articles[1], Tag = Tags[2]},
                 new ArticleTag {Article = Articles[2], Tag = Tags[2]},
             };
+
+            // Identity Data
+            Roles = new List<Role>
+            {
+                new Role { Id = 1, RoleName = "Admin" },
+                new Role { Id = 2, RoleName = "Customer" }
+            };
+
+            Users = new List<User>
+            {
+                new User { Id = 1, Roles = Roles, Username = "Admin" }
+            };
+
         }
 
         // private static MockData _instance = new MockData();
@@ -111,18 +127,34 @@ namespace Saleos.Test
         /// <summary>
         /// generator test data in the database
         /// </summary>
-        public static void SeedData(HomePageDbContext context)
+        public static void SeedData(HomePageDbContext homePageContext = null,
+            IdentityDbContext identityContext = null)
         {
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
-
             var mockData = MockData.GetInstance();
 
-            context.Article.AddRange(mockData.Articles);
-            context.Tags.AddRange(mockData.Tags);
-            context.Categories.AddRange(mockData.Categories);
-            context.ArticleTags.AddRange(mockData.ArticleTags);
-            context.SaveChanges();
+            // Core Database create
+            if(homePageContext != null)
+            {
+                homePageContext.Database.EnsureDeleted();
+                homePageContext.Database.EnsureCreated();
+
+                homePageContext.Article.AddRange(mockData.Articles);
+                homePageContext.Tags.AddRange(mockData.Tags);
+                homePageContext.Categories.AddRange(mockData.Categories);
+                homePageContext.ArticleTags.AddRange(mockData.ArticleTags);
+                homePageContext.SaveChanges();
+            }
+
+            // Identity Database create
+            if(identityContext != null)
+            {
+                identityContext.Database.EnsureDeleted();
+                identityContext.Database.EnsureCreated();
+
+                identityContext.Roles.AddRange(mockData.Roles);
+                identityContext.Users.AddRange(mockData.Users);
+                identityContext.SaveChanges();
+            }
         }
     }
 }

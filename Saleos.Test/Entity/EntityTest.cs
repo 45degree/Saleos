@@ -16,6 +16,7 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Saleos.Entity;
 using Saleos.Entity.Data;
@@ -30,26 +31,47 @@ namespace Saleos.Test.Entity
     /// </summary>
     public abstract class EntityTest
     {
-        private DbContextOptions<HomePageDbContext> ContextOptions { get; }
+        private DbContextOptions<HomePageDbContext> homePageContextOptions { get; }
+        private DbContextOptions<IdentityDbContext> identityContextOptions { get; }
         private readonly MockData _mockData = MockData.GetInstance();
 
-        protected EntityTest(DbContextOptions<HomePageDbContext> contextOptions)
+        protected EntityTest(DbContextOptions<HomePageDbContext> homePageContextOptions = null,
+            DbContextOptions<IdentityDbContext> identityContextOptions = null)
         {
-            this.ContextOptions = contextOptions;
-            Seed();
-        }
+            this.homePageContextOptions = homePageContextOptions;
+            this.identityContextOptions = identityContextOptions;
 
-        private void Seed()
-        {
-            using var context = new HomePageDbContext(ContextOptions);
-            MockData.SeedData(context);
+            HomePageDbContext homePageContext = null;
+            if(homePageContextOptions != null)
+            {
+                homePageContext = new HomePageDbContext(homePageContextOptions);
+            }
+
+            IdentityDbContext identityContext = null;
+            if(identityContextOptions != null)
+            {
+                identityContext = new IdentityDbContext(identityContextOptions);
+            }
+
+            MockData.SeedData(homePageContext, identityContext);
+
+            if(homePageContext != null)
+            {
+                homePageContext.Dispose();
+            }
+            if(identityContext != null)
+            {
+                identityContext.Dispose();
+            }
         }
 
         [Fact]
         public void GetItems()
         {
+            if(homePageContextOptions == null) return;
+
             // test tag
-            using var context = new HomePageDbContext(ContextOptions);
+            using var context = new HomePageDbContext(homePageContextOptions);
             var tag = context.Tags.SingleOrDefault(x => x.Id == 1);
             Assert.NotNull(tag);
             Assert.Equal(_mockData.Tags[0].Content, tag.Content);
@@ -68,7 +90,9 @@ namespace Saleos.Test.Entity
         [Fact]
         public void GetTagsFromArticle()
         {
-            using var context = new HomePageDbContext(ContextOptions);
+            if(homePageContextOptions == null) return;
+
+            using var context = new HomePageDbContext(homePageContextOptions);
             var article = context.Article
                 .Where(x => x.Id == 1)
                 .Include(x => x.ArticleTags)
@@ -85,7 +109,9 @@ namespace Saleos.Test.Entity
         [Fact]
         public void GetArticleFromTag()
         {
-            using var context = new HomePageDbContext(ContextOptions);
+            if(homePageContextOptions == null) return;
+
+            using var context = new HomePageDbContext(homePageContextOptions);
             var tag = context.Tags
                 .Where(x => x.Id == 1)
                 .Include(x => x.ArticleTag)
@@ -97,6 +123,47 @@ namespace Saleos.Test.Entity
             var article = tag.ArticleTag[0].Article;
             Assert.Equal(1, articleId);
             Assert.Equal(_mockData.Articles[0].Content, article.Content);
+        }
+
+        [Fact]
+        public async Task GetRoles()
+        {
+            if(identityContextOptions == null) return;
+
+            using var context = new IdentityDbContext(identityContextOptions);
+            var roles = await context.Roles.ToListAsync();
+
+            var mockData = MockData.GetInstance();
+
+            Assert.Equal(mockData.Roles.Count, roles.Count);
+            for(var i = 0; i < mockData.Roles.Count; i ++)
+            {
+                Assert.Equal(mockData.Roles[i].RoleName, roles[i].RoleName);
+                Assert.Equal(mockData.Roles[i].Id, roles[i].Id);
+            }
+        }
+
+        [Fact]
+        public async Task GetUsers()
+        {
+            if(identityContextOptions == null) return;
+
+            using var context = new IdentityDbContext(identityContextOptions);
+            var users = await context.Users.Include(x => x.Roles).ToListAsync();
+
+            var mockData = MockData.GetInstance();
+
+            Assert.Equal(mockData.Users.Count, users.Count);
+            for(var i = 0; i < mockData.Users.Count; i++)
+            {
+                Assert.Equal(mockData.Users[i].Id, users[i].Id);
+                Assert.Equal(mockData.Users[i].Username, users[i].Username);
+                for(var j = 0; j < mockData.Users[i].Roles.Count; j++)
+                {
+                    Assert.Equal(mockData.Users[i].Roles[j].Id, users[i].Roles[j].Id);
+                    Assert.Equal(mockData.Users[i].Roles[j].RoleName, users[i].Roles[j].RoleName);
+                }
+            }
         }
     }
 }

@@ -22,27 +22,31 @@ namespace Saleos.Test
 {
     public class MemoryEntityTest : EntityTest
     {
-        public MemoryEntityTest() : base(new DbContextOptionsBuilder<HomePageDbContext>()
-            .UseInMemoryDatabase("Mock Database")
-            .Options)
+        public MemoryEntityTest() : base(
+            new DbContextOptionsBuilder<HomePageDbContext>()
+                .UseInMemoryDatabase("Mock CoreDatabase").Options,
+            new DbContextOptionsBuilder<IdentityDbContext>()
+                .UseInMemoryDatabase("Mock IdentityDatabase").Options)
         {
         }
     }
 
     public class MemoryArticleRepositoryTest : ArticleRepositoryTest
     {
-        public MemoryArticleRepositoryTest() : base(new DbContextOptionsBuilder<HomePageDbContext>()
-            .UseInMemoryDatabase("Mock ArticleRepository-routine")
-            .Options)
+        public MemoryArticleRepositoryTest() : base(
+            new DbContextOptionsBuilder<HomePageDbContext>()
+                .UseInMemoryDatabase("Mock ArticleRepository-routine")
+                .Options)
         {
         }
     }
 
     public class MemoryArticleInfoRepositoryTest : ArticleInfoRepositoryTest
     {
-        public MemoryArticleInfoRepositoryTest(): base(new DbContextOptionsBuilder<HomePageDbContext>()
-            .UseInMemoryDatabase("Mock ArticleInfoRepository-routine")
-            .Options)
+        public MemoryArticleInfoRepositoryTest(): base(
+            new DbContextOptionsBuilder<HomePageDbContext>()
+                .UseInMemoryDatabase("Mock ArticleInfoRepository-routine")
+                .Options)
         {
 
         }
@@ -50,9 +54,10 @@ namespace Saleos.Test
 
     public class MemoryTagInfoRepositoryTest : TagRepositoryTest
     {
-        public MemoryTagInfoRepositoryTest(): base(new DbContextOptionsBuilder<HomePageDbContext>()
-            .UseInMemoryDatabase("Mock TagRepository-routine")
-            .Options)
+        public MemoryTagInfoRepositoryTest(): base(
+            new DbContextOptionsBuilder<HomePageDbContext>()
+                .UseInMemoryDatabase("Mock TagRepository-routine")
+                .Options)
         {
         }
     }
