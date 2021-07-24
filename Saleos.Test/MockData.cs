@@ -112,7 +112,14 @@ namespace Saleos.Test
 
             Users = new List<User>
             {
-                new User { Id = 1, Roles = Roles, Username = "Admin" }
+                new User
+                {
+                    Id = 1,
+                    Roles = Roles,
+                    Username = "Admin",
+                    PasswordSha1="601F1889667EFAEBB33B8C12572835DA3F027F78", // password: 123
+                    Salt="123"
+                }
             };
 
         }

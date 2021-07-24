@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Saleos.Entity.Data;
 using Saleos.Entity.Services.CoreServices;
+using Saleos.Entity.Services.IdentityService;
 using Saleos.Entity.Services.ImageStorage;
 
 namespace Saleos.Admin
@@ -28,17 +29,30 @@ namespace Saleos.Admin
         {
             services.AddControllersWithViews().AddNewtonsoftJson();
 
-            Console.WriteLine($"POSTGRES_HOST : {Configuration["POSTGRES_HOST"]}");
+            // Add Database
             services.AddDbContext<HomePageDbContext>(options =>
                 options.UseNpgsql(
-                    string.Format(Configuration.GetConnectionString("DefaultConnection"),
+                    string.Format(Configuration.GetConnectionString("CoreConnection"),
                     Configuration["POSTGRES_HOST"] ?? "localhost",
                     Configuration["POSTGRES_PORT"] ?? "5432",
                     Configuration["POSTGRES_USER"] ?? "Saleos",
                     Configuration["POSTGRES_PASSWORD"] ?? "Saleos")
                 )
             );
+
+            services.AddDbContext<IdentityDbContext>(options =>
+                options.UseNpgsql(
+                    string.Format(Configuration.GetConnectionString("IdentityConnection"),
+                    Configuration["POSTGRES_HOST"] ?? "localhost",
+                    Configuration["POSTGRES_PORT"] ?? "5432",
+                    Configuration["POSTGRES_USER"] ?? "Saleos",
+                    Configuration["POSTGRES_PASSWORD"] ?? "Saleos")
+                )
+            );
+
             services.AddScoped<IImageStorage, MinioImageStorage>();
+            services.AddScoped<IPasswordHash, PasswordHash>();
+            services.AddScoped<IIdentityService, IdentityServiceImpl>();
             services.AddScoped<ArticleServices, ArticleServicesImpl>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

@@ -11,19 +11,30 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License.namespace Saleos.Entity.Services
+ * limitations under the License.
  */
 
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using Saleos.DAO;
 
-namespace Saleos.Entity.Services.IdentityService
+namespace Saleos.Entity.DAOExtension
 {
-    public interface IIdentityService
+    public static class UserDAOExtension
     {
-        public Task<UserDAO> Login(LoginDAO loginDAO);
-        public Task<bool> IsLogin(string username);
-        public Task Logout(string username);
-        public Task CreateCustomerAsync(string username, string password, string salt);
+        public static UserDAO GetUserDAOFromUser(this User user)
+        {
+            var userDAO = new UserDAO
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Roles = new List<string>(),
+            };
+
+            foreach(var role in user.Roles)
+            {
+                userDAO.Roles.Add(role.RoleName);
+            }
+            return userDAO;
+        }
     }
 }

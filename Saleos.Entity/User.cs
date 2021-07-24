@@ -14,6 +14,7 @@
  * limitations under the license.
  */
 
+using System;
 using System.Collections.Generic;
 
 namespace Saleos.Entity
@@ -29,5 +30,13 @@ namespace Saleos.Entity
         public List<Role> Roles { get; set; }
 
         public string Salt { get; set; }
+
+        public DateTime CreateTime { get; set; }
+
+        public DateTime LastLoginTime { get; set; }
+
+        public DateTime LastLogoutTime { get; set; }
+
+        public bool IsLogin { get; set; }
     }
 }

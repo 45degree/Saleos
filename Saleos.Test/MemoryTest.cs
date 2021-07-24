@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Saleos.Entity.Data;
 using Saleos.Test.Entity.CoreServicesTest;
 using Saleos.Test.Entity;
+using Saleos.Test.Entity.IdentityServicesTest;
 
 namespace Saleos.Test
 {
@@ -68,6 +69,16 @@ namespace Saleos.Test
         public MemoryCategoryRepositoryTest()
             : base(new DbContextOptionsBuilder<HomePageDbContext>()
                 .UseInMemoryDatabase("Mock CategoryRepository-routine")
+                .Options)
+        {
+        }
+    }
+
+    public class MemoryIdentityServerTest: IdentityServerTest
+    {
+        public MemoryIdentityServerTest()
+            : base(new DbContextOptionsBuilder<IdentityDbContext>()
+                .UseInMemoryDatabase("Mock IdentityServer-routine")
                 .Options)
         {
         }

@@ -15,3 +15,7 @@ bucketname="article"
 [Saleos.Admin]
 # the host port which you could visited the admin page
 port=3232
+
+[Admin]
+Name="Saleos"
+Password="Saleos"

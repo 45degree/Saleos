@@ -15,16 +15,28 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Saleos.Admin.Models;
+using Saleos.DAO;
+using Saleos.Entity.Services.IdentityService;
 
 namespace Saleos.Controllers
 {
     public class LoginController : Controller
     {
+        private IIdentityService _identityService;
+
+        public LoginController(IIdentityService identityService)
+        {
+            _identityService = identityService;
+        }
+
         [HttpGet]
         public IActionResult Index(string returnUrl)
         {
@@ -33,36 +45,55 @@ namespace Saleos.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index([FromForm] User user)
+        public async Task<IActionResult> Index([FromForm] LoginPostModel model)
         {
-            if (user.Username == "Admin" && user.Password == "Admin")
+            var loginDAO = new LoginDAO
             {
+                Username = model.Username,
+                Password = model.Password,
+            };
+
+            try
+            {
+                var user = await _identityService.Login(loginDAO);
                 var claims = new List<Claim>()
                 {
-                    new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Role, "Admin")
+                    new Claim(ClaimTypes.Name, user.Username)
                 };
+                foreach (var role in user.Roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity));
             }
-            else RedirectToAction(nameof(Index));
+            catch
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
-            return Redirect(user.ReturnUrl ?? "/");
+            return Redirect(model.ReturnUrl ?? "/");
         }
 
         public async Task<IActionResult> Logout()
         {
+            if (!HttpContext.User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var username = HttpContext.User.Claims
+                    .SingleOrDefault(x => x.Type == ClaimTypes.Name).Value;
+            if(!await _identityService.IsLogin(username))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            await _identityService.Logout(username);
             await HttpContext.SignOutAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        public class User
-        {
-            public string ReturnUrl { get; set; }
-            public string Username { get; set; }
-            public string Password { get; set; }
         }
     }
 }

@@ -38,6 +38,8 @@ class Config:
         self.__minio_security: str = "saleosadmin"
         self.__minio_bucketname: str = "article"
         self.__SaleosAdmin_port: int = 3232
+        self.__Admin_Name: str = "Saleos"
+        self.__Admin_Password: str = "Saleos"
 
     def parse(self) -> None:
         '''
@@ -98,6 +100,10 @@ class Config:
         # saleos.Admin environment variable
         envVariable.append("{}={}\n".format("SALEOS_ADMIN_PORT", self.__SaleosAdmin_port))
 
+        # admin environment variable
+        envVariable.append("{}={}\n".format("SALEOS_ADMIN_NAME", self.__Admin_Name))
+        envVariable.append("{}={}\n".format("SALEOS_ADMIN_PASSWORD", self.__Admin_Password))
+
         return envVariable
 
     def __parsePostGres(self, tomlFile: MutableMapping[str, any]) -> None:
@@ -119,6 +125,10 @@ class Config:
     def __parseSaleosAdmin(self, tomlFile: MutableMapping[str, any]):
         saleosAdminConfig: MutableMapping[str, any] = tomlFile["Saleos"]["Admin"]
         self.__SaleosAdmin_port = saleosAdminConfig["port"]
+
+    def __parseAdmin(self, tomlFile: MutableMapping[str, any]):
+        self.__Admin_Name = tomlFile["Admin"]["Name"]
+        self.__Admin_Password = tomlFile["Admin"]["Password"]
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

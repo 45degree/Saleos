@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Saleos.Entity.Data;
 using Saleos.Test.Entity;
 using Saleos.Test.Entity.CoreServicesTest;
+using Saleos.Test.Entity.IdentityServicesTest;
 
 namespace Saleos.Test
 {
@@ -41,9 +42,10 @@ namespace Saleos.Test
 
     public class SqliteArticleInfoRepositoryTest : ArticleInfoRepositoryTest
     {
-        public SqliteArticleInfoRepositoryTest(): base(new DbContextOptionsBuilder<HomePageDbContext>()
-            .UseSqlite("Data Source=Mock-ArticleInfoRepository-routine.db")
-            .Options)
+        public SqliteArticleInfoRepositoryTest()
+            : base(new DbContextOptionsBuilder<HomePageDbContext>()
+                .UseSqlite("Data Source=Mock-ArticleInfoRepository-routine.db")
+                .Options)
         {
 
         }
@@ -51,9 +53,10 @@ namespace Saleos.Test
 
     public class SqliteTagInfoRepositoryTest : TagRepositoryTest
     {
-        public SqliteTagInfoRepositoryTest(): base(new DbContextOptionsBuilder<HomePageDbContext>()
-            .UseSqlite("Data Source=Mock-TagRepository-routine.db")
-            .Options)
+        public SqliteTagInfoRepositoryTest()
+            : base(new DbContextOptionsBuilder<HomePageDbContext>()
+                .UseSqlite("Data Source=Mock-TagRepository-routine.db")
+                .Options)
         {
         }
     }
@@ -63,6 +66,16 @@ namespace Saleos.Test
         public SqliteCategoryRepositoryTest()
             : base(new DbContextOptionsBuilder<HomePageDbContext>()
                 .UseSqlite("Data Source=Mock-CategoryRepository-routine.db")
+                .Options)
+        {
+        }
+    }
+
+    public class SqliteIdentityServerTest: IdentityServerTest
+    {
+        public SqliteIdentityServerTest()
+            : base(new DbContextOptionsBuilder<IdentityDbContext>()
+                .UseSqlite("Data Source=Mock-identityServer-routine.db")
                 .Options)
         {
         }
