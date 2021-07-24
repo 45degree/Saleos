@@ -20,7 +20,7 @@ namespace Saleos.Entity.Services.IdentityService
 {
     public interface IIdentityService
     {
-        public Task Login(string username, string password, string role);
+        public Task Login(string username, string password);
         public Task Logout(string username);
         public Task CreateCustomer(string username, string password);
     }

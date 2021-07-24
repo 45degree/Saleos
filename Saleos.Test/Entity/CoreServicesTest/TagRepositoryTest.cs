@@ -23,9 +23,9 @@ using Saleos.Entity.Data;
 using Saleos.Entity.Services.CoreServices;
 using Xunit;
 
-namespace Saleos.Test.Entity
+namespace Saleos.Test.Entity.CoreServicesTest
 {
-    public abstract class TagRepositoryTest : BaseServicesTest
+    public abstract class TagRepositoryTest : BaseCoreServicesTest
     {
         protected TagRepositoryTest(DbContextOptions<HomePageDbContext> contextOptions)
             : base(contextOptions)

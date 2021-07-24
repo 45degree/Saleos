@@ -22,9 +22,9 @@ using Saleos.Entity.Data;
 using Saleos.Entity.Services.CoreServices;
 using Xunit;
 
-namespace Saleos.Test.Entity
+namespace Saleos.Test.Entity.CoreServicesTest
 {
-    public abstract class CategoryRepositoryTest : BaseServicesTest
+    public abstract class CategoryRepositoryTest : BaseCoreServicesTest
     {
         protected CategoryRepositoryTest(DbContextOptions<HomePageDbContext> contextOptions)
             : base(contextOptions)

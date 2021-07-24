@@ -24,9 +24,9 @@ using Saleos.Entity.Data;
 using Saleos.Entity.Services.CoreServices;
 using Xunit;
 
-namespace Saleos.Test.Entity
+namespace Saleos.Test.Entity.CoreServicesTest
 {
-    public abstract class ArticleRepositoryTest : BaseServicesTest
+    public abstract class ArticleRepositoryTest : BaseCoreServicesTest
     {
         protected ArticleRepositoryTest(DbContextOptions<HomePageDbContext> contextOptions)
             : base(contextOptions)

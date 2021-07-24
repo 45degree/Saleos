@@ -17,14 +17,14 @@
 using Microsoft.EntityFrameworkCore;
 using Saleos.Entity.Data;
 
-namespace Saleos.Test.Entity
+namespace Saleos.Test.Entity.CoreServicesTest
 {
-    public class BaseServicesTest
+    public class BaseCoreServicesTest
     {
         protected DbContextOptions<HomePageDbContext> ContextOptions { get; }
         protected MockData _mockData = MockData.GetInstance();
 
-        protected BaseServicesTest(DbContextOptions<HomePageDbContext> contextOptions)
+        protected BaseCoreServicesTest(DbContextOptions<HomePageDbContext> contextOptions)
         {
             ContextOptions = contextOptions;
             Seed();

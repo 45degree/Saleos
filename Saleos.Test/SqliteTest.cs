@@ -17,6 +17,7 @@
 using Microsoft.EntityFrameworkCore;
 using Saleos.Entity.Data;
 using Saleos.Test.Entity;
+using Saleos.Test.Entity.CoreServicesTest;
 
 namespace Saleos.Test
 {
